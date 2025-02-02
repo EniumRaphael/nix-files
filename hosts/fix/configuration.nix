@@ -1,11 +1,20 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
 	imports = [
 		../global.nix
 		./hardware-configuration.nix
+		../../services/discord.nix
 	];
 
+	service = {
+		bot_discord = {
+			master = true;
+			music = true;
+			tempvoc = true;
+			ticket = true;
+		};
+	};
 	# Bootloader.
 	boot.loader = {
 		systemd-boot.enable = true;
@@ -17,37 +26,6 @@
 		firewall.enable = false;
 		networkmanager.enable = true;
 		wireless.enable = false;
-	};
-
-	systemd.services = {
-		music = {
-			description = "Enium discord bot for music";
-			after = [ "network.target" ];
-			wantedBy = [ "multi-user.target" ];
-			serviceConfig = {
-				Type = "simple";
-				User = "nobody";
-				WorkingDirectory = "/root/music";
-				ExecStart = "${pkgs.nodejs}/bin/npm start";
-				Environment = "PATH=${pkgs.coreutils}/bin:${pkgs.bash}/bin:${pkgs.nodejs}/bin";
-				Restart = "on-failure";
-				RestartSec = 5;
-			};
-		};
-		yagpdb = {
-			description = "Enium discord master bot";
-			after = [ "network.target" ];
-			wantedBy = [ "multi-user.target" ];
-			serviceConfig = {
-				Type = "simple";
-				User = "nobody";
-				WorkingDirectory = "/root/yagpdb/cmd/yagpdb";
-				ExecStart = "/root/yagpdb/cmd/yagpdb/yagpdb -all -pa";
-				EnvironmentFile = "/root/yagpdb/cmd/yagpdb/sampleenvfile";
-				Restart = "on-failure";
-				RestartSec = 5;
-			};
-		};
 	};
 
 	programs = {

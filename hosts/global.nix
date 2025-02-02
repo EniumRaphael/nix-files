@@ -53,7 +53,6 @@
 		dconf
 		fastfetch
 		git
-		go
 		home-manager
 		lego
 		libjpeg
