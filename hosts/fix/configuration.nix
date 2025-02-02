@@ -20,41 +20,13 @@
 	};
 
 	systemd.services = {
-		ticket = {
-			description = "Service for ticket";
-			after = [ "network.target" ];
-			wantedBy = [ "multi-user.target" ];
-			serviceConfig = {
-				Type = "simple";
-				User = "root";
-				WorkingDirectory = "/root/ticket";
-				ExecStart = "${pkgs.nodejs}/bin/npm start";
-				Environment = "PATH=${pkgs.coreutils}/bin:${pkgs.bash}/bin:${pkgs.nodejs}/bin";
-				Restart = "on-failure";
-				RestartSec = 5;
-			};
-		};
-		tempvoc = {
-			description = "Service for tempvoc";
-			after = [ "network.target" ];
-			wantedBy = [ "multi-user.target" ];
-			serviceConfig = {
-				Type = "simple";
-				User = "root";
-				WorkingDirectory = "/root/tempvoc";
-				ExecStart = "${pkgs.nodejs}/bin/npm start";
-				Environment = "PATH=${pkgs.coreutils}/bin:${pkgs.bash}/bin:${pkgs.nodejs}/bin";
-				Restart = "on-failure";
-				RestartSec = 5;
-			};
-		};
 		music = {
-			description = "Service for music";
+			description = "Enium discord bot for music";
 			after = [ "network.target" ];
 			wantedBy = [ "multi-user.target" ];
 			serviceConfig = {
 				Type = "simple";
-				User = "root";
+				User = "nobody";
 				WorkingDirectory = "/root/music";
 				ExecStart = "${pkgs.nodejs}/bin/npm start";
 				Environment = "PATH=${pkgs.coreutils}/bin:${pkgs.bash}/bin:${pkgs.nodejs}/bin";
@@ -63,12 +35,12 @@
 			};
 		};
 		yagpdb = {
-			description = "Service for yagpdb";
+			description = "Enium discord master bot";
 			after = [ "network.target" ];
 			wantedBy = [ "multi-user.target" ];
 			serviceConfig = {
 				Type = "simple";
-				User = "root";
+				User = "nobody";
 				WorkingDirectory = "/root/yagpdb/cmd/yagpdb";
 				ExecStart = "/root/yagpdb/cmd/yagpdb/yagpdb -all -pa";
 				EnvironmentFile = "/root/yagpdb/cmd/yagpdb/sampleenvfile";
@@ -130,7 +102,9 @@
 
 	xdg.portal = {
 		enable = true;
-		extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; 
+		extraPortals = [
+			pkgs.xdg-desktop-portal-hyprland
+ 		];
 		config.common.default = "*";
 	};
 

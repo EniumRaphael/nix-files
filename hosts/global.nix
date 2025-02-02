@@ -64,7 +64,6 @@
 		man-pages
 		man-pages-posix
 		networkmanager
-		nodejs
 		openssl
 		pkg-config
 		postgresql
@@ -78,6 +77,7 @@
 		wl-clipboard
 		xclip
 		xsel
+		xdg-desktop-portal-hyprland
 		yarn
 		zsh
 		vim
