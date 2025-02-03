@@ -48,15 +48,6 @@
 			pulse.enable = true;
 			jack.enable = true;
 		};
-		nginx = {
-			virtualHosts = {
-				"enium.eu" = {
-					forceSSL = true;
-					sslCertificate = "/etc/nginx/ssl/selfsigned.crt";
-					sslCertificateKey = "/etc/nginx/ssl/selfsigned.key";
-				};
-			};
-		};
 		udev.extraRules = ''
 			SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
 		'';

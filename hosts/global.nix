@@ -6,7 +6,9 @@
 		man.enable = true;
 		dev.enable = true;
 	};
+
 	time.timeZone = "Europe/Paris";
+
 	i18n = {
 		defaultLocale = "en_US.UTF-8";
 		extraLocaleSettings = {
@@ -42,8 +44,14 @@
 			};
 		};
 	};
+
 	nixpkgs.config.allowUnfree = true;
-	nix.extraOptions = ''experimental-features = nix-command flakes'';
+
+	nix.settings.experimental-features = [
+		"nix-command"
+		"flakes"
+	];
+
 	programs = {
 		zsh.enable = true;
 	};
