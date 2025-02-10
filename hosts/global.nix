@@ -78,15 +78,17 @@
 		python3
 		python3Packages.pip
 		qflipper
+		swaylock
+		swaylock-fancy
 		tmux
 		unzip
+		vim
 		wget
 		wl-clipboard
 		xclip
-		xsel
 		xdg-desktop-portal-hyprland
+		xsel
 		yarn
 		zsh
-		vim
 	];
 }

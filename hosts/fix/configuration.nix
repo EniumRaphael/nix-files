@@ -15,6 +15,9 @@
 			ticket = true;
 		};
 	};
+
+	security.pam.services.swaylock = {};
+
 	# Bootloader.
 	boot.loader = {
 		systemd-boot.enable = true;
