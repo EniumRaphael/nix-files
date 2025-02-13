@@ -9,6 +9,8 @@
 
 	time.timeZone = "Europe/Paris";
 
+	security.pam.services.swaylock = {};
+
 	i18n = {
 		defaultLocale = "en_US.UTF-8";
 		extraLocaleSettings = {
@@ -78,6 +80,7 @@
 		python3
 		python3Packages.pip
 		qflipper
+		ripgrep
 		swaylock
 		swaylock-fancy
 		tmux

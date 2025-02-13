@@ -22,5 +22,11 @@
 				./hosts/fix/configuration.nix
 			];
 		};
+		nixosConfigurations."nixos-asahi" = nixpkgs.lib.nixosSystem {
+			system = "aarch64-linux";
+			modules = [
+				./hosts/asahi/configuration.nix
+			];
+		};
 	};
 }
