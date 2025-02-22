@@ -1,4 +1,0 @@
-[submodule "hm-config"]
-	path = hm-config
-	url = https://github.com/EniumRaphael/home-manager
-	branch = full-nix-config
