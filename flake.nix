@@ -19,9 +19,7 @@
 		nixosConfigurations."nixos-fix" = nixpkgs.lib.nixosSystem {
 			system = "x86_64-linux";
 			modules = [
-				home-manager.nixosModules.home-manager
 				./hosts/fix/configuration.nix
-				./home-config/host/fix.nix
 			];
 		};
 		nixosConfigurations."nixos-asahi" = nixpkgs.lib.nixosSystem {
