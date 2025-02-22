@@ -1,3 +1,0 @@
-[submodule "hm-config"]
-	path = hm-config
-	url = git@github.com:EniumRaphael/home-manager
