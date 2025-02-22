@@ -21,7 +21,7 @@
 			modules = [
 				home-manager.nixosModules.home-manager
 				./hosts/fix/configuration.nix
-				./hm-config/host/fix.nix
+				./home-config/host/fix.nix
 			];
 		};
 		nixosConfigurations."nixos-asahi" = nixpkgs.lib.nixosSystem {
