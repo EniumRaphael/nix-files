@@ -7,10 +7,11 @@
 			url = "github:nix-community/home-manager";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
+		minecraft.url = "github:Infinidoge/nix-minecraft";
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 	};
 
-	outputs = { self, nixpkgs, flake-utils, home-manager,... }@inputs:
+	outputs = { self, nixpkgs, flake-utils, ... }@inputs:
 	let
 		pkgs = import nixpkgs {
 			config.allowUnfree = true;
@@ -21,6 +22,9 @@
 			modules = [
 				./hosts/fix/configuration.nix
 			];
+			specialArgs = {
+				inherit inputs;
+			};
 		};
 		nixosConfigurations."nixos-asahi" = nixpkgs.lib.nixosSystem {
 			system = "aarch64-linux";

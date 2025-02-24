@@ -1,13 +1,21 @@
-{ config, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, ... }:
 
 {
 	imports = [
 		../global.nix
 		./hardware-configuration.nix
+		../../modules/games/global.nix
 		../../services/discord.nix
+		../../services/games.nix
 	];
 
+	games = {
+		lutris = true;
+	};
 	service = {
+		minecraft = {
+			enium-pv = true;
+		};
 		bot_discord = {
 			master = true;
 			music = true;
@@ -23,6 +31,13 @@
 		systemd-boot.enable = true;
 		efi.canTouchEfiVariables = true;
 	};
+
+	environment.systemPackages = with pkgs; [
+		wine-staging
+		lutris
+		dxvk
+		vkd3d
+	];
 
 	networking = {
 		hostName = "nixos-fix";
