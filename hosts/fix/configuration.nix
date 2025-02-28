@@ -78,14 +78,8 @@
 		vkd3d
 	];
 
-	networking = {
-		hostName = "nixos-fix";
-		firewall.enable = false;
-		networkmanager.enable = true;
-		wireless.enable = false;
-	};
-
 	programs = {
+		hyprland.enable = true;
 		steam = {
 			enable = true;
 			gamescopeSession.enable = true;
@@ -119,7 +113,7 @@
 			enable = true;
 			settings = {
 				default_session = {
-					command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --remember-user-session --time --cmd Hyprland";
+					command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --user-menu --remember-user-session --time";
 				};
 			};
 		};
