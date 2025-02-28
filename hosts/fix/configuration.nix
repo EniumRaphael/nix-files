@@ -9,6 +9,13 @@
 		../../services/games.nix
 	];
 
+	networking = {
+		hostName = "nixos-fix";
+		firewall.enable = false;
+		networkmanager.enable = true;
+		wireless.enable = false;
+	};
+
 	games = {
 		lutris = true;
 	};
@@ -24,7 +31,39 @@
 		};
 	};
 
-	security.pam.services.swaylock = {};
+	security.pam.services = {
+		greetd = {
+			enableGnomeKeyring = true;
+		};
+		swaylock = {};
+	};
+
+	services.xserver = {
+		desktopManager.gnome.enable = true;
+		displayManager.gdm.wayland = true;
+	};
+
+	users = {
+		defaultUserShell = pkgs.zsh;
+		users = {
+			deb = {
+				isNormalUser = true;
+				initialPassword = "pasadmin1234";
+				description = "deb";
+				useDefaultShell = true;
+				extraGroups = [
+					"networkmanager"
+					"dialout"
+					"docker"
+					"video"
+				];
+				packages = with pkgs; [
+					gnome-session
+					home-manager
+				];
+			};
+		};
+	};
 
 	# Bootloader.
 	boot.loader = {
@@ -55,6 +94,7 @@
 	};
 
 	services = {
+		dbus.enable = true;
 		openssh = {
 			enable = true;
 			ports = [ 42131 ];

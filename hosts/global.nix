@@ -30,7 +30,7 @@
 		users = {
 			raphael = {
 				isNormalUser = true;
-				description = "The main account of raphael";
+				description = "raphael";
 				useDefaultShell = true;
 				extraGroups = [
 					"networkmanager"
