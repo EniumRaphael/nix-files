@@ -38,11 +38,6 @@
 		swaylock = {};
 	};
 
-	services.xserver = {
-		desktopManager.gnome.enable = true;
-		displayManager.gdm.wayland = true;
-	};
-
 	users = {
 		defaultUserShell = pkgs.zsh;
 		users = {
@@ -79,7 +74,10 @@
 	];
 
 	programs = {
-		hyprland.enable = true;
+		hyprland = {
+			enable = true;
+			xwayland.enable = true;
+		};
 		steam = {
 			enable = true;
 			gamescopeSession.enable = true;
@@ -88,6 +86,11 @@
 	};
 
 	services = {
+		seatd.enable = true;
+		xserver = {
+			desktopManager.gnome.enable = true;
+			displayManager.gdm.wayland = true;
+		};
 		dbus.enable = true;
 		openssh = {
 			enable = true;

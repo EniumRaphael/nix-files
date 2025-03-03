@@ -56,13 +56,16 @@
 	
 	services.xserver.videoDrivers = ["nvidia"];
 
-	hardware.nvidia = {
-		open = false;
-		modesetting.enable = true;
-		powerManagement.enable = false;
-		powerManagement.finegrained = false;
-		nvidiaSettings = true;
-		package = config.boot.kernelPackages.nvidiaPackages.stable;
+	hardware = {
+		graphics.enable = true;
+		nvidia = {
+			open = false;
+			modesetting.enable = true;
+			powerManagement.enable = false;
+			powerManagement.finegrained = false;
+			nvidiaSettings = true;
+			package = config.boot.kernelPackages.nvidiaPackages.stable;
+		};
 	};
 
 	nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
