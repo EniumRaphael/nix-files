@@ -17,20 +17,31 @@
 			config.allowUnfree = true;
 		};
 	in {
-		nixosConfigurations."nixos-fix" = nixpkgs.lib.nixosSystem {
-			system = "x86_64-linux";
-			modules = [
-				./hosts/fix/configuration.nix
-			];
-			specialArgs = {
-				inherit inputs;
+		nixosConfigurations = {
+			"nixos-fix" = nixpkgs.lib.nixosSystem {
+				system = "x86_64-linux";
+				modules = [
+					./hosts/fix/configuration.nix
+				];
+				specialArgs = {
+					inherit inputs;
+				};
 			};
-		};
-		nixosConfigurations."nixos-asahi" = nixpkgs.lib.nixosSystem {
-			system = "aarch64-linux";
-			modules = [
-				./hosts/asahi/configuration.nix
-			];
+			"nixos-server" = nixpkgs.lib.nixosSystem {
+				system = "x86_64-linux";
+				modules = [
+					./hosts/server/configuration.nix
+				];
+				specialArgs = {
+					inherit inputs;
+				};
+			};
+			"nixos-asahi" = nixpkgs.lib.nixosSystem {
+				system = "aarch64-linux";
+				modules = [
+					./hosts/asahi/configuration.nix
+				];
+			};
 		};
 	};
 }
