@@ -18,7 +18,7 @@
 
 	service = {
 		minecraft = {
-			enium-pv = true;
+			enium-pv = false;
 		};
 		bot_discord = {
 			master = true;
