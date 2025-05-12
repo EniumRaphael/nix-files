@@ -22,6 +22,7 @@
 		};
 		bot_discord = {
 			master = true;
+			bde = true;
 			music = true;
 			tempvoc = true;
 			ticket = true;
@@ -30,7 +31,24 @@
 
 	users = {
 		defaultUserShell = pkgs.zsh;
+		users = {
+			axel = {
+				isNormalUser = true;
+				initialPassword = "Feuyllelpb12341234";
+				description = "feuylle";
+				useDefaultShell = true;
+				extraGroups = [
+					"networkmanager"
+					"plugdev"
+					"docker"
+				];
+				packages = with pkgs; [
+					home-manager
+				];
+			};
+		};
 	};
+
 
 	# Bootloader.
 	boot.loader = {
