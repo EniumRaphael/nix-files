@@ -8,7 +8,7 @@ in
 		environment.systemPackages = with pkgs; [
 			nix
 		];
-		systemd.services.bot_bde = {
+		systemd.services.bot_ada = {
 			description = "Ada (chdoe asso) discord bot public";
 			after = [
 				"network.target"
