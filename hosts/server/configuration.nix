@@ -23,6 +23,7 @@
 		bot_discord = {
 			master = true;
 			bde = true;
+			ada = true;
 			music = true;
 			tempvoc = true;
 			ticket = true;
