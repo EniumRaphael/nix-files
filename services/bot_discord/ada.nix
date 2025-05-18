@@ -5,9 +5,18 @@ let
 in
 {
 	config = lib.mkIf cfg {
-		environment.systemPackages = with pkgs; [
-			nix
-		];
+		users = {
+			groups.dsc_ada = {
+				name = "dsc_ada";
+			};
+			users.dsc_ada = {
+				description = "Utilisateur pour le bot Ada";
+				group = "dsc_ada";
+				home = "/opt/Ada";
+				isSystemUser = true;
+			};
+		};
+
 		systemd.services.bot_ada = {
 			description = "Ada (chdoe asso) discord bot public";
 			after = [
@@ -18,15 +27,12 @@ in
 			];
 			serviceConfig = {
 				Type = "simple";
-				User = "nobody";
+				User = "dsc_ada";
 				WorkingDirectory = "/opt/Ada";
-				ExecStart = "/opt/Ada/.venv/bin/python /opt/Ada/bot.py";
+				ExecStart = "/opt/Ada/bot.py";
 				EnvironmentFile = "/opt/Ada/.env";
 				Restart = "on-failure";
 				RestartSec = 5;
-				Environment = lib.mkForce ''
-					Environment=PYTHONUNBUFFERED=1
-				'';
 			};
 		};
 	};

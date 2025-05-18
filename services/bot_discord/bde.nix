@@ -5,9 +5,6 @@ let
 in
 {
 	config = lib.mkIf cfg {
-		environment.systemPackages = with pkgs; [
-			nix
-		];
 		systemd.services.bot_bde = {
 			description = "BDE discord bot public";
 			after = [
@@ -24,9 +21,6 @@ in
 				EnvironmentFile = "/opt/Bot_Auth/.env";
 				Restart = "on-failure";
 				RestartSec = 5;
-				Environment = lib.mkForce ''
-					Environment=PYTHONUNBUFFERED=1
-				'';
 			};
 		};
 	};
