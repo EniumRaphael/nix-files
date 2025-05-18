@@ -24,7 +24,7 @@ in
 				EnvironmentFile = "/opt/Ada/.env";
 				Restart = "on-failure";
 				RestartSec = 5;
-				Environment = lib.mkForce''
+				Environment = lib.mkForce ''
 					Environment=PYTHONUNBUFFERED=1
 				'';
 			};
