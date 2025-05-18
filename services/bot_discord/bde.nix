@@ -5,6 +5,18 @@ let
 in
 {
 	config = lib.mkIf cfg {
+		users = {
+			groups.dsc_bde = {
+				name = "dsc_bde";
+			};
+			users.dsc_bde = {
+				description = "Utilisateur pour le bot BDE";
+				group = "dsc_bde";
+				home = "/opt/bde";
+				isSystemUser = true;
+			};
+		};
+
 		systemd.services.bot_bde = {
 			description = "BDE discord bot public";
 			after = [
@@ -15,10 +27,10 @@ in
 			];
 			serviceConfig = {
 				Type = "simple";
-				User = "nobody";
-				WorkingDirectory = "/opt/Bot_Auth";
-				ExecStart = "/opt/Bot_Auth/.venv/bin/python /opt/Bot_Auth/bot.py";
-				EnvironmentFile = "/opt/Bot_Auth/.env";
+				User = "dsc_bde";
+				WorkingDirectory = "/opt/Bde";
+				ExecStart = "/opt/Bde/.venv/bin/python /opt/Bde/bot.py";
+				EnvironmentFile = "/opt/Bde/.env";
 				Restart = "on-failure";
 				RestartSec = 5;
 			};
