@@ -24,7 +24,7 @@
 			master = true;
 			bde = true;
 			ada = true;
-			music = true;
+			music = false;
 			tempvoc = true;
 			ticket = true;
 		};

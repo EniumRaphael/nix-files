@@ -8,13 +8,24 @@ in
 		environment.systemPackages = with pkgs; [
 			nodejs
 		];
+		users = {
+			groups.dsc_music = {
+				name = "dsc_music";
+			};
+			users.dsc_music = {
+				description = "Utilisateur pour le bot music";
+				group = "dsc_music";
+				home = "/opt/music";
+				isSystemUser = true;
+			};
+		};
 		systemd.services.music = {
 			description = "Enium discord bot for music";
 			after = [ "network.target" ];
 			wantedBy = [ "multi-user.target" ];
 			serviceConfig = {
 				Type = "simple";
-				User = "nobody";
+				User = "dsc_music";
 				WorkingDirectory = "/opt/music";
 				ExecStart = "${pkgs.nodejs}/bin/npm start";
 				Environment = "PATH=${pkgs.coreutils}/bin:${pkgs.bash}/bin:${pkgs.nodejs}/bin";
