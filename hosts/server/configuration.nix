@@ -7,6 +7,7 @@
 		../../modules/games/global.nix
 		../../services/discord.nix
 		../../services/games.nix
+		../../services/web.nix
 	];
 
 	networking = {
@@ -17,6 +18,7 @@
 	};
 
 	service = {
+		web.portefolio = true;
 		minecraft = {
 			enium-pv = false;
 		};
