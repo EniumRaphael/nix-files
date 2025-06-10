@@ -22,24 +22,19 @@ in
 		};
 
 		services.nginx = {
-			enable = true;
-			recommendedGzipSettings = true;
-			recommendedProxySettings = true;
 			virtualHosts."raphael.parodi.pro" = {
-				forceSSL   = true;
+				forceSSL = true;
 				enableACME = true;
 				locations."/" = {
-					root       = "/opt/portefolio/dist";
-					index      = "index.html";
+					root = "/opt/portefolio/dist";
+					index = "index.html";
 					extraConfig = ''
-					try_files $uri /index.html;
+						try_files $uri /index.html;
 					'';
 				};
 			};
 		};
 		security.acme = {
-			acceptTerms = true;
-			email = "raphael@parodi.pro";
 			certs = {
 				"raphael.parodi.pro" = {};
 			};
