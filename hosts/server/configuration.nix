@@ -25,6 +25,7 @@
 		bot_discord = {
 			master = true;
 			bde = true;
+			marty = true;
 			ada = true;
 			music = false;
 			tempvoc = true;

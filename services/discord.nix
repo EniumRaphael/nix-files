@@ -16,6 +16,9 @@ let
 	bde_bot = import ./bot_discord/bde.nix {
 		inherit config pkgs lib;
 	};
+	marty_bot = import ./bot_discord/marty.nix {
+		inherit config pkgs lib;
+	};
 	ticket_bot = import ./bot_discord/ticket.nix {
 		inherit config pkgs lib;
 	};
@@ -29,6 +32,7 @@ in
 		music_bot
 		tempvoc_bot
 		ticket_bot
+		marty_bot
 	];
 
 	options.service.bot_discord = {
@@ -46,6 +50,11 @@ in
 			type = lib.types.bool;
 			default = false;
 			description = "Enable bde bot";
+		};
+		marty = lib.mkOption {
+			type = lib.types.bool;
+			default = false;
+			description = "Enable marty bot";
 		};
 		music = lib.mkOption {
 			type = lib.types.bool;
