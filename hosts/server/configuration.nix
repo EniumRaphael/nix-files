@@ -5,6 +5,7 @@
 		../global.nix
 		./hardware-configuration.nix
 		../../modules/games/global.nix
+		../../services/forty_two.nix
 		../../services/discord.nix
 		../../services/games.nix
 		../../services/web.nix
@@ -18,6 +19,7 @@
 	};
 
 	service = {
+		forty_two.irc = true;
 		web.portefolio = true;
 		minecraft = {
 			enium-pv = false;
