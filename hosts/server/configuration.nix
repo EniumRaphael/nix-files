@@ -9,6 +9,7 @@
 		../../services/discord.nix
 		../../services/games.nix
 		../../services/web.nix
+		../../services/self_host.nix
 	];
 
 	networking = {
@@ -19,6 +20,9 @@
 	};
 
 	service = {
+		selfhost = {
+			nextcloud = true;
+		};
 		forty_two.irc = true;
 		web.portefolio = true;
 		minecraft = {
