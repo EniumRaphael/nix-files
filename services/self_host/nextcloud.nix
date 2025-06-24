@@ -20,6 +20,12 @@ in
 				adminuser = "OwnedByTheEniumTeam";
 				dbtype = "sqlite";
 			};
+			settings = {
+				trusted_domains = [
+					"192.168.1.254"
+				];
+				default_phone_region = "FR";
+			};
 		};
 		nginx.virtualHosts."nextcloud.enium.eu".enableACME = true;
 		nginx.virtualHosts."nextcloud.enium.eu".forceSSL = true;

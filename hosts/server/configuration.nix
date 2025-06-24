@@ -21,6 +21,7 @@
 
 	service = {
 		selfhost = {
+			monitor = true;
 			nextcloud = true;
 		};
 		forty_two.irc = true;
