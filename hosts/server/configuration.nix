@@ -21,6 +21,7 @@
 
 	service = {
 		selfhost = {
+			htop = true;
 			monitor = true;
 			nextcloud = true;
 		};
