@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-	cfg = config.service.bot_discord.bde;
+	cfg = config.service.bot_discord.ada;
 in
 {
 	config = lib.mkIf cfg {

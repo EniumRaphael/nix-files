@@ -93,6 +93,9 @@ in
 					targets = [
 						"https://raphael.parodi.pro"
 						"https://nextcloud.enium.eu"
+						"https://htop.enium.eu"
+						"https://monitor.enium.eu"
+						"https://relance-pas-stp.me:4242"
 					];
 				}];
 				relabel_configs = [

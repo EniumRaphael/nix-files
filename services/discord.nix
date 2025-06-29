@@ -13,6 +13,9 @@ let
 	ada_bot = import ./bot_discord/ada.nix {
 		inherit config pkgs lib;
 	};
+	tut_bot = import ./bot_discord/bot_loc.nix {
+		inherit config pkgs lib;
+	};
 	bde_bot = import ./bot_discord/bde.nix {
 		inherit config pkgs lib;
 	};
@@ -28,6 +31,7 @@ in
 	imports = [
 		ada_bot
 		bde_bot
+		tut_bot
 		master_bot
 		music_bot
 		tempvoc_bot
@@ -46,10 +50,15 @@ in
 			default = false;
 			description = "Enable ada bot";
 		};
+		tut = lib.mkOption {
+			type = lib.types.bool;
+			default = false;
+			description = "enable tut bot";
+		};
 		bde = lib.mkOption {
 			type = lib.types.bool;
 			default = false;
-			description = "Enable bde bot";
+			description = "enable bde bot";
 		};
 		marty = lib.mkOption {
 			type = lib.types.bool;

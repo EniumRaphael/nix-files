@@ -32,7 +32,8 @@
 		};
 		bot_discord = {
 			master = true;
-			bde = true;
+			bde = false;
+			tut = true;
 			marty = true;
 			ada = true;
 			music = false;
