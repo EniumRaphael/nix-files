@@ -95,6 +95,7 @@ in
 						"https://nextcloud.enium.eu"
 						"https://htop.enium.eu"
 						"https://monitor.enium.eu"
+						"https://ollama.enium.eu"
 						"http://relance-pas-stp.me:4242"
 					];
 				}];

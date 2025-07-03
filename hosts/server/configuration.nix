@@ -22,6 +22,7 @@
 	service = {
 		selfhost = {
 			htop = true;
+			ollama = true;
 			monitor = true;
 			nextcloud = true;
 		};
