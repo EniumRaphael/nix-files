@@ -8,7 +8,7 @@ in
 		ollama = {
 			enable = true;
 			loadModels = [
-				"mistral:7b"
+				"qwen2.5:3b"
 			];
 			acceleration = "cuda";
 		};
