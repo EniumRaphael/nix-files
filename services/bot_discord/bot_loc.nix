@@ -28,9 +28,9 @@ in
 			serviceConfig = {
 				Type = "simple";
 				User = "dsc_loc";
-				WorkingDirectory = "/opt/alerte_poste-master";
-				ExecStart = "/opt/alerte_poste-master/.venv/bin/python /opt/alerte_poste-master/src/main.py";
-				EnvironmentFile = "/opt/alerte_poste-master/.env";
+				WorkingDirectory = "/opt/alerte-poste";
+				ExecStart = "/opt/alerte-poste/.venv/bin/python /opt/alerte-poste/src/main.py";
+				EnvironmentFile = "/opt/alerte-poste/.env";
 				Restart = "on-failure";
 				RestartSec = 5;
 			};
