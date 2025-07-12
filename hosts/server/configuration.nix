@@ -24,6 +24,7 @@
 			htop = true;
 			ollama = false;
 			monitor = true;
+			teamspeak = true;
 			nextcloud = true;
 		};
 		forty_two.irc = true;
