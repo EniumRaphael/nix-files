@@ -4,6 +4,9 @@ let
 	htop = import ./self_host/htop.nix {
 		inherit inputs config pkgs lib;
 	};
+	mail = import ./self_host/mail.nix {
+		inherit inputs config pkgs lib;
+	};
 	monitor = import ./self_host/monitor.nix {
 		inherit inputs config pkgs lib;
 	};
@@ -21,6 +24,7 @@ in
 {
 	imports = [
 		nextcloud
+		mail
 		htop
 		ollama
 		teamspeak
@@ -47,6 +51,11 @@ in
 			type = lib.types.bool;
 			default = false;
 			description = "Enable the ollama";
+		};
+		mail = lib.mkOption {
+			type = lib.types.bool;
+			default = false;
+			description = "Enable the mail";
 		};
 		monitor = lib.mkOption {
 			type = lib.types.bool;

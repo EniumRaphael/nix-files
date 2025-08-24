@@ -7,11 +7,12 @@
 			url = "github:nix-community/home-manager";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
+		simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
 		minecraft.url = "github:Infinidoge/nix-minecraft";
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 	};
 
-	outputs = { self, nixpkgs, flake-utils, ... }@inputs:
+	outputs = { self, nixpkgs, flake-utils, simple-nixos-mailserver, ... }@inputs:
 	let
 		pkgs = import nixpkgs {
 			config.allowUnfree = true;
@@ -31,6 +32,7 @@
 				system = "x86_64-linux";
 				modules = [
 					./hosts/server/configuration.nix
+					simple-nixos-mailserver.nixosModule
 				];
 				specialArgs = {
 					inherit inputs;

@@ -23,6 +23,7 @@
 		selfhost = {
 			htop = true;
 			ollama = false;
+			mail = false;
 			monitor = true;
 			teamspeak = true;
 			nextcloud = true;
