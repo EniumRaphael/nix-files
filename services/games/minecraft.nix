@@ -1,13 +1,12 @@
 { inputs, config, pkgs, lib, ... }:
 
 let
-	cfg = config.service.minecraft.enium-pv;
+	cfg = config.service.games.enium-pv;
 in
 {
 	imports = [
 		inputs.minecraft.nixosModules.minecraft-servers
 	];
-
 
 	config = lib.mkIf cfg {
 		nixpkgs.overlays = [
