@@ -1,18 +1,12 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    configuration.nix                                  :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/10/02 00:54:38 by rparodi           #+#    #+#              #
-#    Updated: 2025/10/02 11:44:15 by rparodi          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+{
+  inputs,
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
-{ inputs, config, pkgs, lib, ... }:
-
-  {
+{
   imports = [
     ../global.nix
     ./hardware-configuration.nix
@@ -57,14 +51,6 @@
     };
   };
 
-  programs = {
-    steam = {
-      enable = true;
-      gamescopeSession.enable = true;
-    };
-    gamemode.enable = true;
-  };
-
   users = {
     defaultUserShell = pkgs.zsh;
     users = {
@@ -85,7 +71,6 @@
     };
   };
 
-
   # Bootloader.
   boot.loader = {
     systemd-boot.enable = true;
@@ -94,44 +79,34 @@
 
   services = {
     seatd.enable = true;
-    displayManager = {
-      defaultSession = "steam";
-      gdm.enable = true;
-      autoLogin = {
-        enable = true;
-        user = "raphael";
-      };
-    };
     xserver = {
       enable = true;
       videoDrivers = [
         "nvidia"
       ];
     };
-      dbus.enable = true;
-      pipewire = {
-        enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
-        pulse.enable = true;
-        jack.enable = true;
-      };
-      openssh = {
-        enable = true;
-        ports = [ 42131 ];
-      };
-      udev.extraRules = ''
-            SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
-      '';
-      redis.servers."" = {
-        enable = true;
-      };
-      postgresql = {
-        enable = true;
-      };
+    dbus.enable = true;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
     };
-
-    virtualisation.docker.enable = true;
-
-    system.stateVersion = "24.05";
-  }
+    openssh = {
+      enable = true;
+      ports = [ 42131 ];
+    };
+    udev.extraRules = ''
+      SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
+    '';
+    redis.servers."" = {
+      enable = true;
+    };
+    postgresql = {
+      enable = true;
+    };
+  };
+  virtualisation.docker.enable = true;
+  system.stateVersion = "24.05";
+}
