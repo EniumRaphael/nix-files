@@ -10,15 +10,23 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    programs.steam = {
-      enable = true;
-      gamescopeSession.enable = true;
-      extraCompatPackages = with pkgs; [
-        proton-ge-bin
-      ];
+    programs = {
+      steam = {
+        enable = true;
+        gamescopeSession.enable = true;
+        extraCompatPackages = with pkgs; [
+          proton-ge-bin
+        ];
+      };
+      gamemode.enable = true;
     };
 
-    programs.gamemode.enable = true;
+    environment.systemPackages = with pkgs; [
+      wine-staging
+      lutris
+      dxvk
+      vkd3d
+    ];
 
     systemd.user.services."steam-bp" = lib.mkIf cfg.bp {
       description = "Steam Big Picture auto start";
@@ -35,6 +43,13 @@ in
     };
 
     services = {
+      pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
+        jack.enable = true;
+      };
       desktopManager.plasma6.enable = lib.mkIf cfg.bp true;
       displayManager = lib.mkIf cfg.bp {
         defaultSession = "plasmax11";
