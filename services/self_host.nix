@@ -31,14 +31,6 @@ let
       lib
       ;
   };
-  teamspeak = import ./self_host/teamspeak.nix {
-    inherit
-      inputs
-      config
-      pkgs
-      lib
-      ;
-  };
   ollama = import ./self_host/ollama.nix {
     inherit
       inputs
@@ -63,7 +55,6 @@ in
     mail
     htop
     ollama
-    teamspeak
     monitor
   ];
 
@@ -77,11 +68,6 @@ in
       type = lib.types.bool;
       default = false;
       description = "Enable the htop";
-    };
-    teamspeak = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Enable the teamspeak";
     };
     ollama = lib.mkOption {
       type = lib.types.bool;
