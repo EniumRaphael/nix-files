@@ -23,17 +23,10 @@
   };
 
   games = {
-    lutris = true;
-  };
-  service = {
-    minecraft = {
-      enium-pv = true;
-    };
-    bot_discord = {
-      master = true;
-      music = true;
-      tempvoc = true;
-      ticket = true;
+    lutris = false;
+    steam = {
+      enable = true;
+      bp = false;
     };
   };
 
@@ -72,28 +65,11 @@
     efi.canTouchEfiVariables = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    wine-staging
-    lutris
-    dxvk
-    vkd3d
-  ];
-
   programs = {
-    appimage = {
-      enable = true;
-      binfmt = true;
-      package = pkgs.appimage-run.override { extraPkgs = pkgs: [ pkgs.libthai ]; };
-    };
     hyprland = {
       enable = true;
       xwayland.enable = true;
     };
-    steam = {
-      enable = true;
-      gamescopeSession.enable = true;
-    };
-    gamemode.enable = true;
   };
 
   services = {
@@ -101,6 +77,14 @@
     xserver = {
       desktopManager.gnome.enable = true;
       displayManager.gdm.wayland = true;
+    };
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --user-menu --remember-user-session --time";
+        };
+      };
     };
     dbus.enable = true;
     openssh = {
@@ -115,21 +99,13 @@
       jack.enable = true;
     };
     udev.extraRules = ''
-      			SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
-      		'';
+      SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
+    '';
     redis.servers."" = {
       enable = true;
     };
     postgresql = {
       enable = true;
-    };
-    greetd = {
-      enable = true;
-      settings = {
-        default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --user-menu --remember-user-session --time";
-        };
-      };
     };
   };
 
