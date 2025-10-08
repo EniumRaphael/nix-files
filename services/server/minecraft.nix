@@ -7,7 +7,7 @@
 }:
 
 let
-  cfg = config.service.games.enium-pv;
+  cfg = config.service.games.minecraft;
 in
 {
   imports = [
