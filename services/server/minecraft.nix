@@ -7,7 +7,7 @@
 }:
 
 let
-  cfg = config.service.games.minecraft;
+  cfg = config.service.server.minecraft;
 in
 {
   imports = [
