@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.service.selfhost.monitor;
+  cfg = config.service.server.teamspeak;
 in
 {
   config = lib.mkIf cfg {
