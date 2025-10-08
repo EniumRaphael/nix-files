@@ -6,14 +6,17 @@
 }:
 
 let
-  lutris = import ./lutris.nix {
+  steam = import ./games/steam.nix {
     inherit config pkgs lib;
   };
-  cfg = config.games;
+  lutris = import ./games/lutris.nix {
+    inherit config pkgs lib;
+  };
 in
 {
   imports = [
     lutris
+    steam
   ];
 
   options.games = {
