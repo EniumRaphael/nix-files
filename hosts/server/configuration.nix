@@ -10,10 +10,10 @@
   imports = [
     ../global.nix
     ./hardware-configuration.nix
-    ../../modules/games/global.nix
+    ../../modules/games.nix
     ../../services/forty_two.nix
     ../../services/discord.nix
-    ../../services/games.nix
+    ../../services/server.nix
     ../../services/web.nix
     ../../services/self_host.nix
   ];
@@ -25,19 +25,27 @@
     wireless.enable = false;
   };
 
+  games = {
+    lutris = false;
+    steam = {
+      enable = true;
+      bp = true;
+    };
+  };
+
   service = {
     selfhost = {
       htop = true;
       ollama = false;
       mail = false;
       monitor = true;
-      teamspeak = true;
       nextcloud = true;
     };
     forty_two.irc = true;
     web.portefolio = true;
-    games = {
-      enium-pv = false;
+    server = {
+      minecraft = false;
+      teamspeak = true;
     };
     bot_discord = {
       master = true;
@@ -86,13 +94,6 @@
       ];
     };
     dbus.enable = true;
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      jack.enable = true;
-    };
     openssh = {
       enable = true;
       ports = [ 42131 ];
