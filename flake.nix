@@ -7,6 +7,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hm-config.url = "github:EniumRaphael/home-manager";
     simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     minecraft.url = "github:Infinidoge/nix-minecraft";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -17,6 +18,8 @@
       self,
       nixpkgs,
       flake-utils,
+      home-manager,
+      hm-config,
       simple-nixos-mailserver,
       ...
     }@inputs:
@@ -31,6 +34,12 @@
           system = "x86_64-linux";
           modules = [
             ./hosts/fix/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.raphael = hm-config.homeConfigurations."hm-fix";
+            }
           ];
           specialArgs = {
             inherit inputs;
@@ -41,6 +50,12 @@
           modules = [
             ./hosts/server/configuration.nix
             simple-nixos-mailserver.nixosModule
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.raphael = import hm-config.homeModules.server;
+            }
           ];
           specialArgs = {
             inherit inputs;
@@ -50,6 +65,12 @@
           system = "aarch64-linux";
           modules = [
             ./hosts/asahi/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.raphael = hm-config.homeConfigurations."hm-asahi";
+            }
           ];
         };
       };
