@@ -11,8 +11,8 @@ in
 {
   config = lib.mkIf cfg {
     environment.systemPackages = with pkgs; [
-      llvmPackages.clang
-      llvmPackages.clang-tools
+      llvmPackages_21.clang
+      llvmPackages_21.clang-tools
       gnumake
     ];
     users = {
