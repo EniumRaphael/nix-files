@@ -11,6 +11,12 @@
     simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     minecraft.url = "github:Infinidoge/nix-minecraft";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixvim.url = "github:EniumRaphael/nixvim";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -21,6 +27,7 @@
       home-manager,
       hm-config,
       simple-nixos-mailserver,
+      catppuccin,
       ...
     }@inputs:
     let
@@ -38,6 +45,12 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                system = "x86_64-linux";
+                nixvim = inputs.nixvim.packages."x86_64-linux".default;
+                zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
+              };
               home-manager.users.raphael = hm-config.homeConfigurations."hm-fix";
             }
           ];
@@ -52,9 +65,16 @@
             simple-nixos-mailserver.nixosModule
             home-manager.nixosModules.home-manager
             {
+              home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.raphael = import hm-config.homeModules.server;
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                system = "x86_64-linux";
+                nixvim = inputs.nixvim.packages."x86_64-linux".default;
+                zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
+              };
+              home-manager.users.raphael = import hm-config.outputs.homeModules.server;
             }
           ];
           specialArgs = {
@@ -69,6 +89,12 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                system = "aarch64-linux";
+                nixvim = inputs.nixvim.packages."aarch64-linux".default;
+                zen-browser = inputs.zen-browser.packages."aarch64-linux".default;
+              };
               home-manager.users.raphael = hm-config.homeConfigurations."hm-asahi";
             }
           ];
