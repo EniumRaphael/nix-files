@@ -28,9 +28,9 @@ in
       nextcloud = {
         enable = true;
         https = true;
-        package = pkgs.nextcloud31;
+        package = pkgs.nextcloud32;
         hostName = "nextcloud.enium.eu";
-        datadir = "/mnt/data/nextcloud/";
+        datadir = dataDir;
         config = {
           adminpassFile = "/etc/nextcloud-pass.txt";
           adminuser = "OwnedByTheEniumTeam";
@@ -46,8 +46,8 @@ in
       nginx.virtualHosts."nextcloud.enium.eu".enableACME = true;
       nginx.virtualHosts."nextcloud.enium.eu".forceSSL = true;
       nginx.virtualHosts."nextcloud.enium.eu".locations."~ \.php$".extraConfig = ''
-        			fastcgi_pass unix:/run/phpfpm-nextcloud.sock;
-        			'';
+        fastcgi_pass unix:/run/phpfpm-nextcloud.sock;
+      '';
     };
   };
 }
