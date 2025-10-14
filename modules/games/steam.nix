@@ -28,6 +28,13 @@ in
       vkd3d
     ];
 
+    users = {
+      groups.datausers = { };
+      users = {
+        raphael.extraGroups = [ "datausers" ];
+      };
+    };
+
     systemd.user.services."steam-bp" = lib.mkIf cfg.bp {
       description = "Steam Big Picture auto start";
       wantedBy = [ "graphical-session.target" ];
