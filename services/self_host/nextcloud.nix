@@ -14,6 +14,16 @@ in
     environment.systemPackages = with pkgs; [
       php
     ];
+    users = {
+      groups.datausers = { };
+      users = {
+        nextcloud.extraGroups = [ "datausers" ];
+      };
+    };
+
+    systemd.tmpfiles.rules = [
+      "d /mnt/data 2770 root datausers -"
+    ];
     services = {
       nextcloud = {
         enable = true;
