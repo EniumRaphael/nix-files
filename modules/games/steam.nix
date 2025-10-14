@@ -35,6 +35,10 @@ in
       };
     };
 
+    systemd.tmpfiles.rules = [
+      "d /mnt/data 2770 root datausers -"
+    ];
+
     systemd.user.services."steam-bp" = lib.mkIf cfg.bp {
       description = "Steam Big Picture auto start";
       wantedBy = [ "graphical-session.target" ];
