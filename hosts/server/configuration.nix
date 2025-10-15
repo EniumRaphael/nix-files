@@ -37,7 +37,7 @@
     selfhost = {
       htop = true;
       ollama = false;
-      mail = false;
+      mail = true;
       monitor = true;
       nextcloud = true;
     };
