@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   cfg = config.service.selfhost.mail;
@@ -12,7 +17,7 @@ in
       group = "vmail";
       shell = "/run/current-system/sw/bin/nologin";
     };
-    users.groups.vmail = {};
+    users.groups.vmail = { };
     systemd.tmpfiles.rules = [
       "d /var/vmail 0750 vmail vmail - -"
       "d /var/spool/postfix 0755 postfix postfix - -"
@@ -22,25 +27,31 @@ in
 
     security.acme.certs."mail.enium.eu" = {
       group = "nginx";
-      reloadServices = [ "postfix.service" "dovecot.service" ];
+      reloadServices = [
+        "postfix.service"
+        "dovecot.service"
+      ];
     };
-    users.groups.nginx.members = [ "postfix" "dovecot" ];
+    users.groups.nginx.members = [
+      "postfix"
+      "dovecot"
+    ];
 
     services.postfix = {
       enable = true;
-      rootAlias = "raphael@enium.eu";
+      rootAlias = "direction@enium.eu";
 
       settings = {
         main = {
           myhostname = "mail.enium.eu";
-          mydomain   = "enium.eu";
-          relayhost  = [
+          mydomain = "enium.eu";
+          relayhost = [
             "[in-v3.mailjet.com]:587"
           ];
 
           mydestination = "localhost";
           inet_interfaces = "all";
-          inet_protocols  = "ipv4";
+          inet_protocols = "ipv4";
 
           smtp_sasl_auth_enable = "yes";
           smtp_sasl_password_maps = "hash:/var/lib/postfix/sasl_passwd";
@@ -51,10 +62,11 @@ in
           smtp_tls_security_level = "may";
           smtp_tls_CAfile = "/etc/ssl/certs/ca-certificates.crt";
           smtp_tls_session_cache_database = "btree:/var/lib/postfix/smtp_scache";
-          
+
           virtual_mailbox_domains = "enium.eu";
           virtual_transport = "lmtp:unix:/run/dovecot/lmtp";
           virtual_mailbox_maps = "hash:/var/lib/postfix/vmailbox";
+          virtual_alias_maps = "hash:/var/lib/postfix/virtual";
 
           local_recipient_maps = "";
 
@@ -62,7 +74,7 @@ in
           smtpd_recipient_restrictions = "check_recipient_access hash:/var/lib/postfix/recipient_access";
 
           smtpd_tls_cert_file = "/var/lib/acme/mail.enium.eu/fullchain.pem";
-          smtpd_tls_key_file  = "/var/lib/acme/mail.enium.eu/key.pem";
+          smtpd_tls_key_file = "/var/lib/acme/mail.enium.eu/key.pem";
 
           smtpd_milters = "unix:/run/rspamd/rspamd-milter.sock";
           non_smtpd_milters = "unix:/run/rspamd/rspamd-milter.sock";
@@ -72,7 +84,7 @@ in
         master."submission" = {
           type = "inet";
           private = false;
-          chroot  = false;
+          chroot = false;
           command = "smtpd";
           args = [
             "-o" "smtpd_recipient_restrictions=permit_sasl_authenticated,reject"
@@ -87,10 +99,6 @@ in
         };
       };
     };
-    environment.etc."postfix-sender_login".text = ''
-      raphael@enium.eu   raphael@enium.eu
-      no-reply@enium.eu   raphael@enium.eu
-    '';
     environment.etc."postfix-sasl_passwd" = {
       text = "[in-v3.mailjet.com]:587 ${mailjetSecrets.smtpUser}:${mailjetSecrets.smtpPass}\n";
       mode = "0600";
@@ -115,6 +123,10 @@ in
         install -Dm644 /etc/postfix-vmailbox /var/lib/postfix/vmailbox
         ${pkgs.postfix}/bin/postmap /var/lib/postfix/vmailbox
       '')
+      (lib.mkAfter ''
+        install -Dm644 /etc/postfix-virtual /var/lib/postfix/virtual
+        ${pkgs.postfix}/bin/postmap /var/lib/postfix/virtual
+      '')
     ];
 
     services.dovecot2 = {
@@ -122,7 +134,7 @@ in
       enableImap = true;
       mailLocation = "maildir:/var/vmail/%d/%n";
       sslServerCert = "/var/lib/acme/mail.enium.eu/fullchain.pem";
-      sslServerKey  = "/var/lib/acme/mail.enium.eu/key.pem";
+      sslServerKey = "/var/lib/acme/mail.enium.eu/key.pem";
       extraConfig = ''
         disable_plaintext_auth = yes
         auth_mechanisms = plain login
@@ -180,9 +192,34 @@ in
     # doveadm pw -s SHA512-CRYPT
     environment.etc."dovecot/users".text = ''
       raphael@enium.eu:{SHA512-CRYPT}$6$rIsn6/dLJ6MbITx5$vMo82dgkQZoV8BQIaO6Bs9J86ZjgcJ.LqMuIqnXVfuBRgZOqY/YiURBUOcS1P2wAo5h4TCFkKExfcjjX1reUU.
+      benjamin@enium.eu:{SHA512-CRYPT}$6$.34vS2JkrmGnioYo$pUF.vN5Q3njn5WRTLdMU5n7vGJdwk64bB/si0vQXFw.ioky4xlHUVocFXC8GI9wkVJNif.2kHvAYEcEtXvU2I0
+      deborah@enium.eu:{SHA512-CRYPT}$6$IZ7Dd31uZ4VKzz04$z5IhS25Jve8KsX0GIIXB8GUiPYd3eSuxlDz9RZQHa2tE4hptgtXQVU3av42MIRpaN9GPqG9iM6jiQUwRZ9V39/
     '';
     environment.etc."postfix-vmailbox".text = ''
-      raphael@enium.eu   enium.eu/raphael/
+      raphael@enium.eu enium.eu/raphael/
+      benjamin@enium.eu enium.eu/benjamin/
+      deborah@enium.eu enium.eu/deborah/
+    '';
+    environment.etc."postfix-sender_login".text = ''
+      raphael@enium.eu raphael@enium.eu
+      no-reply@enium.eu raphael@enium.eu
+      direction@enium.eu raphael@enium.eu
+      recrutement@enium.eu  raphael@enium.eu
+      contact@enium.eu raphael@enium.eu
+
+      benjamin@enium.eu benjamin@enium.eu
+      no-reply@enium.eu benjamin@enium.eu
+      direction@enium.eu benjamin@enium.eu
+      recrutement@enium.eu  benjamin@enium.eu
+      contact@enium.eu benjamin@enium.eu
+    '';
+    environment.etc."postfix-virtual".text = ''
+      direction@enium.eu raphael@enium.eu
+      recrutement@enium.eu raphael@enium.eu
+      contact@enium.eu raphael@enium.eu
+      direction@enium.eu benjamin@enium.eu
+      recrutement@enium.eu benjamin@enium.eu
+      contact@enium.eu benjamin@enium.eu
     '';
 
     services.nginx.virtualHosts."mail.enium.eu" = {
