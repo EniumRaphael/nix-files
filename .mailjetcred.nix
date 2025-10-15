@@ -1,0 +1,4 @@
+{
+  smtpUser = ;
+  smtpPass = ;
+}
