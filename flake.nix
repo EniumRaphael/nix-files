@@ -8,7 +8,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hm-config.url = "github:EniumRaphael/home-manager";
-    simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     minecraft.url = "github:Infinidoge/nix-minecraft";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.url = "github:EniumRaphael/nixvim";
@@ -26,7 +25,6 @@
       flake-utils,
       home-manager,
       hm-config,
-      simple-nixos-mailserver,
       catppuccin,
       ...
     }@inputs:
@@ -62,7 +60,6 @@
           system = "x86_64-linux";
           modules = [
             ./hosts/server/configuration.nix
-            simple-nixos-mailserver.nixosModule
             home-manager.nixosModules.home-manager
             {
               home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
