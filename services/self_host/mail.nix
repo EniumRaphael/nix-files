@@ -107,10 +107,6 @@ in
         };
       };
     };
-    # environment.etc."postfix-sasl_passwd" = {
-    #   text = "[in-v3.mailjet.com]:587 ${builtins.readFile mailjet-user}:${builtins.readFile mailjet-pass}\n";
-    #   mode = "0600";
-    # };
     environment.etc."postfix-recipient_access".text = ''
       no-reply@enium.eu   REJECT 550 Cette adresse n’est pas autorise a recevoir de mail
     '';
