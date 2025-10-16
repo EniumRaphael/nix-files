@@ -7,6 +7,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix.url = "github:ryantm/agenix";
     hm-config.url = "github:EniumRaphael/home-manager";
     minecraft.url = "github:Infinidoge/nix-minecraft";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -23,6 +24,7 @@
       self,
       nixpkgs,
       flake-utils,
+      agenix,
       home-manager,
       hm-config,
       catppuccin,
@@ -61,6 +63,7 @@
           modules = [
             ./hosts/server/configuration.nix
             home-manager.nixosModules.home-manager
+            agenix.nixosModules.default
             {
               home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
               home-manager.useGlobalPkgs = true;

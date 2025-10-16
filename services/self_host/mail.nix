@@ -7,7 +7,8 @@
 
 let
   cfg = config.service.selfhost.mail;
-  mailjetSecrets = import ../../.mailjetcred.nix;
+  mailjet-user = config.age.secrets."mailjet-user".path;
+  mailjet-pass = config.age.secrets."mailjet-pass".path;
 in
 {
   config = lib.mkIf cfg {
@@ -99,14 +100,20 @@ in
         };
       };
     };
-    environment.etc."postfix-sasl_passwd" = {
-      text = "[in-v3.mailjet.com]:587 ${mailjetSecrets.smtpUser}:${mailjetSecrets.smtpPass}\n";
-      mode = "0600";
-    };
+    # environment.etc."postfix-sasl_passwd" = {
+    #   text = "[in-v3.mailjet.com]:587 ${mailjetSecrets.smtpUser}:${mailjetSecrets.smtpPass}\n";
+    #   mode = "0600";
+    # };
     environment.etc."postfix-recipient_access".text = ''
       no-reply@enium.eu   REJECT 550 Cette adresse n’est pas autorise a recevoir de mail
     '';
     systemd.services.postfix.preStart = lib.mkMerge [
+      (lib.mkBefore ''
+        umask 077
+        install -d -m 0700 /var/lib/postfix
+        echo "[in-v3.mailjet.com]:587 $(cat ${mailjet-user}):$(cat ${mailjet-pass})" > /var/lib/postfix/sasl_passwd
+        ${pkgs.postfix}/bin/postmap /var/lib/postfix/sasl_passwd
+      '')
       (lib.mkAfter ''
         install -Dm600 /etc/postfix-sasl_passwd /var/lib/postfix/sasl_passwd
         ${pkgs.postfix}/bin/postmap /var/lib/postfix/sasl_passwd
@@ -181,6 +188,12 @@ in
       '';
     };
 
+    systemd.services.postfix.requires = [
+      "agenix.service"
+    ];
+    systemd.services.postfix.after = [
+      "agenix.service"
+    ];
     systemd.services.dovecot.after = [
       "postfix-setup.service"
       "postfix.service"
