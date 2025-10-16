@@ -10,6 +10,7 @@
   imports = [
     ../global.nix
     ./hardware-configuration.nix
+    ./secrets.nix
     ../../modules/games.nix
     ../../services/forty_two.nix
     ../../services/discord.nix

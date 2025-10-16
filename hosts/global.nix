@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
@@ -62,11 +63,13 @@
     ];
   };
 
+  environment.variables.AGE_KEY_FILE = "/root/.config/age/keys.txt";
   programs = {
     zsh.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
+    age
     bat
     cairo
     dconf
@@ -102,5 +105,7 @@
     xsel
     yarn
     zsh
+  ] ++ [
+    inputs.agenix.packages.${pkgs.system}.agenix
   ];
 }
