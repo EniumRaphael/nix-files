@@ -20,10 +20,17 @@ in
     };
     users.groups.vmail = { };
     systemd.tmpfiles.rules = [
-      "d /var/vmail 0750 vmail vmail - -"
+      "d /run/dovecot 0755 dovecot dovecot - -"
+      "d /var/lib/postfix 0755 postfix postfix - -"
+      "d /var/lib/postfix/data 0755 postfix postfix - -"
+      "d /var/lib/postfix/queue 0755 root root - -"
+      "d /var/lib/postfix/queue/maildrop 0730 postfix postdrop - -"
+      "d /var/lib/postfix/queue/pid 0755 root root - -"
+      "d /var/lib/postfix/queue/private 0750 postfix postfix - -"
+      "d /var/lib/postfix/queue/public 0730 postfix postdrop - -"
       "d /var/spool/postfix 0755 postfix postfix - -"
       "d /var/spool/postfix/private 0750 postfix postfix - -"
-      "d /run/dovecot 0755 dovecot dovecot - -"
+      "d /var/vmail 0750 vmail vmail - -"
     ];
 
     security.acme.certs."mail.enium.eu" = {
@@ -77,8 +84,8 @@ in
           smtpd_tls_cert_file = "/var/lib/acme/mail.enium.eu/fullchain.pem";
           smtpd_tls_key_file = "/var/lib/acme/mail.enium.eu/key.pem";
 
-          smtpd_milters = "unix:/run/rspamd/rspamd-milter.sock";
-          non_smtpd_milters = "unix:/run/rspamd/rspamd-milter.sock";
+          smtpd_milters = "unix:/run/rspamd/rspamd.sock";
+          non_smtpd_milters = "unix:/run/rspamd/rspamd.sock";
           milter_protocol = "6";
           milter_default_action = "accept";
         };
@@ -101,21 +108,18 @@ in
       };
     };
     # environment.etc."postfix-sasl_passwd" = {
-    #   text = "[in-v3.mailjet.com]:587 ${mailjetSecrets.smtpUser}:${mailjetSecrets.smtpPass}\n";
+    #   text = "[in-v3.mailjet.com]:587 ${builtins.readFile mailjet-user}:${builtins.readFile mailjet-pass}\n";
     #   mode = "0600";
     # };
     environment.etc."postfix-recipient_access".text = ''
       no-reply@enium.eu   REJECT 550 Cette adresse n’est pas autorise a recevoir de mail
     '';
     systemd.services.postfix.preStart = lib.mkMerge [
-      (lib.mkBefore ''
-        umask 077
-        install -d -m 0700 /var/lib/postfix
-        echo "[in-v3.mailjet.com]:587 $(cat ${mailjet-user}):$(cat ${mailjet-pass})" > /var/lib/postfix/sasl_passwd
-        ${pkgs.postfix}/bin/postmap /var/lib/postfix/sasl_passwd
-      '')
       (lib.mkAfter ''
-        install -Dm600 /etc/postfix-sasl_passwd /var/lib/postfix/sasl_passwd
+        umask 077
+        echo "[in-v3.mailjet.com]:587 $(cat ${config.age.secrets."mailjet-user".path}):$(cat ${config.age.secrets."mailjet-pass".path})" > /var/lib/postfix/sasl_passwd
+        chown postfix:postfix /var/lib/postfix/sasl_passwd
+        chmod 600 /var/lib/postfix/sasl_passwd
         ${pkgs.postfix}/bin/postmap /var/lib/postfix/sasl_passwd
       '')
       (lib.mkAfter ''
@@ -188,12 +192,14 @@ in
       '';
     };
 
-    systemd.services.postfix.requires = [
-      "agenix.service"
-    ];
-    systemd.services.postfix.after = [
-      "agenix.service"
-    ];
+    systemd.services.postfix = {
+      after = [
+        "rspamd.service"
+      ];
+      requires = [
+        "rspamd.service"
+      ];
+    };
     systemd.services.dovecot.after = [
       "postfix-setup.service"
       "postfix.service"
@@ -215,24 +221,17 @@ in
     '';
     environment.etc."postfix-sender_login".text = ''
       raphael@enium.eu raphael@enium.eu
-      no-reply@enium.eu raphael@enium.eu
-      direction@enium.eu raphael@enium.eu
-      recrutement@enium.eu  raphael@enium.eu
-      contact@enium.eu raphael@enium.eu
-
       benjamin@enium.eu benjamin@enium.eu
-      no-reply@enium.eu benjamin@enium.eu
-      direction@enium.eu benjamin@enium.eu
-      recrutement@enium.eu  benjamin@enium.eu
-      contact@enium.eu benjamin@enium.eu
+
+      no-reply@enium.eu raphael@enium.eu, benjamin@enium.eu
+      direction@enium.eu raphael@enium.eu, benjamin@enium.eu
+      recrutement@enium.eu  raphael@enium.eu, benjamin@enium.eu
+      contact@enium.eu raphael@enium.eu, benjamin@enium.eu
     '';
     environment.etc."postfix-virtual".text = ''
-      direction@enium.eu raphael@enium.eu
-      recrutement@enium.eu raphael@enium.eu
-      contact@enium.eu raphael@enium.eu
-      direction@enium.eu benjamin@enium.eu
-      recrutement@enium.eu benjamin@enium.eu
-      contact@enium.eu benjamin@enium.eu
+      direction@enium.eu raphael@enium.eu, benjamin@enium.eu
+      recrutement@enium.eu raphael@enium.eu, benjamin@enium.eu
+      contact@enium.eu raphael@enium.eu, benjamin@enium.eu
     '';
 
     services.nginx.virtualHosts."mail.enium.eu" = {
@@ -240,8 +239,16 @@ in
       enableACME = true;
     };
 
-    services.rspamd.enable = true;
-
+    services.rspamd = {
+      enable = true;
+      extraConfig = ''
+        milter {
+          unix_permissions = 0660;
+          user = "rspamd";
+          group = "postfix";
+        }
+      '';
+    };
     services.roundcube = {
       enable = true;
       hostName = "mail.enium.eu";
