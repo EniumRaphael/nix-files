@@ -1,0 +1,33 @@
+{ config, pkgs, inputs, ... }:
+let
+  main-server = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFEEuBgdANmzr69bapLdSxu6gnsLHGUQUBatS2dQsdOU root@nixos";
+  systems = [
+    main-server
+  ];
+
+  root = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKQRq2M+a40lucGpjiWsWnjeUfA0ihzdtqyDbKznawAg root@nixos-server";
+  users = [
+    root
+  ];
+in
+{
+  "mailjet-user.age".publicKeys = users ++ systems;
+  "mailjet-pass.age".publicKeys = users ++ systems;
+  imports = [ inputs.agenix.nixosModules.default ];
+
+  age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
+  age.secrets."mailjet-user" = {
+    file = ../../secrets/mailjet-user.age;
+    owner = "root";
+    group = "root";
+    mode  = "0400";
+  };
+
+  age.secrets."mailjet-pass" = {
+    file = ../../secrets/mailjet-pass.age;
+    owner = "root";
+    group = "root";
+    mode  = "0400";
+  };
+}
