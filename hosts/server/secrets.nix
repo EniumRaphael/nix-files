@@ -1,4 +1,5 @@
-{ config, pkgs, inputs, ... }:
+{ inputs, ... }:
+
 {
   imports = [ inputs.agenix.nixosModules.default ];
 
@@ -10,11 +11,30 @@
     group = "root";
     mode  = "0400";
   };
-
   age.secrets."mailjet-pass" = {
     file = ../../secrets/mailjet-pass.age;
     owner = "root";
     group = "root";
     mode  = "0400";
+  };
+
+  age.secrets."authentik-env" = {
+    file = ../../secrets/authentik-env.age;
+    owner = "root";
+    group = "root";
+    mode  = "0400";
+  };
+
+  age.secrets."auth-grafana-id" = {
+    file  = ../../secrets/auth-grafana-id.age;
+    owner = "root";
+    group = "grafana";
+    mode  = "0440";
+  };
+  age.secrets."auth-grafana-secret" = {
+    file  = ../../secrets/auth-grafana-secret.age;
+    owner = "root";
+    group = "grafana";
+    mode  = "0440";
   };
 }

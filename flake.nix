@@ -12,6 +12,7 @@
     minecraft.url = "github:Infinidoge/nix-minecraft";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.url = "github:EniumRaphael/nixvim";
+    authentik-nix.url = "github:nix-community/authentik-nix";
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     catppuccin = {
       url = "github:catppuccin/nix";
@@ -25,6 +26,7 @@
       nixpkgs,
       flake-utils,
       agenix,
+      authentik-nix,
       home-manager,
       hm-config,
       catppuccin,
@@ -64,6 +66,7 @@
             ./hosts/server/configuration.nix
             home-manager.nixosModules.home-manager
             agenix.nixosModules.default
+            authentik-nix.nixosModules.default
             {
               home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
               home-manager.useGlobalPkgs = true;

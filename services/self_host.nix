@@ -47,6 +47,14 @@ let
       lib
       ;
   };
+  sso = import ./self_host/sso.nix {
+    inherit
+      inputs
+      config
+      pkgs
+      lib
+      ;
+  };
   cfg = config.service.selfhost;
 in
 {
@@ -56,6 +64,7 @@ in
     htop
     ollama
     monitor
+    sso
   ];
 
   config = {
@@ -85,6 +94,11 @@ in
       description = "Enable the monitor";
     };
     nextcloud = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable the nextcloud";
+    };
+    sso = lib.mkOption {
       type = lib.types.bool;
       default = false;
       description = "Enable the nextcloud";
