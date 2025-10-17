@@ -34,8 +34,8 @@ in
           root = "/opt/portefolio/dist";
           index = "index.html";
           extraConfig = ''
-            						try_files $uri /index.html;
-            					'';
+            try_files $uri /index.html;
+          '';
         };
       };
     };
