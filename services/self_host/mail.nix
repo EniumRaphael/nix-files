@@ -113,7 +113,7 @@ in
     systemd.services.postfix.preStart = lib.mkMerge [
       (lib.mkAfter ''
         umask 077
-        echo "[in-v3.mailjet.com]:587 $(cat ${config.age.secrets."mailjet-user".path}):$(cat ${config.age.secrets."mailjet-pass".path})" > /var/lib/postfix/sasl_passwd
+        echo "[in-v3.mailjet.com]:587 $(cat ${mailjet-pass}):$(cat ${mailjet-pass})" > /var/lib/postfix/sasl_passwd
         chown postfix:postfix /var/lib/postfix/sasl_passwd
         chmod 600 /var/lib/postfix/sasl_passwd
         ${pkgs.postfix}/bin/postmap /var/lib/postfix/sasl_passwd
