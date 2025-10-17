@@ -11,7 +11,8 @@ let
     "nginx"
     "grafana"
   ];
-  email = "raphael@enium.eu";
+  authentik-grafana-id = config.age.secrets."auth-grafana-id".path;
+  authentik-grafana-secret =config.age.secrets."auth-grafana-secret".path;
 in
 {
   config = lib.mkIf cfg {
@@ -19,6 +20,57 @@ in
       enable = true;
       package = pkgs.grafana;
       dataDir = "/var/lib/grafana";
+
+      settings = {
+        log = {
+          mode = "console";
+          level = "debug";
+        };
+
+        server = {
+          root_url = "https://monitor.enium.eu";
+          domain = "monitor.enium.eu";
+          serve_from_sub_path = true;
+        };
+
+        users = {
+          auto_assign_org = true;
+          auto_assign_org_role = "Viewer";
+        };
+
+        auth = {
+          disable_login_form = false;
+          disable_signout_menu = false;
+        };
+
+        "auth.generic_oauth" = {
+          enabled = true;
+          name = "Authentik";
+          allow_sign_up = true;
+
+          client_id = "$__file{${authentik-grafana-id}}";
+          client_secret = "$__file{${authentik-grafana-secret}}";
+
+          scopes = "openid profile email groups";
+          auth_url = "https://auth.enium.eu/application/o/authorize/";
+          token_url = "https://auth.enium.eu/application/o/token/";
+          api_url = "https://auth.enium.eu/application/o/userinfo/";
+          redirect_uri = "https://monitor.enium.eu/login/generic_oauth";
+
+          use_pkce = true;
+          use_refresh_token = true;
+          login_attribute_path = "preferred_username";
+          name_attribute_path = "name";
+          email_attribute_path = "email";
+          groups_attribute_path = "groups[*]";
+
+          role_attribute_path = "has(groups, 'grafana_admins') && 'Admin' || has(groups, 'EquipeIT') && 'Editor' || 'Viewer'";          allow_assign_grafana_admin = true;
+          skip_org_role_sync = false;
+
+          # org_attribute_path = "";
+          # org_mapping = [];
+        };
+      };
     };
 
     environment.etc."process-exporter.json".text = builtins.toJSON {
