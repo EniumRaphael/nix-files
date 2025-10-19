@@ -37,4 +37,17 @@
     group = "grafana";
     mode  = "0440";
   };
+
+  age.secrets."auth-nextcloud-id" = {
+    file  = ../../secrets/auth-nextcloud-id.age;
+    owner = "root";
+    group = "nextcloud";
+    mode  = "0440";
+  };
+  age.secrets."auth-nextcloud-secret" = {
+    file  = ../../secrets/auth-nextcloud-secret.age;
+    owner = "root";
+    group = "nextcloud";
+    mode  = "0440";
+  };
 }
