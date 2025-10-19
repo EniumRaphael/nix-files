@@ -45,7 +45,7 @@ in
 
         "auth.generic_oauth" = {
           enabled = true;
-          name = "Authentik";
+          name = "Enium";
           allow_sign_up = true;
 
           client_id = "$__file{${authentik-grafana-id}}";
