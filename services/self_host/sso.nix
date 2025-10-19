@@ -39,8 +39,16 @@ in
     };
 
     systemd.services.authentik = {
-      after = [ "authentik-env.service" "postgresql.service" "redis-authentik.service" ];
-      requires = [ "authentik-env.service" "postgresql.service" "redis-authentik.service" ];
+      after = [
+        "authentik-env.service"
+        "postgresql.service"
+        "redis-authentik.service"
+      ];
+      requires = [
+        "authentik-env.service"
+        "postgresql.service"
+        "redis-authentik.service"
+      ];
     };
 
     services = {
