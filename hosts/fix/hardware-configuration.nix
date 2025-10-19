@@ -47,6 +47,10 @@
     "/mnt/data" = {
       device = "/dev/disk/by-uuid/5729d30c-5806-4ccd-8a2a-080a258084dc";
       fsType = "ext4";
+      options = [
+        "acl"
+        "exec"
+      ];
     };
   };
 
@@ -64,8 +68,6 @@
 
   hardware = {
     graphics.enable = true;
-    driSupport32Bit = true;
-    steam-hardware.enable = true;
     nvidia = {
       open = false;
       modesetting.enable = true;

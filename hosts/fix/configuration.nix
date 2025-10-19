@@ -10,9 +10,9 @@
   imports = [
     ../global.nix
     ./hardware-configuration.nix
-    ../../modules/games/global.nix
+    ../../modules/games.nix
     ../../services/discord.nix
-    ../../services/games.nix
+    ../../services/server.nix
   ];
 
   networking = {
