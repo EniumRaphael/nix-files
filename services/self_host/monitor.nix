@@ -22,15 +22,10 @@ in
       dataDir = "/var/lib/grafana";
 
       settings = {
-        log = {
-          mode = "console";
-          level = "debug";
-        };
-
         server = {
           root_url = "https://monitor.enium.eu";
           domain = "monitor.enium.eu";
-          serve_from_sub_path = true;
+          serve_from_sub_path = false;
         };
 
         users = {
@@ -39,8 +34,12 @@ in
         };
 
         auth = {
-          disable_login_form = false;
+          disable_login_form = true;
           disable_signout_menu = false;
+        };
+
+        security = {
+          allow_embedding = true;
         };
 
         "auth.generic_oauth" = {
@@ -62,13 +61,12 @@ in
           login_attribute_path = "preferred_username";
           name_attribute_path = "name";
           email_attribute_path = "email";
-          groups_attribute_path = "groups[*]";
+          groups_attribute_path = "groups";
 
-          role_attribute_path = "has(groups, 'grafana_admins') && 'Admin' || has(groups, 'EquipeIT') && 'Editor' || 'Viewer'";          allow_assign_grafana_admin = true;
+          role_attribute_path = "contains(groups, 'Direction') && 'Admin' || contains(groups, 'ResponsableIT') && 'Admin' || contains(groups, 'EquipeIT') && 'Editor' || 'Viewer'";
+          allow_assign_grafana_admin = true;
+          role_attribute_strict = false;
           skip_org_role_sync = false;
-
-          # org_attribute_path = "";
-          # org_mapping = [];
         };
       };
     };
