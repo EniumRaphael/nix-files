@@ -12,6 +12,9 @@ let
 in
 {
   config = lib.mkIf cfg {
+    environment.systemPackages = [
+      pkgs.dovecot_pigeonhole
+    ];
     users.users.vmail = {
       isSystemUser = true;
       home = "/var/vmail";
@@ -88,6 +91,7 @@ in
           non_smtpd_milters = "unix:/run/rspamd/rspamd.sock";
           milter_protocol = "6";
           milter_default_action = "accept";
+          milter_mail_macros = "i {mail_addr} {client_addr} {client_name} {auth_authen}";
         };
         master."submission" = {
           type = "inet";
@@ -139,14 +143,17 @@ in
     services.dovecot2 = {
       enable = true;
       enableImap = true;
+      enableLmtp = true;
+      enablePAM = false;
+
       mailLocation = "maildir:/var/vmail/%d/%n";
       sslServerCert = "/var/lib/acme/mail.enium.eu/fullchain.pem";
       sslServerKey = "/var/lib/acme/mail.enium.eu/key.pem";
+
       extraConfig = ''
-        disable_plaintext_auth = yes
-        auth_mechanisms = plain login
-        ssl = required
         protocols = imap lmtp
+        auth_mechanisms = plain login
+        disable_plaintext_auth = yes
         base_dir = /run/dovecot
 
         userdb {
@@ -175,7 +182,9 @@ in
             group = postfix
           }
         }
+
         service lmtp {
+          # si Postfix attend un autre chemin, on ajustera ici
           unix_listener lmtp {
             mode = 0660
             user = postfix
@@ -183,7 +192,15 @@ in
           }
         }
 
+        # Sieve exécuté à la livraison (LMTP)
         protocol lmtp {
+          mail_plugins = $mail_plugins sieve
+        }
+
+        plugin {
+          sieve = file:~/.dovecot.sieve
+          sieve_dir = ~/sieve
+          sieve_after = /var/lib/dovecot/sieve/
         }
       '';
     };
@@ -238,14 +255,83 @@ in
 
     services.rspamd = {
       enable = true;
-      extraConfig = ''
-        milter {
-          unix_permissions = 0660;
-          user = "rspamd";
-          group = "postfix";
-        }
+        extraConfig = ''
+          worker "controller" {
+            bind_socket = "127.0.0.1:11334";
+            password = "admin";
+          };
+
+          worker "normal" {
+            bind_socket = "127.0.0.1:11333";
+          };
+
+          worker "rspamd_proxy" {
+            bind_socket = "127.0.0.1:11332";
+            milter = yes;
+            timeout = 120s;
+            upstream "local" {
+              self_scan = yes;
+            };
+          };
+
+          actions {
+            reject = 12;
+            add_header = 6;
+            greylist = 4;
+          };
+
+          milter {
+            unix_socket = "/run/rspamd/milter.sock";
+            unix_permissions = 0660;
+            user = "rspamd";
+            group = "postfix";
+          };
+
+          classifier "bayes" {
+            backend = "redis";
+            servers = "127.0.0.1:6381";
+            autolearn = true;
+            min_learns = 200;
+            new_schema = true;
+            cache = true;
+
+            statfile {
+              symbol = "BAYES_HAM";
+              spam = false;
+            };
+
+            statfile {
+              symbol = "BAYES_SPAM";
+              spam = true;
+            };
+
+            learn_condition = <<EOD
+return function(task)
+  return true
+end
+EOD;
+        };
+
+        rbl {
+          enabled = true;
+          rbls = {
+            spamhaus = {
+              symbol = "RBL_SPAMHAUS";
+              rbl = "zen.spamhaus.org";
+            };
+            barracuda = {
+              symbol = "RBL_BARRACUDA";
+              rbl = "b.barracudacentral.org";
+            };
+          };
+        };
       '';
     };
+    services.redis.servers.rspamd = {
+      enable = true;
+      port = 6381;
+    };
+
     services.roundcube = {
       enable = true;
       hostName = "mail.enium.eu";
