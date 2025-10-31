@@ -36,18 +36,6 @@ in
       "d /var/vmail 0750 vmail vmail - -"
     ];
 
-    security.acme.certs."mail.enium.eu" = {
-      group = "nginx";
-      reloadServices = [
-        "postfix.service"
-        "dovecot.service"
-      ];
-    };
-    users.groups.nginx.members = [
-      "postfix"
-      "dovecot"
-    ];
-
     services.postfix = {
       enable = true;
       rootAlias = "direction@enium.eu";
@@ -248,11 +236,6 @@ in
       contact@enium.eu raphael@enium.eu, benjamin@enium.eu
     '';
 
-    services.nginx.virtualHosts."mail.enium.eu" = {
-      forceSSL = true;
-      enableACME = true;
-    };
-
     services.rspamd = {
       enable = true;
         extraConfig = ''
@@ -330,21 +313,6 @@ EOD;
     services.redis.servers.rspamd = {
       enable = true;
       port = 6381;
-    };
-
-    services.roundcube = {
-      enable = true;
-      hostName = "mail.enium.eu";
-      extraConfig = ''
-        $config['smtp_host'] = "tls://mail.enium.eu";
-        $config['smtp_port'] = 587;
-        $config['smtp_user'] = "%u";
-        $config['smtp_pass'] = "%p";
-        $config['smtp_auth_type'] = "LOGIN";
-        $config['imap_host'] = "ssl://mail.enium.eu";
-        $config['default_port'] = 993;
-        $config['username_domain'] = 'enium.eu';
-      '';
     };
   };
 }
