@@ -12,6 +12,15 @@ let
 in
   {
   config = lib.mkIf cfg {
+    users = {
+      users.authentik = {
+        isSystemUser = true;
+        description = "Authentik service user";
+        group = "authentik";
+        home = "/var/lib/authentik";
+      };
+      groups.authentik = {};
+    };
     systemd.tmpfiles.rules = [
       "d /run/authentik 0750 authentik authentik - -"
     ];
