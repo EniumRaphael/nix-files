@@ -7,6 +7,14 @@
 }:
 
 let
+  git = import ./self_host/git.nix {
+    inherit
+      inputs
+      config
+      pkgs
+      lib
+      ;
+  };
   htop = import ./self_host/htop.nix {
     inherit
       inputs
@@ -59,11 +67,12 @@ let
 in
 {
   imports = [
-    nextcloud
-    mail
+    git
     htop
-    ollama
+    mail
     monitor
+    nextcloud
+    ollama
     sso
   ];
 
@@ -73,15 +82,15 @@ in
     };
   };
   options.service.selfhost = {
+    git = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable the git";
+    };
     htop = lib.mkOption {
       type = lib.types.bool;
       default = false;
       description = "Enable the htop";
-    };
-    ollama = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Enable the ollama";
     };
     mail = lib.mkOption {
       type = lib.types.bool;
@@ -97,6 +106,11 @@ in
       type = lib.types.bool;
       default = false;
       description = "Enable the nextcloud";
+    };
+    ollama = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable the ollama";
     };
     sso = lib.mkOption {
       type = lib.types.bool;
