@@ -36,7 +36,7 @@
     users = {
       raphael = {
         isNormalUser = true;
-        description = "raphael";
+        description = "Main account for Raphael";
         useDefaultShell = true;
         extraGroups = [
           "networkmanager"
@@ -88,10 +88,10 @@
     openssl
     pkg-config
     postgresql
-    protonup
+    protonup-ng
     python3
     python3Packages.pip
-    qflipper
+    qFlipper
     ripgrep
     swaylock
     swaylock-fancy
