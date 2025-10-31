@@ -30,7 +30,7 @@ in
     };
     security.acme = {
       acceptTerms = true;
-      defaults.email = "raphael@parodi.pro";
+      defaults.email = "no-reply@enium.eu";
       certs = {
         "raphael.parodi.pro" = { };
       };
