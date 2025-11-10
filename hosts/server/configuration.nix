@@ -61,7 +61,7 @@
       bde = false;
       tut = true;
       marty = true;
-      ada = true;
+      ada = false;
       music = false;
       tempvoc = true;
       ticket = true;
