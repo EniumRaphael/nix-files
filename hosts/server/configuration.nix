@@ -48,6 +48,7 @@
       mail = true;
       monitor = true;
       nextcloud = true;
+      jellyfin = true;
       sso = true;
     };
     forty_two.irc = true;
