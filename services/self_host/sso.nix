@@ -74,7 +74,7 @@ in
           AUTHENTIK_REDIS__PORT = 6380;
         };
       };
-      redis.servers.authentik.port = lib.mkForce 6380;
+      redis.servers."authentik".port = lib.mkForce 6380;
       postgresql = {
         enable = true;
         ensureDatabases = [

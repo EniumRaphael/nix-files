@@ -23,6 +23,14 @@ let
       lib
       ;
   };
+  jellyfin = import ./self_host/jellyfin.nix {
+    inherit
+      inputs
+      config
+      pkgs
+      lib
+      ;
+  };
   mail = import ./self_host/mail.nix {
     inherit
       inputs
@@ -68,6 +76,7 @@ in
 {
   imports = [
     git
+    jellyfin
     htop
     mail
     monitor
@@ -91,6 +100,11 @@ in
       type = lib.types.bool;
       default = false;
       description = "Enable the htop";
+    };
+    jellyfin = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable the jellyfin";
     };
     mail = lib.mkOption {
       type = lib.types.bool;
