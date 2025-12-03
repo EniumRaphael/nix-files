@@ -13,6 +13,8 @@ in
       groups.datausers = { };
       users = {
         jellyfin.extraGroups = [ "datausers" ];
+        radarr.extraGroups = [ "datausers" ];
+        sonarr.extraGroups = [ "datausers" ];
       };
     };
     services = {
