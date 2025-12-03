@@ -74,7 +74,11 @@ in
           AUTHENTIK_REDIS__PORT = 6380;
         };
       };
-      redis.servers."authentik".port = lib.mkForce 6380;
+      redis.servers."authentik" = {
+        enable = true;
+        bind = "127.0.0.1";
+        port = lib.mkForce 6380;
+      };
       postgresql = {
         enable = true;
         ensureDatabases = [
