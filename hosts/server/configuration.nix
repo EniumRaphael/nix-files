@@ -29,8 +29,8 @@
   games = {
     lutris = false;
     steam = {
-      enable = true;
-      bp = true;
+      enable = false;
+      bp = false;
     };
   };
 
@@ -44,7 +44,7 @@
   service = {
     selfhost = {
       htop = true;
-      ollama = false;
+      ollama = true;
       mail = true;
       monitor = true;
       nextcloud = true;
@@ -60,8 +60,8 @@
     bot_discord = {
       master = true;
       bde = false;
-      tut = true;
-      marty = true;
+      tut = false;
+      marty = false;
       ada = false;
       music = false;
       tempvoc = true;
