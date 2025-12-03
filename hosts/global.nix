@@ -55,12 +55,21 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings = {
-    download-buffer-size = 1048576;
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "daily";
+      options = "--delete-older-than 14d";
+    };
+    settings = {
+      download-buffer-size = 268435456;
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      max-jobs = "auto";
+      auto-optimise-store = true;
+    };
   };
 
   environment.variables.AGE_KEY_FILE = "/root/.config/age/keys.txt";
