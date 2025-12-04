@@ -14,9 +14,9 @@ in
       ollama = {
         enable = true;
         loadModels = [
-          "qwen2.5:3b"
+          "mistral:7b"
         ];
-        acceleration = "cuda";
+        acceleration = false;
       };
 
       open-webui = {
