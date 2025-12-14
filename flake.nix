@@ -84,6 +84,27 @@
             inherit inputs;
           };
         };
+        "proxmox-discord" = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./hosts/proxmox/discord-bots/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                system = "x86_64-linux";
+                nixvim = inputs.nixvim.packages."x86_64-linux".default;
+                zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
+              };
+              home-manager.users.raphael = hm-config.homeConfigurations."hm-fix";
+            }
+          ];
+          specialArgs = {
+            inherit inputs;
+          };
+        };
         "nixos-asahi" = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           modules = [
