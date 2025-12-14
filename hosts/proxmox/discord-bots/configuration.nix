@@ -43,8 +43,11 @@
 
   # Bootloader.
   boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+    systemd-boot.enable = false;
+    grub = {
+      enable = true;
+      device = "/dev/sda";
+    };
   };
 
   services = {
