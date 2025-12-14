@@ -10,7 +10,6 @@
   imports = [
     ../../global.nix
     ./hardware-configuration.nix
-    ./secrets.nix
     ../../../services/discord.nix
   ];
 
