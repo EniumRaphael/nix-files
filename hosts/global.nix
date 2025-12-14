@@ -46,9 +46,6 @@
           "docker"
           "video"
         ];
-        packages = with pkgs; [
-          home-manager
-        ];
       };
     };
   };
@@ -78,43 +75,9 @@
   };
 
   environment.systemPackages = with pkgs; [
-    age
-    bat
-    cairo
-    dconf
-    fastfetch
     git
-    home-manager
-    lego
-    libjpeg
-    libpng
-    libuuid
-    linux-manual
-    man
-    man-pages
-    man-pages-posix
-    networkmanager
-    openssl
-    pkg-config
     postgresql
-    protonup-ng
-    python3
-    python3Packages.pip
-    qFlipper
-    ripgrep
-    swaylock
-    swaylock-fancy
-    tmux
-    unzip
     vim
     wget
-    wl-clipboard
-    xclip
-    xdg-desktop-portal-hyprland
-    xsel
-    yarn
-    zsh
-  ] ++ [
-    inputs.agenix.packages.${pkgs.system}.agenix
   ];
 }
