@@ -49,6 +49,51 @@ in
               ];
             };
           };
+          groups = {
+            nextcloud_user = {
+              present = true;
+            };
+          };
+          systems.oauth2 = {
+            nextcloud = {
+              present = true;
+              displayName = "Nextcloud";
+              originUrl = "https://nextcloud.enium.eu";
+              originLanding = "https://nextcloud.enium.eu/login";
+              basicSecretFile = config.age.secrets.nextcloud-oidc-secret.path;
+              public = false;
+              enableLocalhostRedirects = false;
+              allowInsecureClientDisablePkce = false;
+              preferShortUsername = true;
+              scopeMaps = {
+                nextcloud_user = [
+                  "openid"
+                  "profile"
+                  "email"
+                ];
+              };
+              claimMaps = {
+                email = {
+                  joinType = "array";
+                  valuesByGroup = {
+                    nextcloud_user = ["mail"];
+                  };
+                };
+                preferred_username = {
+                  joinType = "array";
+                  valuesByGroup = {
+                    nextcloud_user = ["name"];
+                  };
+                };
+                name = {
+                  joinType = "array";
+                  valuesByGroup = {
+                    nextcloud_user = ["displayname"];
+                  };
+                };
+              };
+            };
+          };
         };
       };
       nginx.virtualHosts."auth.enium.eu" = {
