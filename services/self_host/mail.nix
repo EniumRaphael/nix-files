@@ -21,7 +21,9 @@ in
       group = "vmail";
       shell = "/run/current-system/sw/bin/nologin";
     };
-    users.groups.vmail = { };
+    users.groups = {
+      vmail = {};
+    };
     systemd.tmpfiles.rules = [
       "d /run/dovecot 0755 dovecot dovecot - -"
       "d /var/lib/postfix 0755 postfix postfix - -"
@@ -313,6 +315,9 @@ EOD;
     services.redis.servers.rspamd = {
       enable = true;
       port = 6381;
+    };
+    security.acme.certs."mail.enium.eu" = {
+      listenHTTP = ":80";
     };
   };
 }
