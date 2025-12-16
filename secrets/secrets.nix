@@ -12,5 +12,8 @@ in
 {
   "mailjet-user.age".publicKeys = users ++ systems;
   "mailjet-pass.age".publicKeys = users ++ systems;
+  "nextcloud-admin-pass.age".publicKeys = users ++ systems;
+  "nextcloud-database.age".publicKeys = users ++ systems;
   "kandim-admin.age".publicKeys = users ++ systems;
+  "kandim-idmAdmin.age".publicKeys = users ++ systems;
 }
