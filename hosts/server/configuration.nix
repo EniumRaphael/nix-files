@@ -20,10 +20,23 @@
   ];
 
   networking = {
-    hostName = "nixos-fix";
+    hostName = "nixos-server";
     firewall.enable = false;
     networkmanager.enable = true;
     wireless.enable = false;
+    interfaces.enp0s31f6.ipv4.addresses = [
+      {
+        address = "192.168.1.1";
+        prefixLength = 24;
+      }
+    ];
+    defaultGateway = "192.168.1.254";
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+      "8.8.8.8"
+      "8.8.4.4"
+    ];
   };
 
   games = {
@@ -33,13 +46,6 @@
       bp = false;
     };
   };
-
-  networking.nameservers = [
-    "1.1.1.1"
-    "1.0.0.1"
-    "8.8.8.8"
-    "8.8.4.4"
-  ];
 
   service = {
     selfhost = {
@@ -66,26 +72,6 @@
       music = false;
       tempvoc = true;
       ticket = true;
-    };
-  };
-
-  users = {
-    defaultUserShell = pkgs.zsh;
-    users = {
-      axel = {
-        isNormalUser = true;
-        initialPassword = "Feuyllelpb12341234";
-        description = "feuylle";
-        useDefaultShell = true;
-        extraGroups = [
-          "networkmanager"
-          "plugdev"
-          "docker"
-        ];
-        packages = with pkgs; [
-          home-manager
-        ];
-      };
     };
   };
 
@@ -147,7 +133,9 @@
     dbus.enable = true;
     openssh = {
       enable = true;
-      ports = [ 42131 ];
+      ports = [
+	      42131
+      ];
     };
     udev.extraRules = ''
       SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
