@@ -11,8 +11,6 @@ let
     "nginx"
     "grafana"
   ];
-  authentik-grafana-id = config.age.secrets."auth-grafana-id".path;
-  authentik-grafana-secret =config.age.secrets."auth-grafana-secret".path;
 in
 {
   config = lib.mkIf cfg {
@@ -40,33 +38,6 @@ in
 
         security = {
           allow_embedding = true;
-        };
-
-        "auth.generic_oauth" = {
-          enabled = true;
-          name = "Enium";
-          allow_sign_up = true;
-
-          client_id = "$__file{${authentik-grafana-id}}";
-          client_secret = "$__file{${authentik-grafana-secret}}";
-
-          scopes = "openid profile email groups";
-          auth_url = "https://auth.enium.eu/application/o/authorize/";
-          token_url = "https://auth.enium.eu/application/o/token/";
-          api_url = "https://auth.enium.eu/application/o/userinfo/";
-          redirect_uri = "https://monitor.enium.eu/login/generic_oauth";
-
-          use_pkce = true;
-          use_refresh_token = true;
-          login_attribute_path = "preferred_username";
-          name_attribute_path = "name";
-          email_attribute_path = "email";
-          groups_attribute_path = "groups";
-
-          role_attribute_path = "contains(groups, 'Direction') && 'Admin' || contains(groups, 'ResponsableIT') && 'Admin' || contains(groups, 'EquipeIT') && 'Editor' || 'Viewer'";
-          allow_assign_grafana_admin = true;
-          role_attribute_strict = false;
-          skip_org_role_sync = false;
         };
       };
     };
