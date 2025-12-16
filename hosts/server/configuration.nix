@@ -70,8 +70,8 @@
       marty = false;
       ada = false;
       music = false;
-      tempvoc = true;
-      ticket = true;
+      tempvoc = false;
+      ticket = false;
     };
   };
 
