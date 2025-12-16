@@ -7,101 +7,64 @@
 
 let
   cfg = config.service.selfhost.sso;
-  envFile = config.age.secrets."authentik-env".path;
-  envDst = "/run/authentik/env";
+  kanidm-admin = config.age.secrets."kanidm-admin".path;
 in
   {
   config = lib.mkIf cfg {
     users = {
-      users.authentik = {
+      groups.kanidm = {};
+      users.kanidm = {
         isSystemUser = true;
-        description = "Authentik service user";
-        group = "authentik";
-        home = "/var/lib/authentik";
-      };
-      groups.authentik = {};
-    };
-    systemd.tmpfiles.rules = [
-      "d /run/authentik 0750 authentik authentik - -"
-    ];
-
-    systemd.services.authentik-env = {
-      description = "Prepare Authentik environment file";
-      before = [
-        "authentik.service"
-        "authentik-migrate.service"
-        "authentik-worker.service"
-      ];
-      wantedBy = [
-        "authentik.service"
-        "authentik-migrate.service"
-        "authentik-worker.service"
-      ];
-      after = [
-        "systemd-sysusers.service"
-      ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.coreutils}/bin/install -D -m0400 ${envFile} ${envDst}";
-        ExecStartPost = "${pkgs.coreutils}/bin/chown authentik:authentik ${envDst}";
+        group = "kanidm";
+        extraGroups = [ "nginx" ];
       };
     };
-
-    systemd.services.authentik = {
-      after = [
-        "authentik-env.service"
-        "postgresql.service"
-        "redis-authentik.service"
-      ];
-      requires = [
-        "authentik-env.service"
-        "postgresql.service"
-        "redis-authentik.service"
-      ];
-    };
-
+    security.acme.certs."auth.enium.eu".group = "nginx";
     services = {
-      authentik = {
-        enable = true;
-        environmentFile = envDst;
-        settings = {
-          AUTHENTIK_LISTEN__HTTP = "127.0.0.1:9000";
-          AUTHENTIK_POSTGRESQL__HOST = "/run/postgresql";
-          AUTHENTIK_POSTGRESQL__USER = "authentik";
-          AUTHENTIK_POSTGRESQL__NAME = "authentik";
-          AUTHENTIK_REDIS__HOST = "127.0.0.1";
-          AUTHENTIK_REDIS__DB = 0;
-          AUTHENTIK_REDIS__PORT = 6380;
+      kanidm = {
+        package = pkgs.kanidm_1_8;
+        provision = {
+          idmAdminPasswordFile = kanidm-admin;
+          persons = {
+            raphael = {
+              legalName = "Raphael Parodi";
+              displayName = "Raphael";
+              mailAddresses = [
+                "raphael@enium.eu"
+              ];
+              groups = [
+                "users"
+                "idm_admins"
+              ];
+            };
+          };
+        };
+        enableClient = true;
+        clientSettings.uri = "https://auth.enium.eu";
+        enableServer = true;
+        serverSettings = {
+          role = "WriteReplica";
+          domain = "enium.eu";
+          origin = "https://auth.enium.eu";
+          bindaddress = "127.0.0.1:9000";
+          tls_chain = "/var/lib/acme/auth.enium.eu/fullchain.pem";
+          tls_key = "/var/lib/acme/auth.enium.eu/key.pem";
         };
       };
-      redis.servers."authentik" = {
-        enable = true;
-        bind = "127.0.0.1";
-        port = lib.mkForce 6380;
-      };
-      postgresql = {
-        enable = true;
-        ensureDatabases = [
-          "authentik"
-        ];
-        ensureUsers = [
-          {
-            name = "authentik";
-            ensureDBOwnership = true;
-          }
-        ];
-        initialScript = pkgs.writeText "init-authentik-db.sql" ''
-          ALTER USER authentik WITH PASSWORD '$(grep AUTHENTIK_POSTGRESQL__PASSWORD ${envFile} | cut -d= -f2)';
-        '';
-      };
-      nginx = {
-        virtualHosts."auth.enium.eu" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:9000";
-            proxyWebsockets = true;
-          };
+      nginx.virtualHosts."auth.enium.eu" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          proxyPass = "https://127.0.0.1:9000";
+          proxyWebsockets = true;
+
+          extraConfig = ''
+            proxy_ssl_verify off;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+          '';
         };
       };
     };
