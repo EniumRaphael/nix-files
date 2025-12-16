@@ -25,6 +25,13 @@
     mode  = "0400";
   };
 
+  age.secrets."nextcloud-oidc-secret" = {
+    file = ../../secrets/nextcloud-oidc-secret.age;
+    owner = "kanidm";
+    group = "kanidm";
+    mode  = "0400";
+  };
+
   age.secrets."nextcloud-database" = {
     file = ../../secrets/nextcloud-database.age;
     owner = "nextcloud";
