@@ -14,19 +14,14 @@ in
       nodejs
       pnpm
     ];
-    users = {
-      groups.web_portefolio = {
-        name = "web_portefolio";
-      };
-      users.web_portefolio = {
-        description = "Utilisateur pour le bot BDE";
-        group = "web_portefolio";
-        home = "/opt/portefolio/";
-        isSystemUser = true;
-      };
-    };
-
     services.nginx = {
+      virtualHosts."parodi.pro" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          return = "404";
+        };
+      };
       virtualHosts."raphael.parodi.pro" = {
         forceSSL = true;
         enableACME = true;
@@ -41,7 +36,8 @@ in
     };
     security.acme = {
       certs = {
-        "raphael.parodi.pro" = { };
+        "parodi.pro" = {};
+        "raphael.parodi.pro" = {};
       };
     };
   };
