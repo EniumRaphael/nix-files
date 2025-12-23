@@ -56,16 +56,33 @@ in
           serve_from_sub_path = false;
         };
 
-        users = {
-          auto_assign_org = true;
-          auto_assign_org_role = "Viewer";
+        "auth.generic_oauth" = {
+          enabled = true;
+          name = "Enium";
+          allow_sign_up = true;
+          client_id = "grafana";
+          client_secret = "$__file{${config.age.secrets.grafana-oidc-secret.path}}";
+          scopes = "openid profile email groups";
+          auth_url = "https://auth.enium.eu/ui/oauth2";
+          token_url = "https://auth.enium.eu/oauth2/token";
+          api_url = "https://auth.enium.eu/oauth2/openid/grafana/userinfo";
+          redirect_uri = "https://monitor.enium.eu/login/generic_oauth";
+          use_pkce = true;
+          use_refresh_token = true;
+          login_attribute_path = "preferred_username";
+          name_attribute_path = "name";
+          email_attribute_path = "email";
+          groups_attribute_path = "groups";
+          role_attribute_path = "contains(groups, 'grafana_superadmins@enium.eu') && 'GrafanaAdmin' || contains(groups, 'grafana_admins@enium.eu') && 'Admin' || contains(groups, 'grafana_editors@enium.eu') && 'Editor' || 'Viewer'";
+          allow_assign_grafana_admin = true;
+          role_attribute_strict = false;
+          skip_org_role_sync = false;
         };
-
+        log.level = "debug";
         auth = {
           disable_login_form = true;
           disable_signout_menu = false;
         };
-
         security = {
           cookie_secure = true;
           cookie_samesite = "none";
