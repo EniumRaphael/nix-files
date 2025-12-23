@@ -7,6 +7,7 @@
 
 let
   cfg = config.service.selfhost.monitor;
+  dashboardsDir = ../../assets/grafana_dashboards;
   monitored = [
     "nginx"
     "grafana"
@@ -18,7 +19,36 @@ in
       enable = true;
       package = pkgs.grafana;
       dataDir = "/var/lib/grafana";
+      provision = {
+        dashboards.settings.providers = [
+          {
+            name = "nixos-dashboards";
+            type = "file";
+            updateIntervalSeconds = 30;
+            editable = false;
 
+            options = {
+              path = "/etc/grafana/dashboards";
+              foldersFromFilesStructure = false;
+            };
+          }
+        ];
+        datasources.settings.datasources = [
+          {
+            name = "Prometheus";
+            type = "prometheus";
+            uid = "prometheus";
+            access = "proxy";
+            url = "http://127.0.0.1:9090";
+            isDefault = true;
+            editable = false;
+            jsonData = {
+              httpMethod = "POST";
+              timeInterval = "15s";
+            };
+          }
+        ];
+      };
       settings = {
         server = {
           root_url = "https://monitor.enium.eu";
@@ -37,6 +67,8 @@ in
         };
 
         security = {
+          cookie_secure = true;
+          cookie_samesite = "none";
           allow_embedding = true;
         };
       };
@@ -156,6 +188,8 @@ in
       ];
       ruleFiles = lib.mkForce [ "/etc/prometheus/services.rules" ];
     };
+
+    environment.etc."grafana/dashboards".source = dashboardsDir;
 
     environment.etc."prometheus/services.rules".text = ''
       groups:
