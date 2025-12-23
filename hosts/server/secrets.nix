@@ -32,6 +32,13 @@
     mode  = "0400";
   };
 
+  age.secrets."grafana-oidc-secret" = {
+    file = ../../secrets/grafana-oidc-secret.age;
+    owner = "kanidm";
+    group = "grafana";
+    mode  = "0440";
+  };
+
   age.secrets."nextcloud-database" = {
     file = ../../secrets/nextcloud-database.age;
     owner = "nextcloud";
