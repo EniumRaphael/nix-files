@@ -26,7 +26,6 @@ in
         package = pkgs.kanidmWithSecretProvisioning_1_8;
         enableServer = true;
         serverSettings = {
-          role = "WriteReplica";
           domain = "enium.eu";
           origin = "https://auth.enium.eu";
           bindaddress = "127.0.0.1:9000";
@@ -47,14 +46,86 @@ in
               mailAddresses = [
                 "raphael@enium.eu"
               ];
+              groups = [
+                "grafana_superadmins"
+                "nextcloud_user"
+              ];
             };
           };
           groups = {
+            grafana_superadmins = {
+              present = true;
+            };
+            grafana_admins = {
+              present = true;
+            };
+            grafana_editors = {
+              present = true;
+            };
+            grafana_user = {
+              present = true;
+            };
             nextcloud_user = {
               present = true;
             };
           };
           systems.oauth2 = {
+            grafana = {
+              present = true;
+              displayName = "Grafana";
+              originUrl = "https://monitor.enium.eu";
+              originLanding = "https://monitor.enium.eu/login/generic_oauth";
+              basicSecretFile = config.age.secrets.grafana-oidc-secret.path;
+              public = false;
+              enableLocalhostRedirects = false;
+              allowInsecureClientDisablePkce = false;
+              preferShortUsername = true;
+              scopeMaps = {
+                grafana_superadmins = [
+                  "email"
+                  "openid"
+                  "profile"
+                  "groups"
+                ];
+                grafana_admins = [
+                  "email"
+                  "openid"
+                  "profile"
+                  "groups"
+                ];
+                grafana_editors = [
+                  "email"
+                  "openid"
+                  "profile"
+                  "groups"
+                ];
+                grafana_user = [
+                  "email"
+                  "openid"
+                  "profile"
+                  "groups"
+                ];
+              };
+              claimMaps = {
+                groups = {
+                  joinType = "array";
+                  valuesByGroup = {
+                    grafana_superadmins = [
+                      "grafana_superadmins"
+                    ];
+                    grafana_admins = [
+                      "grafana_admins"
+                    ];
+                    grafana_editors = [
+                      "grafana_editors"
+                    ];
+                    grafana_user = [
+                      "grafana_user"
+                    ];
+                  };
+                };
+              };
+            };
             nextcloud = {
               present = true;
               displayName = "Nextcloud";
