@@ -18,10 +18,6 @@ in
           SSH_PORT = 42131;
           HTTP_ADDR = "127.0.0.1";
           HTTP_PORT = 3042;
-          DISABLE_REGISTRATION = true;
-          ALLOW_ONLY_EXTERNAL_REGISTRATION = true;
-          SHOW_REGISTRATION_BUTTON = false;
-          DISABLE_REGULAR_LOGIN = true;
         };
 
         oauth2 = {
@@ -39,6 +35,12 @@ in
           UPDATE_AVATAR = true;
         };
 
+        service = {
+          DISABLE_REGISTRATION = true;
+          ALLOW_ONLY_EXTERNAL_REGISTRATION = true;
+          SHOW_REGISTRATION_BUTTON = false;
+          DISABLE_PASSWORD_SIGNIN_FORM = true;
+        };
         security = {
           LOGIN_REMEMBER_DAYS = 14;
         };
