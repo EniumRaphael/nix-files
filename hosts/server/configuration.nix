@@ -6,6 +6,9 @@
   ...
 }:
 
+let
+  sshKeyMac = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKbHk7YasSMK5FBCArKLeqIoaGXsN+WlgVquObyC5Zec raphael@MacBook-Pro-de-raphael.local";
+in
 {
   imports = [
     ../global.nix
@@ -122,6 +125,9 @@
     efi.canTouchEfiVariables = true;
   };
 
+  users.users.raphael.openssh.authorizedKeys.keys = [
+    sshKeyMac
+  ];
   services = {
     seatd.enable = true;
     xserver = {
