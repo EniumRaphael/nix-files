@@ -77,11 +77,6 @@ in
           smtpd_tls_cert_file = "/var/lib/acme/mail.enium.eu/fullchain.pem";
           smtpd_tls_key_file = "/var/lib/acme/mail.enium.eu/key.pem";
 
-          smtpd_milters = "unix:/run/rspamd/rspamd.sock";
-          non_smtpd_milters = "unix:/run/rspamd/rspamd.sock";
-          milter_protocol = "6";
-          milter_default_action = "accept";
-          milter_mail_macros = "i {mail_addr} {client_addr} {client_name} {auth_authen}";
         };
         master."submission" = {
           type = "inet";
@@ -107,7 +102,7 @@ in
     systemd.services.postfix.preStart = lib.mkMerge [
       (lib.mkAfter ''
         umask 077
-        echo "[in-v3.mailjet.com]:587 $(cat ${mailjet-pass}):$(cat ${mailjet-pass})" > /var/lib/postfix/sasl_passwd
+        echo "[in-v3.mailjet.com]:587 $(cat ${mailjet-user}):$(cat ${mailjet-pass})" > /var/lib/postfix/sasl_passwd
         chown postfix:postfix /var/lib/postfix/sasl_passwd
         chmod 600 /var/lib/postfix/sasl_passwd
         ${pkgs.postfix}/bin/postmap /var/lib/postfix/sasl_passwd
@@ -143,7 +138,7 @@ in
       extraConfig = ''
         protocols = imap lmtp
         auth_mechanisms = plain login
-        disable_plaintext_auth = yes
+        disable_plaintext_auth = no
         base_dir = /run/dovecot
 
         userdb {
@@ -240,57 +235,51 @@ in
 
     services.rspamd = {
       enable = true;
-        extraConfig = ''
-          worker "controller" {
-            bind_socket = "127.0.0.1:11334";
-            password = "admin";
+      postfix.enable = true;
+      extraConfig = ''
+        worker "controller" {
+          bind_socket = "127.0.0.1:11334";
+          password = "admin";
+        };
+
+        worker "normal" {
+          bind_socket = "127.0.0.1:11333";
+        };
+
+        worker "rspamd_proxy" {
+          bind_socket = "127.0.0.1:11332";
+          milter = yes;
+          timeout = 120s;
+          upstream "local" {
+            self_scan = yes;
+          };
+        };
+
+        actions {
+          reject = 12;
+          add_header = 6;
+          greylist = 4;
+        };
+
+        classifier "bayes" {
+          backend = "redis";
+          servers = "127.0.0.1:6381";
+          autolearn = true;
+          min_learns = 200;
+          new_schema = true;
+          cache = true;
+
+          statfile {
+            symbol = "BAYES_HAM";
+            spam = false;
           };
 
-          worker "normal" {
-            bind_socket = "127.0.0.1:11333";
+          statfile {
+            symbol = "BAYES_SPAM";
+            spam = true;
           };
 
-          worker "rspamd_proxy" {
-            bind_socket = "127.0.0.1:11332";
-            milter = yes;
-            timeout = 120s;
-            upstream "local" {
-              self_scan = yes;
-            };
-          };
-
-          actions {
-            reject = 12;
-            add_header = 6;
-            greylist = 4;
-          };
-
-          milter {
-            unix_socket = "/run/rspamd/milter.sock";
-            unix_permissions = 0660;
-            user = "rspamd";
-            group = "postfix";
-          };
-
-          classifier "bayes" {
-            backend = "redis";
-            servers = "127.0.0.1:6381";
-            autolearn = true;
-            min_learns = 200;
-            new_schema = true;
-            cache = true;
-
-            statfile {
-              symbol = "BAYES_HAM";
-              spam = false;
-            };
-
-            statfile {
-              symbol = "BAYES_SPAM";
-              spam = true;
-            };
-
-            learn_condition = <<EOD
+        learn_condition = <<EOD
 return function(task)
   return true
 end
@@ -318,6 +307,7 @@ EOD;
     };
     security.acme.certs."mail.enium.eu" = {
       listenHTTP = ":80";
+      group = "dovecot2";
     };
   };
 }
