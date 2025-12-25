@@ -70,6 +70,45 @@ in
             };
           };
           systems.oauth2 = {
+            forgejo = {
+              present = true;
+              displayName = "Forjego";
+              originUrl = "https://git.enium.eu";
+              imageFile = kanidmLogo;
+              originLanding = "https://git.enium.eu/user/oauth2/Enium/callback";
+              basicSecretFile = config.age.secrets.forgejo-oidc-secret.path;
+              public = false;
+              enableLocalhostRedirects = false;
+              allowInsecureClientDisablePkce = true;
+              preferShortUsername = true;
+              scopeMaps = {
+                forgejo_admins = [
+                  "email"
+                  "openid"
+                  "profile"
+                  "groups"
+                ];
+                forgejo_users = [
+                  "email"
+                  "openid"
+                  "profile"
+                  "groups"
+                ];
+              };
+              claimMaps = {
+                groups = {
+                  joinType = "array";
+                  valuesByGroup = {
+                    forgejo_admins = [
+                      "forgejo_admins"
+                    ];
+                    forgejo_users = [
+                      "forgejo_users"
+                    ];
+                  };
+                };
+              };
+            };
             grafana = {
               present = true;
               displayName = "Grafana";
