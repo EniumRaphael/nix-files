@@ -39,6 +39,13 @@
     mode  = "0440";
   };
 
+  age.secrets."forgejo-oidc-secret" = {
+    file = ../../secrets/forgejo-oidc-secret.age;
+    owner = "kanidm";
+    group = "forgejo";
+    mode  = "0440";
+  };
+
   age.secrets."nextcloud-database" = {
     file = ../../secrets/nextcloud-database.age;
     owner = "nextcloud";
