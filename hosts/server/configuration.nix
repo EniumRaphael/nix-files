@@ -26,7 +26,6 @@ in
     hostName = "nixos-server";
     firewall.enable = false;
     networkmanager.enable = true;
-    wireless.enable = false;
     interfaces.enp0s31f6.ipv4.addresses = [
       {
         address = "192.168.1.1";
@@ -60,10 +59,10 @@ in
       jellyfin = true;
       sso = true;
     };
-    forty_two.irc = true;
+    forty_two.irc = false;
     web.portefolio = true;
     server = {
-      minecraft = false;
+      minecraft = true;
       teamspeak = true;
     };
     bot_discord = {
