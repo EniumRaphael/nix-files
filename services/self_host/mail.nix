@@ -211,16 +211,19 @@ in
       raphael@enium.eu:{SHA512-CRYPT}$6$rIsn6/dLJ6MbITx5$vMo82dgkQZoV8BQIaO6Bs9J86ZjgcJ.LqMuIqnXVfuBRgZOqY/YiURBUOcS1P2wAo5h4TCFkKExfcjjX1reUU.
       benjamin@enium.eu:{SHA512-CRYPT}$6$.34vS2JkrmGnioYo$pUF.vN5Q3njn5WRTLdMU5n7vGJdwk64bB/si0vQXFw.ioky4xlHUVocFXC8GI9wkVJNif.2kHvAYEcEtXvU2I0
       deborah@enium.eu:{SHA512-CRYPT}$6$IZ7Dd31uZ4VKzz04$z5IhS25Jve8KsX0GIIXB8GUiPYd3eSuxlDz9RZQHa2tE4hptgtXQVU3av42MIRpaN9GPqG9iM6jiQUwRZ9V39/
+      rchouraqui@enium.eu:{SHA512-CRYPT}$6$.YW4sF83D1EZXQW8$AZoxbni6XFGf3XuSp1sKhZ9cHjU5CcryEH8C45Fbu5s2nJHixDRnDeH6Vl5EvfQfH09wrxhDYp0Tld.TiUSpn.
     '';
     environment.etc."postfix-vmailbox".text = ''
       raphael@enium.eu enium.eu/raphael/
       benjamin@enium.eu enium.eu/benjamin/
       deborah@enium.eu enium.eu/deborah/
+      rchouraqui@enium.eu enium.eu/rchouraqui/
     '';
     environment.etc."postfix-sender_login".text = ''
       raphael@enium.eu raphael@enium.eu
       benjamin@enium.eu benjamin@enium.eu
       deborah@enium.eu deborah@enium.eu
+      rchouraqui@enium.eu rchouraqui@enium.eu
 
       no-reply@enium.eu raphael@enium.eu, benjamin@enium.eu
       direction@enium.eu raphael@enium.eu, benjamin@enium.eu
@@ -229,7 +232,7 @@ in
     '';
     environment.etc."postfix-virtual".text = ''
       direction@enium.eu raphael@enium.eu, benjamin@enium.eu
-      recrutement@enium.eu raphael@enium.eu, benjamin@enium.eu
+      recrutement@enium.eu raphael@enium.eu, benjamin@enium.eu, rchouraqui@enium.eu
       contact@enium.eu raphael@enium.eu, benjamin@enium.eu
     '';
 
