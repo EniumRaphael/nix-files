@@ -5,6 +5,13 @@
 
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
+  age.secrets."wireguard-secret" = {
+    file = ../../secrets/wireguard-secret.age;
+    owner = "root";
+    group = "root";
+    mode  = "0400";
+  };
+
   age.secrets."mailjet-user" = {
     file = ../../secrets/mailjet-user.age;
     owner = "root";
