@@ -72,6 +72,7 @@ in
             };
             volumes = [
               "/mnt/data/radarr/config:/config"
+              "/mnt/data/downloads:/downloads"
               "/mnt/data:/data"
             ];
           };
@@ -88,6 +89,7 @@ in
             };
             volumes = [
               "/mnt/data/sonarr/config:/config"
+              "/mnt/data/downloads:/downloads"
               "/mnt/data:/data"
             ];
           };
