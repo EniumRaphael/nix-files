@@ -7,7 +7,7 @@
 }:
 
 let
-  sshKeyMac = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKbHk7YasSMK5FBCArKLeqIoaGXsN+WlgVquObyC5Zec raphael@MacBook-Pro-de-raphael.local";
+  sshKeyMac = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIML4yVz1fhccwaTL0iHixkNkU5zUWU1rsit9u2TIIa5r raphael@raphaels-MacBook-Pro.local";
 in
 {
   imports = [
