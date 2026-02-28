@@ -26,10 +26,10 @@ let
     sha256 = "sha256-hL51zJkFxUys1CoM8yUxiH8BDw111wh3Qv7eTLm+XYo=";
   };
 in
-  {
+{
   config = lib.mkIf cfg {
     users = {
-      groups.kanidm = {};
+      groups.kanidm = { };
       users.kanidm = {
         isSystemUser = true;
         group = "kanidm";
@@ -40,16 +40,20 @@ in
     services = {
       kanidm = {
         package = pkgs.kanidmWithSecretProvisioning_1_8;
-        enableServer = true;
-        serverSettings = {
-          domain = "enium.eu";
-          origin = "https://auth.enium.eu";
-          bindaddress = "127.0.0.1:9000";
-          tls_chain = "/var/lib/acme/auth.enium.eu/fullchain.pem";
-          tls_key = "/var/lib/acme/auth.enium.eu/key.pem";
+        server = {
+          enable = true;
+          settings = {
+            domain = "enium.eu";
+            origin = "https://auth.enium.eu";
+            bindaddress = "127.0.0.1:9000";
+            tls_chain = "/var/lib/acme/auth.enium.eu/fullchain.pem";
+            tls_key = "/var/lib/acme/auth.enium.eu/key.pem";
+          };
         };
-        enableClient = true;
-        clientSettings.uri = config.services.kanidm.serverSettings.origin;
+        client = {
+          enable = true;
+          settings.uri = config.services.kanidm.server.settings.origin;
+        };
         provision = {
           enable = true;
           autoRemove = false;
@@ -211,19 +215,19 @@ in
                 email = {
                   joinType = "array";
                   valuesByGroup = {
-                    nextcloud_user = ["mail"];
+                    nextcloud_user = [ "mail" ];
                   };
                 };
                 preferred_username = {
                   joinType = "array";
                   valuesByGroup = {
-                    nextcloud_user = ["name"];
+                    nextcloud_user = [ "name" ];
                   };
                 };
                 name = {
                   joinType = "array";
                   valuesByGroup = {
-                    nextcloud_user = ["displayname"];
+                    nextcloud_user = [ "displayname" ];
                   };
                 };
               };
