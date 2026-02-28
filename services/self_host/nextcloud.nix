@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   cfg = config.service.selfhost.nextcloud;
@@ -6,7 +11,7 @@ let
   nextcloud-database = config.age.secrets."nextcloud-database".path;
   dataDir = "/mnt/data/nextcloud";
 in
-  {
+{
   config = lib.mkIf cfg {
     environment.systemPackages = with pkgs; [
       php

@@ -1,14 +1,14 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 let
   cfg = config.service.selfhost.jellyfin;
   wireguard-key = config.age.secrets."wireguard-secret".path;
 in
-  {
+{
   config = lib.mkIf cfg {
     virtualisation = {
       docker.enable = true;

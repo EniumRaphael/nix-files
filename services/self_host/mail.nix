@@ -22,7 +22,7 @@ in
       shell = "/run/current-system/sw/bin/nologin";
     };
     users.groups = {
-      vmail = {};
+      vmail = { };
     };
     systemd.tmpfiles.rules = [
       "d /run/dovecot 0755 dovecot dovecot - -"
@@ -84,14 +84,22 @@ in
           chroot = false;
           command = "smtpd";
           args = [
-            "-o" "smtpd_recipient_restrictions=permit_sasl_authenticated,reject"
-            "-o" "smtpd_sasl_auth_enable=yes"
-            "-o" "smtpd_sasl_security_options=noanonymous"
-            "-o" "smtpd_sender_login_maps=hash:/var/lib/postfix/sender_login"
-            "-o" "smtpd_sender_restrictions=reject_sender_login_mismatch"
-            "-o" "smtpd_tls_auth_only=yes"
-            "-o" "smtpd_tls_security_level=encrypt"
-            "-o" "syslog_name=postfix/submission"
+            "-o"
+            "smtpd_recipient_restrictions=permit_sasl_authenticated,reject"
+            "-o"
+            "smtpd_sasl_auth_enable=yes"
+            "-o"
+            "smtpd_sasl_security_options=noanonymous"
+            "-o"
+            "smtpd_sender_login_maps=hash:/var/lib/postfix/sender_login"
+            "-o"
+            "smtpd_sender_restrictions=reject_sender_login_mismatch"
+            "-o"
+            "smtpd_tls_auth_only=yes"
+            "-o"
+            "smtpd_tls_security_level=encrypt"
+            "-o"
+            "syslog_name=postfix/submission"
           ];
         };
       };
@@ -240,68 +248,68 @@ in
       enable = true;
       postfix.enable = true;
       extraConfig = ''
-        worker "controller" {
-          bind_socket = "127.0.0.1:11334";
-          password = "admin";
-        };
+                worker "controller" {
+                  bind_socket = "127.0.0.1:11334";
+                  password = "admin";
+                };
 
-        worker "normal" {
-          bind_socket = "127.0.0.1:11333";
-        };
+                worker "normal" {
+                  bind_socket = "127.0.0.1:11333";
+                };
 
-        worker "rspamd_proxy" {
-          bind_socket = "127.0.0.1:11332";
-          milter = yes;
-          timeout = 120s;
-          upstream "local" {
-            self_scan = yes;
-          };
-        };
+                worker "rspamd_proxy" {
+                  bind_socket = "127.0.0.1:11332";
+                  milter = yes;
+                  timeout = 120s;
+                  upstream "local" {
+                    self_scan = yes;
+                  };
+                };
 
-        actions {
-          reject = 12;
-          add_header = 6;
-          greylist = 4;
-        };
+                actions {
+                  reject = 12;
+                  add_header = 6;
+                  greylist = 4;
+                };
 
-        classifier "bayes" {
-          backend = "redis";
-          servers = "127.0.0.1:6381";
-          autolearn = true;
-          min_learns = 200;
-          new_schema = true;
-          cache = true;
+                classifier "bayes" {
+                  backend = "redis";
+                  servers = "127.0.0.1:6381";
+                  autolearn = true;
+                  min_learns = 200;
+                  new_schema = true;
+                  cache = true;
 
-          statfile {
-            symbol = "BAYES_HAM";
-            spam = false;
-          };
+                  statfile {
+                    symbol = "BAYES_HAM";
+                    spam = false;
+                  };
 
-          statfile {
-            symbol = "BAYES_SPAM";
-            spam = true;
-          };
+                  statfile {
+                    symbol = "BAYES_SPAM";
+                    spam = true;
+                  };
 
-        learn_condition = <<EOD
-return function(task)
-  return true
-end
-EOD;
-        };
+                learn_condition = <<EOD
+        return function(task)
+          return true
+        end
+        EOD;
+                };
 
-        rbl {
-          enabled = true;
-          rbls = {
-            spamhaus = {
-              symbol = "RBL_SPAMHAUS";
-              rbl = "zen.spamhaus.org";
-            };
-            barracuda = {
-              symbol = "RBL_BARRACUDA";
-              rbl = "b.barracudacentral.org";
-            };
-          };
-        };
+                rbl {
+                  enabled = true;
+                  rbls = {
+                    spamhaus = {
+                      symbol = "RBL_SPAMHAUS";
+                      rbl = "zen.spamhaus.org";
+                    };
+                    barracuda = {
+                      symbol = "RBL_BARRACUDA";
+                      rbl = "b.barracudacentral.org";
+                    };
+                  };
+                };
       '';
     };
     services.redis.servers.rspamd = {
