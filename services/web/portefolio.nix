@@ -36,8 +36,8 @@ in
     };
     security.acme = {
       certs = {
-        "parodi.pro" = {};
-        "raphael.parodi.pro" = {};
+        "parodi.pro" = { };
+        "raphael.parodi.pro" = { };
       };
     };
   };
