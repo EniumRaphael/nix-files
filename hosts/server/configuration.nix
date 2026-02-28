@@ -77,46 +77,49 @@ in
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    age
-    bat
-    cairo
-    dconf
-    fastfetch
-    git
-    home-manager
-    lego
-    libjpeg
-    libpng
-    libuuid
-    linux-manual
-    man
-    man-pages
-    man-pages-posix
-    networkmanager
-    openssl
-    pkg-config
-    postgresql
-    protonup-ng
-    python3
-    python3Packages.pip
-    qFlipper
-    ripgrep
-    swaylock
-    swaylock-fancy
-    tmux
-    unzip
-    vim
-    wget
-    wl-clipboard
-    xclip
-    xdg-desktop-portal-hyprland
-    xsel
-    yarn
-    zsh
-  ] ++ [
-    inputs.agenix.packages.${pkgs.system}.agenix
-  ];
+  environment.systemPackages =
+    with pkgs;
+    [
+      age
+      bat
+      cairo
+      dconf
+      fastfetch
+      git
+      home-manager
+      lego
+      libjpeg
+      libpng
+      libuuid
+      linux-manual
+      man
+      man-pages
+      man-pages-posix
+      networkmanager
+      openssl
+      pkg-config
+      postgresql
+      protonup-ng
+      python3
+      python3Packages.pip
+      qFlipper
+      ripgrep
+      swaylock
+      swaylock-fancy
+      tmux
+      unzip
+      vim
+      wget
+      wl-clipboard
+      xclip
+      xdg-desktop-portal-hyprland
+      xsel
+      yarn
+      zsh
+    ]
+    ++ [
+      inputs.agenix.packages.${pkgs.system}.agenix
+    ];
 
   # Bootloader.
   boot.loader = {
@@ -139,7 +142,7 @@ in
     openssh = {
       enable = true;
       ports = [
-	      42131
+        42131
       ];
     };
     udev.extraRules = ''
