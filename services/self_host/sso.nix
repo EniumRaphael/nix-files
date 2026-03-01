@@ -38,7 +38,7 @@ in
     security.acme.certs."auth.enium.eu".group = "nginx";
     services = {
       kanidm = {
-        package = pkgs.kanidmWithSecretProvisioning_1_8;
+        package = pkgs.kanidmWithSecretProvisioning_1_9;
         server = {
           enable = true;
           settings = {
