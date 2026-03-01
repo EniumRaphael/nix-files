@@ -9,7 +9,6 @@ let
   cfg = config.service.selfhost.sso;
   kanidm-admin = config.age.secrets."kanidm-admin".path;
   kanidm-idmAdmin = config.age.secrets."kanidm-idmAdmin".path;
-  imagesDir = "/user/share/kanidm/assets";
   kanidmLogo = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/doc-sheet/forgejo/refs/heads/forgejo/assets/logo.svg";
     name = "kanidm.svg";
