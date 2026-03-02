@@ -1,0 +1,594 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "$$hashKey": "object:75",
+        "builtIn": 1,
+        "datasource": {
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Log Viewer Dashboard for Loki",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 20,
+  "links": [
+    {
+      "$$hashKey": "object:59",
+      "icon": "bolt",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "View In Explore",
+      "type": "link",
+      "url": "/explore?orgId=1&left=[\"now-1h\",\"now\",\"Loki\",{\"expr\":\"{job=\\\"$app\\\"}\"},{\"ui\":[true,true,true,\"none\"]}]"
+    },
+    {
+      "$$hashKey": "object:61",
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Learn LogQL",
+      "type": "link",
+      "url": "https://grafana.com/docs/loki/latest/logql/"
+    }
+  ],
+  "panels": [
+    {
+      "datasource": {
+        "uid": "bfesvtbn7l534f"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "noValue": "0",
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "warn"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "info"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "debug"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "none",
+        "tooltip": {
+          "hideZeros": true,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "bfesvtbn7l534f"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum(count_over_time({job=\"systemd-journal\"} | detected_level = \"debug\" [$__auto])) by (detected_level)",
+          "hide": false,
+          "legendFormat": "{{detected_level}}",
+          "queryType": "range",
+          "refId": "D",
+          "step": ""
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "bfesvtbn7l534f"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum(count_over_time({job=\"systemd-journal\"} | detected_level = \"info\" [$__auto])) by (detected_level)",
+          "hide": false,
+          "legendFormat": "{{detected_level}}",
+          "queryType": "range",
+          "refId": "C",
+          "step": ""
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "bfesvtbn7l534f"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum(count_over_time({job=\"systemd-journal\"} | detected_level = \"unknown\" [$__auto])) by (detected_level)",
+          "hide": false,
+          "legendFormat": "{{detected_level}}",
+          "queryType": "range",
+          "refId": "E",
+          "step": ""
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "bfesvtbn7l534f"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum(count_over_time({job=\"systemd-journal\"} | detected_level = \"warn\" [$__auto])) by (detected_level)",
+          "hide": false,
+          "legendFormat": "{{detected_level}}",
+          "queryType": "range",
+          "refId": "B",
+          "step": ""
+        },
+        {
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum(count_over_time({job=\"systemd-journal\"} | detected_level = \"error\" [$__auto])) by (detected_level)",
+          "legendFormat": "{{detected_level}}",
+          "queryType": "range",
+          "refId": "A",
+          "step": ""
+        }
+      ],
+      "title": "Type log pie chart",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "bfesvtbn7l534f"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 0,
+            "pointSize": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^(info|information)$/i"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^debug$/i"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^(warn|warning)$/i"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^(error|errors)$/i"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^(crit|critical|fatal|severe)$/i"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#705da0",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^(logs|unknown)$/i"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "darkgray",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 16,
+        "x": 8,
+        "y": 0
+      },
+      "id": 9,
+      "interval": "5s",
+      "maxDataPoints": 500,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.3",
+      "targets": [
+        {
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum(count_over_time({job=\"systemd-journal\"} [$__auto])) by (detected_level)",
+          "legendFormat": "{{detected_level}}",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Metric query",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "bfesvtbn7l534f"
+      },
+      "description": "All warn/error's logs will be printed here",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 8,
+      "maxDataPoints": "",
+      "options": {
+        "dedupStrategy": "none",
+        "detailsMode": "inline",
+        "enableInfiniteScrolling": true,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showControls": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "syntaxHighlighting": true,
+        "timestampResolution": "ms",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "bfesvtbn7l534f"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{job=\"$app\"} | logfmt | detected_level =~ `err|error|emerg|emergency|fatal|crit|critical|warn` | line_format \"Service: {{ if .logger }}{{ .logger }}{{ else }}Loki{{ end }} | Message: {{ if .msg }}{{ .msg }}{{ else }}No Message{{ end }}\"",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Warn/Error's logs",
+      "transparent": true,
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "bfesvtbn7l534f"
+      },
+      "description": "All infos logs will be printed here",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 7,
+      "maxDataPoints": "",
+      "options": {
+        "dedupStrategy": "none",
+        "detailsMode": "inline",
+        "enableInfiniteScrolling": true,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showControls": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "syntaxHighlighting": true,
+        "timestampResolution": "ms",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "bfesvtbn7l534f"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{job=\"$app\"} | logfmt | detected_level =~ `info|notice|debug|trace` | line_format \"Service: {{ if .logger }}{{ .logger }}{{ else }}Loki{{ end }} | Message: {{ if .msg }}{{ .msg }}{{ else }}No Message{{ end }}\"",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs Informative",
+      "transparent": true,
+      "type": "logs"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "systemd-journal",
+          "value": "systemd-journal"
+        },
+        "datasource": "bfesvtbn7l534f",
+        "definition": "label_values(job)",
+        "includeAll": false,
+        "label": "App",
+        "name": "app",
+        "options": [],
+        "query": "label_values(job)",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "label": "String Match",
+        "name": "search",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Logs / App",
+  "uid": "sadlil-loki-apps-dashboard",
+  "version": 13
+}
