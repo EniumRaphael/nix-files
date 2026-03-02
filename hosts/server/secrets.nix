@@ -46,6 +46,13 @@
     mode = "0440";
   };
 
+  age.secrets."grafana-secret-key" = {
+    file = ../../secrets/grafana-secret-key.age;
+    owner = "grafana";
+    group = "grafana";
+    mode = "0440";
+  };
+
   age.secrets."forgejo-oidc-secret" = {
     file = ../../secrets/forgejo-oidc-secret.age;
     owner = "kanidm";
