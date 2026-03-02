@@ -66,7 +66,7 @@ in
       teamspeak = true;
     };
     bot_discord = {
-      master = true;
+      master = false;
       bde = false;
       tut = false;
       marty = false;
