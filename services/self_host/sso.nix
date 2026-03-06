@@ -101,7 +101,7 @@ in
               displayName = "Forjego";
               imageFile = kanidmLogo;
               originUrl = "https://git.enium.eu";
-              originLanding = "https://git.enium.eu/login";
+              originLanding = "https://git.enium.eu/user/oauth2/Enium/callback";
               basicSecretFile = config.age.secrets.forgejo-oidc-secret.path;
               public = false;
               enableLocalhostRedirects = false;
