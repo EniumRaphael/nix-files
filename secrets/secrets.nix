@@ -19,6 +19,7 @@ in
   "grafana-oidc-secret.age".publicKeys = users ++ systems;
   "grafana-secret-key.age".publicKeys = users ++ systems;
   "forgejo-oidc-secret.age".publicKeys = users ++ systems;
+  "forgejo-runner-token.age".publicKeys = users ++ systems;
   "kandim-admin.age".publicKeys = users ++ systems;
   "kandim-idmAdmin.age".publicKeys = users ++ systems;
 }
