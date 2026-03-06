@@ -60,6 +60,13 @@
     mode = "0440";
   };
 
+  age.secrets."forgejo-runner-token" = {
+    file = ../../secrets/forgejo-runner-token.age;
+    owner = "forgejo";
+    group = "forgejo";
+    mode = "0440";
+  };
+
   age.secrets."nextcloud-database" = {
     file = ../../secrets/nextcloud-database.age;
     owner = "nextcloud";

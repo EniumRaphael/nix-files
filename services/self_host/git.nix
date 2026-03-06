@@ -35,6 +35,7 @@ in
           AUTH_URL = "https://git.enium.eu/ui/oauth2";
           TOKEN_URL = "https://git.enium.eu/oauth2/token";
           API_URL = "https://git.enium.eu/oauth2/openid/forgejo/userinfo";
+          REDIRECT_URI = "https://git.enium.eu/user/oauth2/Enium/callback";
           CODE_CHALLENGE_METHOD = "S256";
           ENABLE_AUTO_REGISTRATION = true;
           UPDATE_AVATAR = true;
@@ -51,7 +52,18 @@ in
         };
       };
     };
-
+    gitea-actions-runner = {
+      package = pkgs.forgejo-runner;
+      instances.default = {
+        enable = true;
+        name = "monolith";
+        url = "https://git.enium.eu";
+        tokenFile = config.age.secrets.forgejo-runner-token.path;
+        labels = [
+          "ubuntu-latest:docker://node:16-bullseye"
+        ];
+      };
+    };
     nginx.virtualHosts."${gitDomain}" = {
       enableACME = true;
       forceSSL = true;
