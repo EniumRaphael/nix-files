@@ -1,8 +1,8 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
@@ -15,7 +15,7 @@ let
     "grafana"
   ];
 in
-  {
+{
   config = lib.mkIf cfg {
     services = {
       grafana = {
@@ -101,16 +101,16 @@ in
           blackbox = {
             enable = true;
             configFile = pkgs.writeText "blackbox-exporter.yml" ''
-            modules:
-              http_2xx:
-                prober: http
-                timeout: 5s
-                http:
-                  valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
-                  valid_status_codes: []
-                  method: GET
-                  no_follow_redirects: false
-                  fail_if_not_ssl: false
+              modules:
+                http_2xx:
+                  prober: http
+                  timeout: 5s
+                  http:
+                    valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+                    valid_status_codes: []
+                    method: GET
+                    no_follow_redirects: false
+                    fail_if_not_ssl: false
             '';
           };
           node.enable = true;
@@ -212,16 +212,18 @@ in
             };
           };
           schema_config = {
-            configs = [{
-              from = "2024-01-01";
-              store = "tsdb";
-              object_store = "filesystem";
-              schema = "v13";
-              index = {
-                prefix = "index_";
-                period = "24h";
-              };
-            }];
+            configs = [
+              {
+                from = "2024-01-01";
+                store = "tsdb";
+                object_store = "filesystem";
+                schema = "v13";
+                index = {
+                  prefix = "index_";
+                  period = "24h";
+                };
+              }
+            ];
           };
         };
       };
@@ -276,7 +278,6 @@ in
         };
       };
     };
-
 
     systemd.services = {
       alloy.serviceConfig.SupplementaryGroups = [ "systemd-journal" ];
@@ -342,8 +343,6 @@ in
               description: "Le processus grafana tourne de nouveau."
       '';
     };
-
-
 
   };
 }
