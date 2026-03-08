@@ -88,4 +88,17 @@
     mode = "0400";
   };
 
+  age.secrets."vault-oidc-secret" = {
+    file = ../../secrets/vault-oidc-secret.age;
+    owner = "kanidm";
+    group = "kanidm";
+    mode = "0400";
+  };
+
+  age.secrets."vault-secret-env" = {
+    file = ../../secrets/vault-secret-env.age;
+    owner = "vaultwarden";
+    group = "vaultwarden";
+    mode = "0400";
+  };
 }
