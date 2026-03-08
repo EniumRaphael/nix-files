@@ -77,6 +77,18 @@ in
                 "vault_admins"
               ];
             };
+            deborah = {
+              displayName = "Deborah";
+              legalName = "Deborah Parodi";
+              mailAddresses = [
+                "deborah@enium.eu"
+              ];
+              groups = [
+                "grafana_superadmins"
+                "forgejo_users"
+                "vault_users"
+              ];
+            };
           };
           groups = {
             grafana_superadmins = {
