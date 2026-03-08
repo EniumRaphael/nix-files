@@ -9,7 +9,7 @@ let
   cfg = config.service.selfhost.sso;
   kanidm-admin = config.age.secrets."kanidm-admin".path;
   kanidm-idmAdmin = config.age.secrets."kanidm-idmAdmin".path;
-  kanidmLogo = pkgs.fetchurl {
+  forgejoLogo = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/doc-sheet/forgejo/refs/heads/forgejo/assets/logo.svg";
     name = "kanidm.svg";
     sha256 = "sha256-rP7aZURtHBfF2OYuGLcKZhbvIN+B596T/3kaOxHUvig=";
@@ -23,6 +23,11 @@ let
     url = "https://upload.wikimedia.org/wikipedia/commons/6/60/Nextcloud_Logo.svg";
     name = "nextcloud.svg";
     sha256 = "sha256-hL51zJkFxUys1CoM8yUxiH8BDw111wh3Qv7eTLm+XYo=";
+  };
+  vaultLogo = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/dani-garcia/vaultwarden/ba5519167634ebe1e1f0fc10d610d10d1f405101/resources/vaultwarden-icon.svg";
+    name = "vault.svg";
+    sha256 = "sha256-xY/pFVS9puG+Ub0M9WrISrY/eY1Rc+QeceGqHeUVx+8=";
   };
 in
 {
@@ -69,6 +74,7 @@ in
                 "grafana_superadmins"
                 "forgejo_admins"
                 "nextcloud_user"
+                "vault_admins"
               ];
             };
           };
@@ -91,6 +97,12 @@ in
             forgejo_users = {
               present = true;
             };
+            vault_admins = {
+              present = true;
+            };
+            vault_users = {
+              present = true;
+            };
             nextcloud_user = {
               present = true;
             };
@@ -99,7 +111,7 @@ in
             forgejo = {
               present = true;
               displayName = "Forjego";
-              imageFile = kanidmLogo;
+              imageFile = forgejoLogo;
               originUrl = "https://git.enium.eu";
               originLanding = "https://git.enium.eu/user/oauth2/Enium/callback";
               basicSecretFile = config.age.secrets.forgejo-oidc-secret.path;
@@ -229,6 +241,30 @@ in
                     nextcloud_user = [ "displayname" ];
                   };
                 };
+              };
+            };
+            vault = {
+              present = true;
+              displayName = "Vault";
+              imageFile = vaultLogo;
+              originUrl = "https://vault.enium.eu";
+              originLanding = "https://vault.enium.eu/identity/connect/oidc-signin";
+              basicSecretFile = config.age.secrets.vault-oidc-secret.path;
+              public = false;
+              enableLocalhostRedirects = false;
+              allowInsecureClientDisablePkce = false;
+              preferShortUsername = true;
+              scopeMaps = {
+                vault_admins = [
+                  "openid"
+                  "profile"
+                  "email"
+                ];
+                vault_users = [
+                  "openid"
+                  "profile"
+                  "email"
+                ];
               };
             };
           };
