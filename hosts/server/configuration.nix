@@ -58,6 +58,7 @@ in
       nextcloud = true;
       jellyfin = true;
       sso = true;
+      vault = true;
     };
     forty_two.irc = false;
     web.portefolio = true;
