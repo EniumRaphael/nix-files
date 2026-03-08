@@ -71,6 +71,14 @@ let
       lib
       ;
   };
+  vault = import ./self_host/vault.nix {
+    inherit
+      inputs
+      config
+      pkgs
+      lib
+      ;
+  };
   cfg = config.service.selfhost;
 in
 {
@@ -83,6 +91,7 @@ in
     nextcloud
     ollama
     sso
+    vault
   ];
 
   config = {
@@ -129,7 +138,12 @@ in
     sso = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Enable the nextcloud";
+      description = "Enable the sso";
+    };
+    vault = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable the vault";
     };
   };
 }
