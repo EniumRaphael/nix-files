@@ -42,7 +42,7 @@ in
         };
 
         service = {
-          DISABLE_REGISTRATION = true;
+          DISABLE_REGISTRATION = false;
           ALLOW_ONLY_EXTERNAL_REGISTRATION = true;
           SHOW_REGISTRATION_BUTTON = false;
           DISABLE_PASSWORD_SIGNIN_FORM = true;
