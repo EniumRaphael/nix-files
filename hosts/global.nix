@@ -45,6 +45,7 @@
           "wheel"
           "docker"
           "video"
+          "render"
         ];
       };
     };
@@ -75,6 +76,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    uwsm
     git
     postgresql
     vim
