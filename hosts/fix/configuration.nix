@@ -6,6 +6,12 @@
   ...
 }:
 
+let
+  mullvad-autostart = pkgs.makeAutostartItem {
+    name = "mullvad-vpn";
+    package = pkgs.mullvad-vpn;
+  };
+in
 {
   imports = [
     ../global.nix
@@ -19,7 +25,18 @@
     hostName = "nixos-fix";
     firewall.enable = false;
     networkmanager.enable = true;
-    wireless.enable = false;
+  };
+
+  hardware = {
+    graphics.enable = true;
+    nvidia = {
+      open = false;
+      modesetting.enable = true;
+      powerManagement.enable = false;
+      powerManagement.finegrained = false;
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    };
   };
 
   games = {
@@ -37,27 +54,7 @@
     swaylock = { };
   };
 
-  users = {
-    defaultUserShell = pkgs.zsh;
-    users = {
-      deb = {
-        isNormalUser = true;
-        initialPassword = "pasadmin1234";
-        description = "deb";
-        useDefaultShell = true;
-        extraGroups = [
-          "networkmanager"
-          "dialout"
-          "docker"
-          "video"
-        ];
-        packages = with pkgs; [
-          gnome-session
-          home-manager
-        ];
-      };
-    };
-  };
+  users.defaultUserShell = pkgs.zsh;
 
   # Bootloader.
   boot.loader = {
@@ -72,25 +69,27 @@
     };
   };
 
+  environment.systemPackages = [
+    mullvad-autostart
+  ];
+
   services = {
-    seatd.enable = true;
-    xserver = {
-      desktopManager.gnome.enable = true;
-      displayManager.gdm.wayland = true;
+    mullvad-vpn = {
+        enable = true;
+        package = pkgs.mullvad-vpn;
     };
+    xserver.videoDrivers = [ "nvidia" ];
+    seatd.enable = true;
     greetd = {
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --user-menu --remember-user-session --time";
+          command = "${pkgs.tuigreet}/bin/tuigreet --remember --user-menu --remember-user-session --time";
         };
       };
+      useTextGreeter = true;
     };
     dbus.enable = true;
-    openssh = {
-      enable = true;
-      ports = [ 42131 ];
-    };
     pipewire = {
       enable = true;
       alsa.enable = true;
