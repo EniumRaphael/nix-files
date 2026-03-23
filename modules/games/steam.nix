@@ -22,6 +22,7 @@ in
     };
 
     environment.systemPackages = with pkgs; [
+      gamescope
       wine-staging
       lutris
       dxvk
