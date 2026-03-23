@@ -45,6 +45,7 @@
             ./hosts/fix/configuration.nix
             home-manager.nixosModules.home-manager
             {
+              home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = {
@@ -53,7 +54,7 @@
                 nixvim = inputs.nixvim.packages."x86_64-linux".default;
                 zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
               };
-              home-manager.users.raphael = hm-config.homeConfigurations."hm-fix";
+              home-manager.users.raphael = import hm-config.outputs.homeModules.fix;
             }
           ];
           specialArgs = {
