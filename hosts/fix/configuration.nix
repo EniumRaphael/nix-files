@@ -28,12 +28,17 @@ in
   };
 
   hardware = {
-    graphics.enable = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
     nvidia = {
       open = false;
       modesetting.enable = true;
-      powerManagement.enable = false;
-      powerManagement.finegrained = false;
+      powerManagement = {
+        enable = false;
+        finegrained = false;
+      };
       nvidiaSettings = true;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
@@ -63,14 +68,17 @@ in
   };
 
   programs = {
+    thunderbird.enable = true;
     hyprland = {
       enable = true;
       xwayland.enable = true;
     };
   };
 
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
     mullvad-autostart
+    pciutils
+    vulkan-tools
   ];
 
   services = {
@@ -114,6 +122,7 @@ in
     enable = true;
     extraPortals = [
       pkgs.xdg-desktop-portal-hyprland
+      pkgs.xdg-desktop-portal-gtk
     ];
     config.common.default = "*";
   };
