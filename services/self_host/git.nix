@@ -50,18 +50,33 @@ in
         security = {
           LOGIN_REMEMBER_DAYS = 14;
         };
+        actions = {
+          ENABLED = true;
+          DEFAULT_ACTIONS_URL = "github";
+        };
       };
     };
     gitea-actions-runner = {
       package = pkgs.forgejo-runner;
-      instances.default = {
-        enable = true;
-        name = "monolith";
-        url = "https://git.enium.eu";
-        tokenFile = config.age.secrets.forgejo-runner-token.path;
-        labels = [
-          "ubuntu-latest:docker://node:16-bullseye"
-        ];
+      instances = {
+        default = {
+          enable = true;
+          name = "monolith";
+          url = "https://git.enium.eu";
+          tokenFile = config.age.secrets.forgejo-runner-token.path;
+          labels = [
+            "ubuntu-latest:docker://ubuntu/resolute"
+          ];
+        };
+        forty-two = {
+          enable = true;
+          name = "monolith";
+          url = "https://git.enium.eu";
+          tokenFile = config.age.secrets.forgejo-runner-token.path;
+          labels = [
+            "forty-two:docker://alexandregv/remote-42"
+          ];
+        };
       };
     };
     nginx.virtualHosts."${gitDomain}" = {
