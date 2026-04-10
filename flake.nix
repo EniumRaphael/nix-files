@@ -9,6 +9,7 @@
     };
     agenix.url = "github:ryantm/agenix";
     hm-config.url = "github:EniumRaphael/home-manager";
+    orca-slicer-flake.url = "github:EniumRaphael/orca-slicer-flake";
     minecraft.url = "github:Infinidoge/nix-minecraft";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.url = "github:EniumRaphael/nixvim";
@@ -28,6 +29,7 @@
       agenix,
       authentik-nix,
       home-manager,
+      orca-slicer-flake,
       hm-config,
       catppuccin,
       ...
@@ -53,6 +55,7 @@
                 system = "x86_64-linux";
                 nixvim = inputs.nixvim.packages."x86_64-linux".default;
                 zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
+                orca-slicer-pkg = if orca-slicer-flake.packages ? "x86_64-linux" then orca-slicer-flake.packages.x86_64-linux.default else null;
               };
               home-manager.users.raphael = import hm-config.outputs.homeModules.fix;
             }
