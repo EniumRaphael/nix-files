@@ -77,6 +77,10 @@ in
           smtpd_tls_cert_file = "/var/lib/acme/mail.enium.eu/fullchain.pem";
           smtpd_tls_key_file = "/var/lib/acme/mail.enium.eu/key.pem";
 
+          smtpd_tls_security_level = "may";
+          smtpd_tls_auth_only = "yes";
+
+          milter_default_action = "accept";
         };
         master."submission" = {
           type = "inet";
@@ -216,7 +220,7 @@ in
 
     # doveadm pw -s SHA512-CRYPT
     environment.etc."dovecot/users".text = ''
-      raphael@enium.eu:{SHA512-CRYPT}$6$rIsn6/dLJ6MbITx5$vMo82dgkQZoV8BQIaO6Bs9J86ZjgcJ.LqMuIqnXVfuBRgZOqY/YiURBUOcS1P2wAo5h4TCFkKExfcjjX1reUU.
+      raphael@enium.eu:{SHA512-CRYPT}$6$EG3a/yzTkneLYY.l$qCvgXF/k1KfFYh1/KTzYeyj94lSSSnG6kbQcHHdBo6OrC.TnCI.4222s6u66/aZPoWjye0QNM2GdbZomBPDpe.
       benjamin@enium.eu:{SHA512-CRYPT}$6$.34vS2JkrmGnioYo$pUF.vN5Q3njn5WRTLdMU5n7vGJdwk64bB/si0vQXFw.ioky4xlHUVocFXC8GI9wkVJNif.2kHvAYEcEtXvU2I0
       deborah@enium.eu:{SHA512-CRYPT}$6$IZ7Dd31uZ4VKzz04$z5IhS25Jve8KsX0GIIXB8GUiPYd3eSuxlDz9RZQHa2tE4hptgtXQVU3av42MIRpaN9GPqG9iM6jiQUwRZ9V39/
       rchouraqui@enium.eu:{SHA512-CRYPT}$6$.YW4sF83D1EZXQW8$AZoxbni6XFGf3XuSp1sKhZ9cHjU5CcryEH8C45Fbu5s2nJHixDRnDeH6Vl5EvfQfH09wrxhDYp0Tld.TiUSpn.
@@ -244,78 +248,77 @@ in
       contact@enium.eu raphael@enium.eu, benjamin@enium.eu
     '';
 
-    services.rspamd = {
+        services.rspamd = {
       enable = true;
       postfix.enable = true;
-      extraConfig = ''
-                worker "controller" {
-                  bind_socket = "127.0.0.1:11334";
-                  password = "admin";
-                };
+            extraConfig = ''
+        worker "controller" {
+          bind_socket = "127.0.0.1:11334";
+          password = "admin";
+        }
 
-                worker "normal" {
-                  bind_socket = "127.0.0.1:11333";
-                };
+        worker "normal" {
+          bind_socket = "127.0.0.1:11333";
+        }
 
-                worker "rspamd_proxy" {
-                  bind_socket = "127.0.0.1:11332";
-                  milter = yes;
-                  timeout = 120s;
-                  upstream "local" {
-                    self_scan = yes;
-                  };
-                };
+        worker "rspamd_proxy" {
+          bind_socket = "/run/rspamd/rspamd-milter.sock mode=0660 owner=rspamd group=postfix";
+          milter = true;
+          timeout = 120s;
+          upstream "local" {
+            self_scan = true;
+          }
+        }
 
-                actions {
-                  reject = 12;
-                  add_header = 6;
-                  greylist = 4;
-                };
+        actions {
+          reject = 12;
+          add_header = 6;
+          greylist = 4;
+        }
 
-                classifier "bayes" {
-                  backend = "redis";
-                  servers = "127.0.0.1:6381";
-                  autolearn = true;
-                  min_learns = 200;
-                  new_schema = true;
-                  cache = true;
+        classifier "bayes" {
+          backend = "redis";
+          servers = "127.0.0.1:6381";
+          autolearn = true;
+          min_learns = 200;
+          new_schema = true;
+          cache = true;
 
-                  statfile {
-                    symbol = "BAYES_HAM";
-                    spam = false;
-                  };
+          statfile {
+            symbol = "BAYES_HAM";
+            spam = false;
+          }
 
-                  statfile {
-                    symbol = "BAYES_SPAM";
-                    spam = true;
-                  };
+          statfile {
+            symbol = "BAYES_SPAM";
+            spam = true;
+          }
 
-                learn_condition = <<EOD
-        return function(task)
-          return true
-        end
-        EOD;
-                };
+          learn_condition = "return function(task) return true end";
+        }
 
-                rbl {
-                  enabled = true;
-                  rbls = {
-                    spamhaus = {
-                      symbol = "RBL_SPAMHAUS";
-                      rbl = "zen.spamhaus.org";
-                    };
-                    barracuda = {
-                      symbol = "RBL_BARRACUDA";
-                      rbl = "b.barracudacentral.org";
-                    };
-                  };
-                };
+        rbl {
+          enabled = true;
+          rbls {
+            spamhaus {
+              symbol = "RBL_SPAMHAUS";
+              rbl = "zen.spamhaus.org";
+            }
+            barracuda {
+              symbol = "RBL_BARRACUDA";
+              rbl = "b.barracudacentral.org";
+            }
+          }
+        }
       '';
     };
+
     services.redis.servers.rspamd = {
       enable = true;
       port = 6381;
     };
+    users.users.postfix.extraGroups = [ "rspamd" ];
+
     security.acme.certs."mail.enium.eu" = {
       listenHTTP = ":80";
       group = "dovecot2";
