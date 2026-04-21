@@ -162,11 +162,16 @@ in
               {
                 targets = [
                   "https://raphael.parodi.pro"
-                  "https://nextcloud.enium.eu"
+                  "https://auth.enium.eu"
+                  "https://git.enium.eu"
                   "https://htop.enium.eu"
+                  "https://jellyfin.enium.eu"
                   "https://monitor.enium.eu"
+                  "https://nextcloud.enium.eu"
+                  "https://radarr.enium.eu"
+                  "https://sonarr.enium.eu"
+                  "https://vault.enium.eu"
                   "https://ollama.enium.eu"
-                  "http://relance-pas-stp.me:4242"
                 ];
               }
             ];
