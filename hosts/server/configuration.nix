@@ -54,7 +54,7 @@ in
     selfhost = {
       htop = true;
       ollama = false;
-      mail = true;
+      mail = false;
       monitor = true;
       nextcloud = true;
       jellyfin = true;
@@ -64,7 +64,7 @@ in
     forty_two.irc = false;
     web.portefolio = true;
     server = {
-      minecraft = true;
+      minecraft = false;
       teamspeak = true;
     };
     bot_discord = {
@@ -74,7 +74,7 @@ in
       marty = false;
       ada = false;
       music = false;
-      tempvoc = true;
+      tempvoc = false;
       ticket = false;
     };
   };
