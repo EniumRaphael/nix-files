@@ -50,12 +50,17 @@
   swapDevices = [ ];
 
   hardware = {
-    graphics.enable = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
     nvidia = {
       open = false;
       modesetting.enable = true;
-      powerManagement.enable = false;
-      powerManagement.finegrained = false;
+      powerManagement = {
+        enable = false;
+        finegrained = false;
+      };
       nvidiaSettings = true;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
