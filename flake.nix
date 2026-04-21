@@ -52,7 +52,6 @@
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = {
                 inherit inputs;
-                system = "x86_64-linux";
                 nixvim = inputs.nixvim.packages."x86_64-linux".default;
                 zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
                 orca-slicer-pkg = if orca-slicer-flake.packages ? "x86_64-linux" then orca-slicer-flake.packages.x86_64-linux.default else null;
@@ -77,21 +76,12 @@
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = {
                 inherit inputs;
-                system = "x86_64-linux";
                 nixvim = inputs.nixvim.packages."x86_64-linux".default;
                 zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
+                orca-slicer-pkg = if orca-slicer-flake.packages ? "x86_64-linux" then orca-slicer-flake.packages.x86_64-linux.default else null;
               };
               home-manager.users.raphael = import hm-config.outputs.homeModules.server;
             }
-          ];
-          specialArgs = {
-            inherit inputs;
-          };
-        };
-        "proxmox-discord" = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/proxmox/discord-bots/configuration.nix
           ];
           specialArgs = {
             inherit inputs;
@@ -110,6 +100,7 @@
                 system = "aarch64-linux";
                 nixvim = inputs.nixvim.packages."aarch64-linux".default;
                 zen-browser = inputs.zen-browser.packages."aarch64-linux".default;
+                orca-slicer-pkg = if orca-slicer-flake.packages ? "x86_64-linux" then orca-slicer-flake.packages.x86_64-linux.default else null;
               };
               home-manager.users.raphael = hm-config.homeConfigurations."hm-asahi";
             }
