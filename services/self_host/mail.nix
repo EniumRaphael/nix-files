@@ -248,10 +248,10 @@ in
       contact@enium.eu raphael@enium.eu, benjamin@enium.eu
     '';
 
-        services.rspamd = {
+    services.rspamd = {
       enable = true;
       postfix.enable = true;
-            extraConfig = ''
+      extraConfig = ''
         worker "controller" {
           bind_socket = "127.0.0.1:11334";
           password = "admin";
