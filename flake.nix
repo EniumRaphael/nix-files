@@ -56,7 +56,11 @@
                 inherit inputs;
                 nixvim = inputs.nixvim.packages."x86_64-linux".default;
                 zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
-                orca-slicer-pkg = if orca-slicer-flake.packages ? "x86_64-linux" then orca-slicer-flake.packages.x86_64-linux.default else null;
+                orca-slicer-pkg =
+                  if orca-slicer-flake.packages ? "x86_64-linux" then
+                    orca-slicer-flake.packages.x86_64-linux.default
+                  else
+                    null;
               };
               home-manager.users.raphael = import hm-config.outputs.homeModules.fix;
             }
@@ -79,7 +83,11 @@
                 inherit inputs;
                 nixvim = inputs.nixvim.packages."x86_64-linux".default;
                 zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
-                orca-slicer-pkg = if orca-slicer-flake.packages ? "x86_64-linux" then orca-slicer-flake.packages.x86_64-linux.default else null;
+                orca-slicer-pkg =
+                  if orca-slicer-flake.packages ? "x86_64-linux" then
+                    orca-slicer-flake.packages.x86_64-linux.default
+                  else
+                    null;
               };
               home-manager.users.raphael = import hm-config.outputs.homeModules.framework;
             }
@@ -103,7 +111,11 @@
                 inherit inputs;
                 nixvim = inputs.nixvim.packages."x86_64-linux".default;
                 zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
-                orca-slicer-pkg = if orca-slicer-flake.packages ? "x86_64-linux" then orca-slicer-flake.packages.x86_64-linux.default else null;
+                orca-slicer-pkg =
+                  if orca-slicer-flake.packages ? "x86_64-linux" then
+                    orca-slicer-flake.packages.x86_64-linux.default
+                  else
+                    null;
               };
               home-manager.users.raphael = import hm-config.outputs.homeModules.server;
             }
@@ -125,7 +137,11 @@
                 system = "aarch64-linux";
                 nixvim = inputs.nixvim.packages."aarch64-linux".default;
                 zen-browser = inputs.zen-browser.packages."aarch64-linux".default;
-                orca-slicer-pkg = if orca-slicer-flake.packages ? "x86_64-linux" then orca-slicer-flake.packages.x86_64-linux.default else null;
+                orca-slicer-pkg =
+                  if orca-slicer-flake.packages ? "x86_64-linux" then
+                    orca-slicer-flake.packages.x86_64-linux.default
+                  else
+                    null;
               };
               home-manager.users.raphael = hm-config.homeConfigurations."hm-asahi";
             }
