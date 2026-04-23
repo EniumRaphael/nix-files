@@ -24,10 +24,18 @@ in
   networking = {
     hostName = "raphael-framework";
     firewall.enable = false;
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      wifi = {
+        powersave = false;
+        macAddress = "preserve";
+      };
+    };
   };
 
   hardware = {
+    enableRedistributableFirmware = true;
+    bluetooth.enable = true;
     graphics = {
       enable = true;
       enable32Bit = true;
@@ -42,11 +50,20 @@ in
     };
   };
 
-  security.pam.services = {
-    greetd = {
-      enableGnomeKeyring = true;
+  security = {
+    polkit.enable = true;
+    pam.services = {
+      greetd = {
+        enableGnomeKeyring = true;
+        fprintAuth = true;
+      };
+      login.fprintAuth = true;
+      sudo.fprintAuth = true;
+      hyprlock.text = ''
+        auth sufficient pam_fprintd.so
+        auth include login
+      '';
     };
-    swaylock = { };
   };
 
   users.defaultUserShell = pkgs.zsh;
@@ -73,10 +90,20 @@ in
 
   services = {
     mullvad-vpn = {
-        enable = true;
-        package = pkgs.mullvad-vpn;
+      enable = true;
+      package = pkgs.mullvad-vpn;
     };
+    gnome.gnome-keyring.enable = true;
     seatd.enable = true;
+    blueman.enable = true;
+    fprintd = {
+      enable = true;
+      package = pkgs.fprintd-tod;
+      tod = {
+        enable = true;
+        driver = pkgs.libfprint-2-tod1-goodix;
+      };
+    };
     greetd = {
       enable = true;
       settings = {
@@ -94,9 +121,14 @@ in
       pulse.enable = true;
       jack.enable = true;
     };
-    udev.extraRules = ''
-      SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
-    '';
+    udev = {
+      packages = with pkgs; [
+        libfprint-2-tod1-goodix
+      ];
+      extraRules = ''
+        SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
+      '';
+    };
   };
 
   virtualisation.docker.enable = true;
