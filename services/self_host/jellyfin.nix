@@ -29,11 +29,13 @@ in
               BLOCK_MALICIOUS = "off";
               BLOCK_SURVEILLANCE = "off";
               BLOCK_ADS = "off";
-              WIREGUARD_ADDRESSES = "10.70.168.94/32";
+              WIREGUARD_ADDRESSES = "10.74.60.159/32";
               SERVER_COUNTRIES = "Sweden";
               SERVER_CITIES = "Stockholm";
-              SERVER_HOSTNAMES = "se-sto-wg-206";
+              SERVER_HOSTNAMES = "se-sto-wg-204";
               TZ = "Europe/Paris";
+              DNS_ADDRESS = "10.64.0.1";
+              DNS_KEEP_NAMESERVER = "off";
             };
             ports = [
               "8080:8080"
@@ -45,6 +47,9 @@ in
           qbittorrent = {
             image = "lscr.io/linuxserver/qbittorrent:latest";
             autoStart = true;
+            dependsOn = [
+              "gluetun"
+            ];
             extraOptions = [
               "--network=container:gluetun"
             ];
@@ -62,6 +67,9 @@ in
           radarr = {
             image = "lscr.io/linuxserver/radarr:latest";
             autoStart = true;
+            dependsOn = [
+              "gluetun"
+            ];
             extraOptions = [
               "--network=container:gluetun"
             ];
@@ -79,6 +87,9 @@ in
           sonarr = {
             image = "lscr.io/linuxserver/sonarr:latest";
             autoStart = true;
+            dependsOn = [
+              "gluetun"
+            ];
             extraOptions = [
               "--network=container:gluetun"
             ];
@@ -96,6 +107,9 @@ in
           prowlarr = {
             image = "lscr.io/linuxserver/prowlarr:latest";
             autoStart = true;
+            dependsOn = [
+              "gluetun"
+            ];
             extraOptions = [
               "--network=container:gluetun"
             ];
