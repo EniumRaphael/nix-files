@@ -8,6 +8,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     agenix.url = "github:ryantm/agenix";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     hm-config.url = "github:EniumRaphael/home-manager";
     orca-slicer-flake.url = "github:EniumRaphael/orca-slicer-flake";
     minecraft.url = "github:Infinidoge/nix-minecraft";
@@ -28,6 +29,7 @@
       flake-utils,
       agenix,
       authentik-nix,
+      nixos-hardware,
       home-manager,
       orca-slicer-flake,
       hm-config,
@@ -57,6 +59,29 @@
                 orca-slicer-pkg = if orca-slicer-flake.packages ? "x86_64-linux" then orca-slicer-flake.packages.x86_64-linux.default else null;
               };
               home-manager.users.raphael = import hm-config.outputs.homeModules.fix;
+            }
+          ];
+          specialArgs = {
+            inherit inputs;
+          };
+        };
+        "nixos-framework" = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./hosts/framework/configuration.nix
+            nixos-hardware.nixosModules.framework-16-amd-ai-300-series
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                nixvim = inputs.nixvim.packages."x86_64-linux".default;
+                zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
+                orca-slicer-pkg = if orca-slicer-flake.packages ? "x86_64-linux" then orca-slicer-flake.packages.x86_64-linux.default else null;
+              };
+              home-manager.users.raphael = import hm-config.outputs.homeModules.framework;
             }
           ];
           specialArgs = {
