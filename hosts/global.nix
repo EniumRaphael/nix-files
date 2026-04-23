@@ -15,8 +15,6 @@
 
   time.timeZone = "Europe/Paris";
 
-  security.pam.services.swaylock = { };
-
   i18n = {
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
@@ -36,16 +34,17 @@
     users = {
       raphael = {
         isNormalUser = true;
-        description = "Main account for Raphael";
+        description = "Raphael";
         useDefaultShell = true;
         extraGroups = [
-          "networkmanager"
           "dialout"
-          "plugdev"
-          "wheel"
           "docker"
-          "video"
+          "input"
+          "networkmanager"
+          "plugdev"
           "render"
+          "video"
+          "wheel"
         ];
       };
     };
