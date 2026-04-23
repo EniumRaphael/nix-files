@@ -83,8 +83,8 @@ in
 
   services = {
     mullvad-vpn = {
-        enable = true;
-        package = pkgs.mullvad-vpn;
+      enable = true;
+      package = pkgs.mullvad-vpn;
     };
     xserver.videoDrivers = [ "nvidia" ];
     seatd.enable = true;
