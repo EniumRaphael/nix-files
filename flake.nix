@@ -63,6 +63,7 @@
                     null;
               };
               home-manager.users.raphael = import hm-config.outputs.homeModules.fix;
+              home-manager.users.root = import hm-config.outputs.homeModules.root;
             }
           ];
           specialArgs = {
@@ -90,6 +91,7 @@
                     null;
               };
               home-manager.users.raphael = import hm-config.outputs.homeModules.framework;
+              home-manager.users.root = import hm-config.outputs.homeModules.root;
             }
           ];
           specialArgs = {
@@ -118,6 +120,7 @@
                     null;
               };
               home-manager.users.raphael = import hm-config.outputs.homeModules.server;
+              home-manager.users.root = import hm-config.outputs.homeModules.root;
             }
           ];
           specialArgs = {
