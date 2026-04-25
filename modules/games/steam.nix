@@ -24,7 +24,6 @@ in
     environment.systemPackages = with pkgs; [
       gamescope
       wine-staging
-      lutris
       dxvk
       vkd3d
     ];
