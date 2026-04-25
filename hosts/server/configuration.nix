@@ -89,7 +89,6 @@ in
       dconf
       fastfetch
       git
-      home-manager
       lego
       libjpeg
       libpng

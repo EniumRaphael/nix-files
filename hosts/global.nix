@@ -77,6 +77,7 @@
   environment.systemPackages = with pkgs; [
     uwsm
     git
+    home-manager
     postgresql
     vim
     wget
