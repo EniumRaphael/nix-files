@@ -73,7 +73,7 @@ in
               groups = [
                 "grafana_superadmins"
                 "forgejo_admins"
-                "nextcloud_user"
+                "nextcloud_admins"
                 "vault_admins"
               ];
             };
@@ -113,6 +113,9 @@ in
               present = true;
             };
             vault_users = {
+              present = true;
+            };
+            nextcloud_admins = {
               present = true;
             };
             nextcloud_user = {
@@ -220,39 +223,34 @@ in
               present = true;
               displayName = "Nextcloud";
               imageFile = nextcloudLogo;
-              originUrl = "https://nextcloud.enium.eu";
+              originUrl = "https://nextcloud.enium.eu/apps/user_oidc/code";
               originLanding = "https://nextcloud.enium.eu/login";
               basicSecretFile = config.age.secrets.nextcloud-oidc-secret.path;
               public = false;
               enableLocalhostRedirects = false;
               allowInsecureClientDisablePkce = false;
-              preferShortUsername = true;
+              preferShortUsername = false;
+              claimMaps = {
+                groups = {
+                  joinType = "array";
+                  valuesByGroup = {
+                    nextcloud_admins = [ "admin" ];
+                  };
+                };
+              };
               scopeMaps = {
+                nextcloud_admins = [
+                  "openid"
+                  "profile"
+                  "email"
+                  "groups"
+                ];
                 nextcloud_user = [
                   "openid"
                   "profile"
                   "email"
+                  "groups"
                 ];
-              };
-              claimMaps = {
-                email = {
-                  joinType = "array";
-                  valuesByGroup = {
-                    nextcloud_user = [ "mail" ];
-                  };
-                };
-                preferred_username = {
-                  joinType = "array";
-                  valuesByGroup = {
-                    nextcloud_user = [ "name" ];
-                  };
-                };
-                name = {
-                  joinType = "array";
-                  valuesByGroup = {
-                    nextcloud_user = [ "displayname" ];
-                  };
-                };
               };
             };
             vault = {
