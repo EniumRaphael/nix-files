@@ -65,7 +65,7 @@ in
     forty_two.irc = false;
     web.portefolio = true;
     server = {
-      minecraft = false;
+      minecraft = true;
       teamspeak = true;
     };
     bot_discord = {
