@@ -51,7 +51,18 @@ in
   };
 
   security = {
-    polkit.enable = true;
+    polkit = {
+      enable = true;
+      extraConfig = ''
+        polkit.addRule(function(action, subject) {
+          if (action.id == "org.freedesktop.systemd1.manage-units" &&
+              action.lookup("unit") == "fprintd.service" &&
+              subject.user == "raphael") {
+            return polkit.Result.YES;
+          }
+        });
+      '';
+    };
     pam.services = {
       greetd = {
         enableGnomeKeyring = true;
@@ -89,6 +100,16 @@ in
   ];
 
   services = {
+    printing = {
+      enable = true;
+      drivers = with pkgs; [
+        brlaser
+      ];
+    };
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+    };
     mullvad-vpn = {
       enable = true;
       package = pkgs.mullvad-vpn;
