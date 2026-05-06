@@ -6,41 +6,48 @@
   ...
 }:
 
-let
-  sshKeyMac = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIML4yVz1fhccwaTL0iHixkNkU5zUWU1rsit9u2TIIa5r raphael@raphaels-MacBook-Pro.local";
-  sshKeyFramework = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIlz8TaFYDbMiEmx3Pt5jEyHE169zImZTHTaP9IfhFCK raphael@nixos-fix";
-  sshKeyFix = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHqvUXdRS78wloWZnSqiOt63Gx0QRJdHxggrrepOd9+1 raphael@nixos-fix";
-in
 {
   imports = [
     ../global.nix
     ./hardware-configuration.nix
-    ./secrets.nix
     ../../modules/games/default.nix
     ../../services/forty_two/default.nix
     ../../services/bot_discord/default.nix
     ../../services/server/default.nix
     ../../services/web/default.nix
     ../../services/self_host/default.nix
+    ../../modules/users/default.nix
   ];
 
-  networking = {
-    hostName = "nixos-server";
-    firewall.enable = false;
-    networkmanager.enable = true;
-    interfaces.enp0s31f6.ipv4.addresses = [
-      {
-        address = "192.168.1.1";
-        prefixLength = 24;
-      }
-    ];
-    defaultGateway = "192.168.1.254";
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-      "8.8.8.8"
-      "8.8.4.4"
-    ];
+  config-user = {
+    raphael = true;
+  };
+
+  graphical = {
+    enable = false;
+    greetd = false;
+    mail = false;
+    laptop = false;
+  };
+
+  applications = {
+    docker = true;
+    man = true;
+    mullvad = false;
+    ssh = true;
+  };
+
+
+  config-hw = {
+    network = {
+      enable = true;
+      wireless = false;
+    };
+    bluetooth = false;
+    fingerprint = false;
+    printer = false;
+    nix-settings = true;
+    nvidia = true;
   };
 
   games = {
@@ -49,6 +56,17 @@ in
       enable = false;
       bp = false;
     };
+  };
+
+  networking = {
+    hostName = "raphael-server";
+    defaultGateway = "192.168.1.254";
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+      "8.8.8.8"
+      "8.8.4.4"
+    ];
   };
 
   service = {
@@ -80,85 +98,5 @@ in
     };
   };
 
-  environment.systemPackages =
-    with pkgs;
-    [
-      age
-      bat
-      cairo
-      dconf
-      fastfetch
-      git
-      lego
-      libjpeg
-      libpng
-      libuuid
-      linux-manual
-      man
-      man-pages
-      man-pages-posix
-      networkmanager
-      openssl
-      pkg-config
-      postgresql
-      protonup-ng
-      python3
-      python3Packages.pip
-      qFlipper
-      ripgrep
-      swaylock
-      swaylock-fancy
-      tmux
-      unzip
-      vim
-      wget
-      wl-clipboard
-      xclip
-      xdg-desktop-portal-hyprland
-      xsel
-      yarn
-      zsh
-    ]
-    ++ [
-      inputs.agenix.packages.${pkgs.system}.agenix
-    ];
-
-  # Bootloader.
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
-  };
-
-  users.users.raphael.openssh.authorizedKeys.keys = [
-    sshKeyMac
-    sshKeyFramework
-    sshKeyFix
-  ];
-  services = {
-    seatd.enable = true;
-    xserver = {
-      enable = true;
-      videoDrivers = [
-        "nvidia"
-      ];
-    };
-    dbus.enable = true;
-    openssh = {
-      enable = true;
-      ports = [
-        42131
-      ];
-    };
-    udev.extraRules = ''
-      SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
-    '';
-    redis.servers."" = {
-      enable = true;
-    };
-    postgresql = {
-      enable = true;
-    };
-  };
-  virtualisation.docker.enable = true;
   system.stateVersion = "24.05";
 }
