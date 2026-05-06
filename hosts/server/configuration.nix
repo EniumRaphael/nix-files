@@ -8,7 +8,6 @@
 
 {
   imports = [
-    ../global.nix
     ./hardware-configuration.nix
     ../../modules/games/default.nix
     ../../services/forty_two/default.nix
