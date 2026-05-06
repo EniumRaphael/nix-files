@@ -23,6 +23,27 @@ in
       ];
     };
 
+    age.secrets = {
+      "nextcloud-database" = {
+        file = ../../secrets/nextcloud-database.age;
+        owner = "nextcloud";
+        group = "nextcloud";
+        mode = "0400";
+      };
+      "nextcloud-admin-pass" = {
+        file = ../../secrets/nextcloud-admin-pass.age;
+        owner = "nextcloud";
+        group = "nextcloud";
+        mode = "0400";
+      };
+      "nextcloud-oidc-secret" = {
+        file = ../../secrets/nextcloud-oidc-secret.age;
+        owner = "kanidm";
+        group = "kanidm";
+        mode = "0400";
+      };
+    };
+
     systemd = {
       tmpfiles.rules = [
         "d /mnt/data 2770 root datausers -"

@@ -8,8 +8,14 @@ let
   cfg = config.service.selfhost.jellyfin;
   wireguard-key = config.age.secrets."wireguard-secret".path;
 in
-{
+  {
   config = lib.mkIf cfg {
+    age.secrets."wireguard-secret" = {
+      file = ../../secrets/wireguard-secret.age;
+      owner = "root";
+      group = "root";
+      mode = "0400";
+    };
     virtualisation = {
       docker.enable = true;
       oci-containers = {

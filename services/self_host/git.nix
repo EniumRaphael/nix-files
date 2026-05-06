@@ -10,6 +10,22 @@ let
 in
 {
   services = {
+    age.secrets = {
+      "forgejo-oidc-secret" = {
+        file = ../../secrets/forgejo-oidc-secret.age;
+        owner = "kanidm";
+        group = "forgejo";
+        mode = "0440";
+      };
+
+      "forgejo-runner-token" = {
+        file = ../../secrets/forgejo-runner-token.age;
+        owner = "forgejo";
+        group = "forgejo";
+        mode = "0440";
+      };
+    };
+
     forgejo = {
       enable = true;
       database.type = "postgres";
