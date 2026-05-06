@@ -1,15 +1,21 @@
 {
-  config,
-  pkgs,
-  lib,
-  ...
+config,
+pkgs,
+lib,
+...
 }:
 
 let
   gitDomain = "git.enium.eu";
+  forgejoLogo = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/doc-sheet/forgejo/refs/heads/forgejo/assets/logo.svg";
+    name = "forgejo.svg";
+    sha256 = "sha256-rP7aZURtHBfF2OYuGLcKZhbvIN+B596T/3kaOxHUvig=";
+  };
+  cfg = config.service.selfhost.git;
 in
-{
-  services = {
+  {
+  config = lib.mkIf cfg {
     age.secrets = {
       "forgejo-oidc-secret" = {
         file = ../../secrets/forgejo-oidc-secret.age;
@@ -26,81 +32,129 @@ in
       };
     };
 
-    forgejo = {
-      enable = true;
-      database.type = "postgres";
-
-      settings = {
-        server = {
-          "DEFAULT.APP_NAME" = "Enium Git";
-          "DEFAULT.APP_SLOGAN" = "Born2Code";
-          DOMAIN = gitDomain;
-          ROOT_URL = "https://${gitDomain}/";
-          SSH_PORT = 42131;
-          HTTP_ADDR = "127.0.0.1";
-          HTTP_PORT = 3042;
-        };
-
-        oauth2 = {
-          ENABLED = true;
-          NAME = "Enium";
-          CLIENT_ID = "forgejo";
-          CLIENT_SECRET = "${config.age.secrets.forgejo-oidc-secret.path}";
-          SCOPES = "openid email profile groups";
-          LOGIN_ATTRIBUTE_PATH = "preferred_username";
-          AUTH_URL = "https://git.enium.eu/ui/oauth2";
-          TOKEN_URL = "https://git.enium.eu/oauth2/token";
-          API_URL = "https://git.enium.eu/oauth2/openid/forgejo/userinfo";
-          REDIRECT_URI = "https://git.enium.eu/user/oauth2/Enium/callback";
-          CODE_CHALLENGE_METHOD = "S256";
-          ENABLE_AUTO_REGISTRATION = true;
-          UPDATE_AVATAR = true;
-        };
-
-        service = {
-          DISABLE_REGISTRATION = false;
-          ALLOW_ONLY_EXTERNAL_REGISTRATION = true;
-          SHOW_REGISTRATION_BUTTON = false;
-          DISABLE_PASSWORD_SIGNIN_FORM = true;
-        };
-        security = {
-          LOGIN_REMEMBER_DAYS = 14;
-        };
-        actions = {
-          ENABLED = true;
-          DEFAULT_ACTIONS_URL = "github";
-        };
-      };
-    };
-    gitea-actions-runner = {
-      package = pkgs.forgejo-runner;
-      instances = {
-        default = {
-          enable = true;
-          name = "monolith";
-          url = "https://git.enium.eu";
-          tokenFile = config.age.secrets.forgejo-runner-token.path;
-          labels = [
-            "ubuntu-latest:docker://ubuntu/resolute"
-          ];
-        };
-        forty-two = {
-          enable = true;
-          name = "monolith";
-          url = "https://git.enium.eu";
-          tokenFile = config.age.secrets.forgejo-runner-token.path;
-          labels = [
-            "forty-two:docker://alexandregv/remote-42"
-          ];
+    services = {
+      kanidm = {
+        provision = {
+          systems.oauth2.forjego = {
+            present = true;
+            displayName = "Forjego";
+            imageFile = forgejoLogo;
+            originUrl = "https://git.enium.eu";
+            originLanding = "https://git.enium.eu/user/oauth2/Enium/callback";
+            basicSecretFile = config.age.secrets.forgejo-oidc-secret.path;
+            public = false;
+            enableLocalhostRedirects = false;
+            allowInsecureClientDisablePkce = true;
+            preferShortUsername = true;
+            scopeMaps = {
+              forgejo_admins = [
+                "email"
+                "openid"
+                "profile"
+                "groups"
+              ];
+              forgejo_users = [
+                "email"
+                "openid"
+                "profile"
+                "groups"
+              ];
+            };
+            claimMaps = {
+              groups = {
+                joinType = "array";
+                valuesByGroup = {
+                  forgejo_admins = [
+                    "forgejo_admins"
+                  ];
+                  forgejo_users = [
+                    "forgejo_users"
+                  ];
+                };
+              };
+            };
+          };
         };
       };
-    };
-    nginx.virtualHosts."${gitDomain}" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:3042";
-        proxyWebsockets = true;
+      forgejo = {
+        enable = true;
+        database.type = "postgres";
+
+        settings = {
+          server = {
+            "DEFAULT.APP_NAME" = "Enium Git";
+            "DEFAULT.APP_SLOGAN" = "Born2Code";
+            DOMAIN = gitDomain;
+            ROOT_URL = "https://${gitDomain}/";
+            SSH_PORT = 42131;
+            HTTP_ADDR = "127.0.0.1";
+            HTTP_PORT = 3042;
+          };
+
+          oauth2 = {
+            ENABLED = true;
+            NAME = "Enium";
+            CLIENT_ID = "forgejo";
+            CLIENT_SECRET = "${config.age.secrets.forgejo-oidc-secret.path}";
+            SCOPES = "openid email profile groups";
+            LOGIN_ATTRIBUTE_PATH = "preferred_username";
+            AUTH_URL = "https://git.enium.eu/ui/oauth2";
+            TOKEN_URL = "https://git.enium.eu/oauth2/token";
+            API_URL = "https://git.enium.eu/oauth2/openid/forgejo/userinfo";
+            REDIRECT_URI = "https://git.enium.eu/user/oauth2/Enium/callback";
+            CODE_CHALLENGE_METHOD = "S256";
+            ENABLE_AUTO_REGISTRATION = true;
+            UPDATE_AVATAR = true;
+          };
+
+          service = {
+            DISABLE_REGISTRATION = false;
+            ALLOW_ONLY_EXTERNAL_REGISTRATION = true;
+            SHOW_REGISTRATION_BUTTON = false;
+            DISABLE_PASSWORD_SIGNIN_FORM = true;
+          };
+          security = {
+            LOGIN_REMEMBER_DAYS = 14;
+          };
+          actions = {
+            ENABLED = true;
+            DEFAULT_ACTIONS_URL = "github";
+          };
+        };
+      };
+      gitea-actions-runner = {
+        package = pkgs.forgejo-runner;
+        instances = {
+          default = {
+            enable = true;
+            name = "monolith";
+            url = "https://git.enium.eu";
+            tokenFile = config.age.secrets.forgejo-runner-token.path;
+            labels = [
+              "ubuntu-latest:docker://ubuntu/resolute"
+            ];
+          };
+          forty-two = {
+            enable = true;
+            name = "monolith";
+            url = "https://git.enium.eu";
+            tokenFile = config.age.secrets.forgejo-runner-token.path;
+            labels = [
+              "forty-two:docker://alexandregv/remote-42"
+            ];
+          };
+        };
+      };
+      nginx = {
+        enable = true;
+        virtualHosts."${gitDomain}" = {
+          enableACME = true;
+          forceSSL = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:3042";
+            proxyWebsockets = true;
+          };
+        };
       };
     };
   };
