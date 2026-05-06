@@ -6,28 +6,28 @@
 }:
 
 let
-  master_bot = import ./bot_discord/master.nix {
+  master_bot = import ./master.nix {
     inherit config pkgs lib;
   };
-  music_bot = import ./bot_discord/music.nix {
+  music_bot = import ./music.nix {
     inherit config pkgs lib;
   };
-  tempvoc_bot = import ./bot_discord/tempvoc.nix {
+  tempvoc_bot = import ./tempvoc.nix {
     inherit config pkgs lib;
   };
-  ada_bot = import ./bot_discord/ada.nix {
+  ada_bot = import ./ada.nix {
     inherit config pkgs lib;
   };
-  tut_bot = import ./bot_discord/bot_loc.nix {
+  tut_bot = import ./bot_loc.nix {
     inherit config pkgs lib;
   };
-  bde_bot = import ./bot_discord/bde.nix {
+  bde_bot = import ./bde.nix {
     inherit config pkgs lib;
   };
-  marty_bot = import ./bot_discord/marty.nix {
+  marty_bot = import ./marty.nix {
     inherit config pkgs lib;
   };
-  ticket_bot = import ./bot_discord/ticket.nix {
+  ticket_bot = import ./ticket.nix {
     inherit config pkgs lib;
   };
   cfg = config.service.bot_discord;
