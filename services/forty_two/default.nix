@@ -6,7 +6,7 @@
 }:
 
 let
-  irc = import ./forty_two/irc.nix {
+  irc = import ./irc.nix {
     inherit config pkgs lib;
   };
   cfg = config.service.forty_two;
