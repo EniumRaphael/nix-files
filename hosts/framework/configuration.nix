@@ -10,7 +10,6 @@ let
 in
 {
   imports = [
-    ../global.nix
     ./hardware-configuration.nix
     ../../modules/games/default.nix
     ../../services/bot_discord/default.nix

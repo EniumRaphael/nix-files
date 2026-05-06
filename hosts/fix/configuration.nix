@@ -8,7 +8,6 @@
 
 {
   imports = [
-    ../global.nix
     ./hardware-configuration.nix
     ../../modules/games/default.nix
     ../../modules/graphical/default.nix
