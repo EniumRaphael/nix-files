@@ -7,7 +7,7 @@
 }:
 
 let
-  portefolio = import ./web/portefolio.nix {
+  portefolio = import ./portefolio.nix {
     inherit
       inputs
       config
