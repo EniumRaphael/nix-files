@@ -15,6 +15,7 @@ in
         enable = true;
         gamescopeSession.enable = true;
         extraCompatPackages = with pkgs; [
+          protonup-ng
           proton-ge-bin
         ];
       };
