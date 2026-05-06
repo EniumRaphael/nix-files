@@ -12,11 +12,10 @@ in
   imports = [
     ./hardware-configuration.nix
     ../../modules/games/default.nix
-    ../../services/bot_discord/default.nix
-    ../../services/server/default.nix
-    ../../modules/users/default.nix
     ../../modules/graphical/default.nix
     ../../modules/hardware/default.nix
+    ../../modules/users/default.nix
+    ../../modules/applications/default.nix
   ];
 
   networking = {

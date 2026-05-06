@@ -10,12 +10,15 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/games/default.nix
-    ../../services/forty_two/default.nix
+    ../../modules/graphical/default.nix
+    ../../modules/hardware/default.nix
+    ../../modules/users/default.nix
+    ../../modules/applications/default.nix
     ../../services/bot_discord/default.nix
+    ../../services/forty_two/default.nix
+    ../../services/self_host/default.nix
     ../../services/server/default.nix
     ../../services/web/default.nix
-    ../../services/self_host/default.nix
-    ../../modules/users/default.nix
   ];
 
   config-user = {
