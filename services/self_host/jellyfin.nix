@@ -15,6 +15,16 @@ in
       group = "root";
       mode = "0400";
     };
+    environment.systemPackages = with pkgs; [
+      intel-vaapi-driver
+      libva
+      libva-utils
+      ffmpeg-full
+      intel-media-driver
+      vdpauinfo
+      jellyfin-ffmpeg
+    ];
+    hardware.opengl.enable = true;
     virtualisation = {
       docker.enable = true;
       oci-containers = {
@@ -135,7 +145,7 @@ in
     users = {
       groups.datausers = { };
       users = {
-        jellyfin.extraGroups = [ "datausers" ];
+        jellyfin.extraGroups = [ "datausers" "video" "render" ];
       };
     };
     services = {
