@@ -108,12 +108,6 @@ in
     udev.extraRules = ''
       SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
     '';
-    redis.servers."" = {
-      enable = true;
-    };
-    postgresql = {
-      enable = true;
-    };
   };
 
   virtualisation.docker.enable = true;
