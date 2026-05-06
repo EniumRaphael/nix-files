@@ -7,7 +7,7 @@
 }:
 
 let
-  teamspeak = import ./server/teamspeak.nix {
+  teamspeak = import ./teamspeak.nix {
     inherit
       inputs
       config
@@ -15,7 +15,7 @@ let
       lib
       ;
   };
-  minecraft = import ./server/minecraft.nix {
+  minecraft = import ./minecraft.nix {
     inherit
       inputs
       config
