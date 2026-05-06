@@ -53,6 +53,7 @@
           system = "x86_64-linux";
           modules = [
             ./hosts/fix/configuration.nix
+            agenix.nixosModules.default
             home-manager.nixosModules.home-manager
             {
               home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
@@ -81,6 +82,7 @@
           modules = [
             ./hosts/framework/configuration.nix
             nixos-hardware.nixosModules.framework-16-amd-ai-300-series
+            agenix.nixosModules.default
             home-manager.nixosModules.home-manager
             {
               home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
