@@ -6,7 +6,6 @@
 }:
 let
   cfg = config.service.selfhost.jellyfin;
-  wireguard-key = config.age.secrets."wireguard-secret".path;
 in
   {
   config = lib.mkIf cfg {
@@ -28,10 +27,12 @@ in
               "--cap-add=NET_ADMIN"
               "--device=/dev/net/tun"
             ];
+            environmentFiles = [
+              config.age.secrets."wireguard-secret".path
+            ];
             environment = {
               VPN_SERVICE_PROVIDER = "mullvad";
               VPN_TYPE = "wireguard";
-              WIREGUARD_PRIVATE_KEY = builtins.readFile wireguard-key;
               BLOCK_MALICIOUS = "off";
               BLOCK_SURVEILLANCE = "off";
               BLOCK_ADS = "off";
@@ -143,26 +144,29 @@ in
         dataDir = "/mnt/data/jellyfin";
         openFirewall = true;
       };
-      nginx.virtualHosts = {
-        "jellyfin.enium.eu" = {
-          enableACME = true;
-          forceSSL = true;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:8096";
+      nginx = {
+        enable = true;
+        virtualHosts = {
+          "jellyfin.enium.eu" = {
+            enableACME = true;
+            forceSSL = true;
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:8096";
+            };
           };
-        };
-        "radarr.enium.eu" = {
-          enableACME = true;
-          forceSSL = true;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:7878";
+          "radarr.enium.eu" = {
+            enableACME = true;
+            forceSSL = true;
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:7878";
+            };
           };
-        };
-        "sonarr.enium.eu" = {
-          enableACME = true;
-          forceSSL = true;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:8989";
+          "sonarr.enium.eu" = {
+            enableACME = true;
+            forceSSL = true;
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:8989";
+            };
           };
         };
       };

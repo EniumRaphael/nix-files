@@ -1,21 +1,24 @@
 {
-  config,
-  pkgs,
-  lib,
-  ...
+config,
+pkgs,
+lib,
+...
 }:
 
 let
   cfg = config.service.selfhost.monitor;
   dashboardsDir = ../../assets/grafana_dashboards;
-  oidc-secret = config.age.secrets.grafana-oidc-secret.path;
-  encryption-key = config.age.secrets.grafana-secret-key.path;
+  grafanaLogo = pkgs.fetchurl {
+    url = "https://upload.wikimedia.org/wikipedia/commons/a/a1/Grafana_logo.svg";
+    name = "grafana.svg";
+    sha256 = "sha256-UjE6ArLCa52o3XGUmpqPoakbEOeFi+zfsnATi1FtWmQ=";
+  };
   monitored = [
     "nginx"
     "grafana"
   ];
 in
-{
+  {
   config = lib.mkIf cfg {
     age.secrets = {
       "grafana-oidc-secret" = {
@@ -34,6 +37,81 @@ in
     };
 
     services = {
+      kanidm = {
+        provision = {
+          groups = {
+            grafana_superadmins = {
+              present = true;
+            };
+            grafana_admins = {
+              present = true;
+            };
+            grafana_editors = {
+              present = true;
+            };
+            grafana_users = {
+              present = true;
+            };
+          };
+          systems.oauth2.grafana = {
+            present = true;
+            displayName = "Grafana";
+            imageFile = grafanaLogo;
+            originUrl = "https://monitor.enium.eu";
+            originLanding = "https://monitor.enium.eu/login/generic_oauth";
+            basicSecretFile = config.age.secrets.grafana-oidc-secret.path;
+            public = false;
+            enableLocalhostRedirects = false;
+            allowInsecureClientDisablePkce = false;
+            preferShortUsername = true;
+            scopeMaps = {
+              grafana_superadmins = [
+                "email"
+                "openid"
+                "profile"
+                "groups"
+              ];
+              grafana_admins = [
+                "email"
+                "openid"
+                "profile"
+                "groups"
+              ];
+              grafana_editors = [
+                "email"
+                "openid"
+                "profile"
+                "groups"
+              ];
+              grafana_users = [
+                "email"
+                "openid"
+                "profile"
+                "groups"
+              ];
+            };
+            claimMaps = {
+              groups = {
+                joinType = "array";
+                valuesByGroup = {
+                  grafana_superadmins = [
+                    "grafana_superadmins"
+                  ];
+                  grafana_admins = [
+                    "grafana_admins"
+                  ];
+                  grafana_editors = [
+                    "grafana_editors"
+                  ];
+                  grafana_users = [
+                    "grafana_users"
+                  ];
+                };
+              };
+            };
+          };
+        };
+      };
       grafana = {
         enable = true;
         package = pkgs.grafana;
@@ -80,7 +158,7 @@ in
             name = "Enium";
             allow_sign_up = true;
             client_id = "grafana";
-            client_secret = "$__file{${oidc-secret}}";
+            client_secret = "$__file{${config.age.secrets.grafana-oidc-secret.path}}";
             scopes = "openid profile email groups";
             auth_url = "https://auth.enium.eu/ui/oauth2";
             token_url = "https://auth.enium.eu/oauth2/token";
@@ -103,7 +181,7 @@ in
             disable_signout_menu = false;
           };
           security = {
-            secret_key = "$__file{${encryption-key}}";
+            secret_key = "$__file{${config.age.secrets.grafana-secret-key.path}}";
             cookie_secure = true;
             cookie_samesite = "none";
             allow_embedding = true;
@@ -290,12 +368,15 @@ in
           }
         '';
       };
-      nginx.virtualHosts."monitor.enium.eu" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:3000";
-          proxyWebsockets = true;
+      nginx = {
+        enable = true;
+        virtualHosts."monitor.enium.eu" = {
+          enableACME = true;
+          forceSSL = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:3000";
+            proxyWebsockets = true;
+          };
         };
       };
     };

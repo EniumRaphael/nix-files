@@ -9,16 +9,6 @@ let
   cfg = config.service.selfhost.sso;
   kanidm-admin = config.age.secrets."kanidm-admin".path;
   kanidm-idmAdmin = config.age.secrets."kanidm-idmAdmin".path;
-  forgejoLogo = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/doc-sheet/forgejo/refs/heads/forgejo/assets/logo.svg";
-    name = "kanidm.svg";
-    sha256 = "sha256-rP7aZURtHBfF2OYuGLcKZhbvIN+B596T/3kaOxHUvig=";
-  };
-  grafanaLogo = pkgs.fetchurl {
-    url = "https://upload.wikimedia.org/wikipedia/commons/a/a1/Grafana_logo.svg";
-    name = "grafana.svg";
-    sha256 = "sha256-UjE6ArLCa52o3XGUmpqPoakbEOeFi+zfsnATi1FtWmQ=";
-  };
   nextcloudLogo = pkgs.fetchurl {
     url = "https://upload.wikimedia.org/wikipedia/commons/6/60/Nextcloud_Logo.svg";
     name = "nextcloud.svg";
@@ -107,18 +97,6 @@ in
             };
           };
           groups = {
-            grafana_superadmins = {
-              present = true;
-            };
-            grafana_admins = {
-              present = true;
-            };
-            grafana_editors = {
-              present = true;
-            };
-            grafana_users = {
-              present = true;
-            };
             forgejo_admins = {
               present = true;
             };
@@ -139,102 +117,6 @@ in
             };
           };
           systems.oauth2 = {
-            forgejo = {
-              present = true;
-              displayName = "Forjego";
-              imageFile = forgejoLogo;
-              originUrl = "https://git.enium.eu";
-              originLanding = "https://git.enium.eu/user/oauth2/Enium/callback";
-              basicSecretFile = config.age.secrets.forgejo-oidc-secret.path;
-              public = false;
-              enableLocalhostRedirects = false;
-              allowInsecureClientDisablePkce = true;
-              preferShortUsername = true;
-              scopeMaps = {
-                forgejo_admins = [
-                  "email"
-                  "openid"
-                  "profile"
-                  "groups"
-                ];
-                forgejo_users = [
-                  "email"
-                  "openid"
-                  "profile"
-                  "groups"
-                ];
-              };
-              claimMaps = {
-                groups = {
-                  joinType = "array";
-                  valuesByGroup = {
-                    forgejo_admins = [
-                      "forgejo_admins"
-                    ];
-                    forgejo_users = [
-                      "forgejo_users"
-                    ];
-                  };
-                };
-              };
-            };
-            grafana = {
-              present = true;
-              displayName = "Grafana";
-              imageFile = grafanaLogo;
-              originUrl = "https://monitor.enium.eu";
-              originLanding = "https://monitor.enium.eu/login/generic_oauth";
-              basicSecretFile = config.age.secrets.grafana-oidc-secret.path;
-              public = false;
-              enableLocalhostRedirects = false;
-              allowInsecureClientDisablePkce = false;
-              preferShortUsername = true;
-              scopeMaps = {
-                grafana_superadmins = [
-                  "email"
-                  "openid"
-                  "profile"
-                  "groups"
-                ];
-                grafana_admins = [
-                  "email"
-                  "openid"
-                  "profile"
-                  "groups"
-                ];
-                grafana_editors = [
-                  "email"
-                  "openid"
-                  "profile"
-                  "groups"
-                ];
-                grafana_users = [
-                  "email"
-                  "openid"
-                  "profile"
-                  "groups"
-                ];
-              };
-              claimMaps = {
-                groups = {
-                  joinType = "array";
-                  valuesByGroup = {
-                    grafana_superadmins = [
-                      "grafana_superadmins"
-                    ];
-                    grafana_admins = [
-                      "grafana_admins"
-                    ];
-                    grafana_editors = [
-                      "grafana_editors"
-                    ];
-                    grafana_users = [
-                      "grafana_users"
-                    ];
-                  };
-                };
-              };
-            };
             nextcloud = {
               present = true;
               displayName = "Nextcloud";
@@ -296,19 +178,22 @@ in
           };
         };
       };
-      nginx.virtualHosts."auth.enium.eu" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/" = {
-          proxyPass = "https://127.0.0.1:9000";
-          proxyWebsockets = true;
-          extraConfig = ''
+      nginx = {
+        enable = true;
+        virtualHosts."auth.enium.eu" = {
+          enableACME = true;
+          forceSSL = true;
+          locations."/" = {
+            proxyPass = "https://127.0.0.1:9000";
+            proxyWebsockets = true;
+            extraConfig = ''
             proxy_ssl_verify off;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
-          '';
+            '';
+          };
         };
       };
     };

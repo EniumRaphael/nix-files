@@ -28,9 +28,7 @@ in
     };
     services.vaultwarden = {
       enable = true;
-
       environmentFile = vaultEnv;
-
       config = {
         DOMAIN = "https://vault.enium.eu";
         ROCKET_PORT = 8222;
@@ -46,12 +44,15 @@ in
       };
     };
 
-    services.nginx.virtualHosts."vault.enium.eu" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:8222";
-        proxyWebsockets = true;
+    services.nginx = {
+      enable = true;
+      virtualHosts."vault.enium.eu" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8222";
+          proxyWebsockets = true;
+        };
       };
     };
   };

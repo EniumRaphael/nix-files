@@ -7,7 +7,7 @@
 }:
 
 let
-  git = import ./self_host/git.nix {
+  git = import ./git.nix {
     inherit
       inputs
       config
@@ -15,7 +15,7 @@ let
       lib
       ;
   };
-  htop = import ./self_host/htop.nix {
+  htop = import ./htop.nix {
     inherit
       inputs
       config
@@ -23,7 +23,7 @@ let
       lib
       ;
   };
-  jellyfin = import ./self_host/jellyfin.nix {
+  jellyfin = import ./jellyfin.nix {
     inherit
       inputs
       config
@@ -31,7 +31,7 @@ let
       lib
       ;
   };
-  mail = import ./self_host/mail.nix {
+  mail = import ./mail.nix {
     inherit
       inputs
       config
@@ -39,7 +39,7 @@ let
       lib
       ;
   };
-  monitor = import ./self_host/monitor.nix {
+  monitor = import ./monitor.nix {
     inherit
       inputs
       config
@@ -47,7 +47,7 @@ let
       lib
       ;
   };
-  ollama = import ./self_host/ollama.nix {
+  ollama = import ./ollama.nix {
     inherit
       inputs
       config
@@ -55,7 +55,7 @@ let
       lib
       ;
   };
-  nextcloud = import ./self_host/nextcloud.nix {
+  nextcloud = import ./nextcloud.nix {
     inherit
       inputs
       config
@@ -63,7 +63,7 @@ let
       lib
       ;
   };
-  sso = import ./self_host/sso.nix {
+  sso = import ./sso.nix {
     inherit
       inputs
       config
@@ -71,7 +71,7 @@ let
       lib
       ;
   };
-  vault = import ./self_host/vault.nix {
+  vault = import ./vault.nix {
     inherit
       inputs
       config
@@ -94,11 +94,6 @@ in
     vault
   ];
 
-  config = {
-    services.nginx = {
-      enable = true;
-    };
-  };
   options.service.selfhost = {
     git = lib.mkOption {
       type = lib.types.bool;
