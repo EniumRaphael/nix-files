@@ -39,7 +39,6 @@
     ssh = true;
   };
 
-
   config-hw = {
     network = {
       enable = true;
@@ -62,6 +61,12 @@
 
   networking = {
     hostName = "raphael-server";
+    interfaces.enp0s31f6.ipv4.addresses = [
+      {
+        address = "192.168.1.1";
+        prefixLength = 24;
+      }
+    ];
     defaultGateway = "192.168.1.254";
     nameservers = [
       "1.1.1.1"
