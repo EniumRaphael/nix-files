@@ -52,6 +52,22 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  age.secrets."cachix-key" = {
+    file = ../secrets/cachix-key.age;
+    owner = "root";
+    group = "root";
+    mode = "0400";
+  };
+
+  systemd.services.cachix-watch = {
+    description = "Cachix Watch Store";
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.cachix}/bin/cachix watch-store eniumraphael";
+      EnvironmentFile = config.age.secrets.cachix-key.path;
+      Restart = "always";
+    };
+  };
   nix = {
     gc = {
       automatic = true;
@@ -60,9 +76,15 @@
     };
     settings = {
       download-buffer-size = 268435456;
-      substituters = ["https://hyprland.cachix.org"];
-      trusted-substituters = ["https://hyprland.cachix.org"];
-      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+      substituters = [
+        "https://eniumraphael.cachix.org"
+      ];
+      trusted-substituters = [
+        "https://eniumraphael.cachix.org"
+      ];
+      trusted-public-keys = [
+        "eniumraphael.cachix.org-1:MnPAkTzOEHAydM9/yMcBq0HuBMCGToNNmHEtyD/Okxg="
+      ];
       experimental-features = [
         "nix-command"
         "flakes"
@@ -70,6 +92,7 @@
       max-jobs = "auto";
       auto-optimise-store = true;
     };
+    optimise.automatic = true;
   };
 
   environment.variables.AGE_KEY_FILE = "/root/.config/age/keys.txt";
@@ -78,11 +101,14 @@
   };
 
   environment.systemPackages = with pkgs; [
+    age
     uwsm
     git
     home-manager
     postgresql
     vim
     wget
+  ] ++ [
+    inputs.agenix.packages.${pkgs.system}.agenix
   ];
 }
