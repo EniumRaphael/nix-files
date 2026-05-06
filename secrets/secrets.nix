@@ -1,9 +1,11 @@
 let
   main-server = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPgMdbjhUzi2VMEVNS/YHOwl9XgCsUKI6316b6gUS9ub root@nixos";
   fix = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJaO/cnbN4cTZPTBRqBvi8dVPYtq7+z7seh1sqOZhLaI root@nixos-fix";
+  framework = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG++5Y0zZsDgI0ovuoGkBkaEWwHcEGL51Q47Y8DL4o9k root@raphael-framework";
   systems = [
-    main-server
     fix
+    framework
+    main-server
   ];
 
   root = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBr42DzbasU7IjbujPC76Ngp8S3zlhDmMTHjjdl26GuW root@nixos-server";
