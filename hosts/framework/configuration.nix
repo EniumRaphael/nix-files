@@ -15,6 +15,7 @@ in
 {
   imports = [
     ../global.nix
+    ./secrets.nix
     ./hardware-configuration.nix
     ../../modules/games/default.nix
     ../../services/bot_discord/default.nix
