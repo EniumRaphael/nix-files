@@ -15,12 +15,16 @@ let
   mullvad = import ./mullvad.nix {
     inherit config pkgs lib;
   };
+  ssh = import ./ssh.nix {
+    inherit config pkgs lib;
+  };
 in
 {
   imports = [
     docker
     man
     mullvad
+    ssh
   ];
 
   options.applications = {
@@ -38,6 +42,11 @@ in
       type = lib.types.bool;
       default = false;
       description = "enable the mullvad configuration";
+    };
+    ssh = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "enable the ssh configuration";
     };
   };
 }
