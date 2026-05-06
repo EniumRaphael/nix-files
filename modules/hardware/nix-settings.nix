@@ -46,6 +46,8 @@ in
 
     systemd.services.cachix-watch = {
       description = "Cachix Watch Store";
+      after = [ "agenix.service" ];
+      wants = [ "agenix.service" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         ExecStart = "${pkgs.cachix}/bin/cachix watch-store eniumraphael";
