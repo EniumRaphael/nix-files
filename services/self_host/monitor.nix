@@ -17,6 +17,22 @@ let
 in
 {
   config = lib.mkIf cfg {
+    age.secrets = {
+      "grafana-oidc-secret" = {
+        file = ../../secrets/grafana-oidc-secret.age;
+        owner = "kanidm";
+        group = "grafana";
+        mode = "0440";
+      };
+
+      "grafana-secret-key" = {
+        file = ../../secrets/grafana-secret-key.age;
+        owner = "grafana";
+        group = "grafana";
+        mode = "0440";
+      };
+    };
+
     services = {
       grafana = {
         enable = true;

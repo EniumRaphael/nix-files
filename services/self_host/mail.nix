@@ -2,7 +2,7 @@
   config,
   pkgs,
   lib,
-  ...
+...
 }:
 
 let
@@ -10,8 +10,22 @@ let
   mailjet-user = config.age.secrets."mailjet-user".path;
   mailjet-pass = config.age.secrets."mailjet-pass".path;
 in
-{
+  {
   config = lib.mkIf cfg {
+    age.secrets = {
+      "mailjet-user" = {
+        file = ../../secrets/mailjet-user.age;
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
+      "mailjet-pass" = {
+        file = ../../secrets/mailjet-pass.age;
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
+    };
     environment.systemPackages = [
       pkgs.dovecot_pigeonhole
     ];

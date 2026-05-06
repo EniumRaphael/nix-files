@@ -32,6 +32,22 @@ let
 in
 {
   config = lib.mkIf cfg {
+    age.secrets = {
+      "kanidm-admin" = {
+        file = ../../secrets/kandim-admin.age;
+        owner = "kanidm";
+        group = "kanidm";
+        mode = "0400";
+      };
+
+      "kanidm-idmAdmin" = {
+        file = ../../secrets/kandim-idmAdmin.age;
+        owner = "kanidm";
+        group = "kanidm";
+        mode = "0400";
+      };
+    };
+
     users = {
       groups.kanidm = { };
       users.kanidm = {
