@@ -135,29 +135,6 @@
             inherit inputs;
           };
         };
-        "nixos-asahi" = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          modules = [
-            ./hosts/asahi/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                system = "aarch64-linux";
-                nixvim = inputs.nixvim.packages."aarch64-linux".default;
-                zen-browser = inputs.zen-browser.packages."aarch64-linux".default;
-                orca-slicer-pkg =
-                  if orca-slicer-flake.packages ? "x86_64-linux" then
-                    orca-slicer-flake.packages.x86_64-linux.default
-                  else
-                    null;
-              };
-              home-manager.users.raphael = hm-config.homeConfigurations."hm-asahi";
-            }
-          ];
-        };
       };
     };
 }
