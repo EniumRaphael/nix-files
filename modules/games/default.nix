@@ -6,10 +6,10 @@
 }:
 
 let
-  steam = import ./games/steam.nix {
+  steam = import ./steam.nix {
     inherit config pkgs lib;
   };
-  lutris = import ./games/lutris.nix {
+  lutris = import ./lutris.nix {
     inherit config pkgs lib;
   };
 in
