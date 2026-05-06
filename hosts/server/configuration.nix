@@ -16,9 +16,9 @@ in
     ../global.nix
     ./hardware-configuration.nix
     ./secrets.nix
-    ../../modules/games.nix
+    ../../modules/games/default.nix
     ../../services/forty_two.nix
-    ../../services/discord.nix
+    ../../services/bot_discord/default.nix
     ../../services/server.nix
     ../../services/web.nix
     ../../services/self_host.nix

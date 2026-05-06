@@ -16,8 +16,8 @@ in
   imports = [
     ../global.nix
     ./hardware-configuration.nix
-    ../../modules/games.nix
-    ../../services/discord.nix
+    ../../modules/games/default.nix
+    ../../services/bot_discord/default.nix
     ../../services/server.nix
   ];
 
