@@ -18,7 +18,7 @@ in
     ./hardware-configuration.nix
     ../../modules/games/default.nix
     ../../services/bot_discord/default.nix
-    ../../services/server.nix
+    ../../services/server/default.nix
   ];
 
   networking = {

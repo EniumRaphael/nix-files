@@ -17,11 +17,11 @@ in
     ./hardware-configuration.nix
     ./secrets.nix
     ../../modules/games/default.nix
-    ../../services/forty_two.nix
+    ../../services/forty_two/default.nix
     ../../services/bot_discord/default.nix
-    ../../services/server.nix
-    ../../services/web.nix
-    ../../services/self_host.nix
+    ../../services/server/default.nix
+    ../../services/web/default.nix
+    ../../services/self_host/default.nix
   ];
 
   networking = {
