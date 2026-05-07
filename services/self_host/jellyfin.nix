@@ -15,16 +15,6 @@ in
       group = "root";
       mode = "0400";
     };
-    environment.systemPackages = with pkgs; [
-      intel-vaapi-driver
-      libva
-      libva-utils
-      ffmpeg-full
-      intel-media-driver
-      vdpauinfo
-      jellyfin-ffmpeg
-    ];
-    hardware.opengl.enable = true;
     virtualisation = {
       docker.enable = true;
       oci-containers = {
@@ -142,12 +132,46 @@ in
         };
       };
     };
+    hardware.graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        intel-vaapi-driver
+        intel-media-driver
+        libvdpau-va-gl
+
+        nvidia-vaapi-driver
+
+        libva
+        libva-utils
+        vdpauinfo
+      ];
+    };
+    services.xserver.videoDrivers = [ "nvidia" ];
+    environment.systemPackages = with pkgs; [
+      intel-vaapi-driver
+      intel-media-driver
+      libva
+      libva-utils
+      ffmpeg-full
+      jellyfin-ffmpeg
+      vdpauinfo
+      nvtopPackages.full
+    ];
+    environment.sessionVariables = {
+      LIBVA_DRIVER_NAME = "nvidia";
+      NVD_BACKEND = "direct";
+      __NV_PRIME_RENDER_OFFLOAD = "1";
+    };
+    boot.initrd.kernelModules = [ "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
+
     users = {
       groups.datausers = { };
       users = {
         jellyfin.extraGroups = [ "datausers" "video" "render" ];
       };
     };
+
     services = {
       jellyfin = {
         enable = true;
