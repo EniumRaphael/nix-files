@@ -1,8 +1,8 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
@@ -12,7 +12,7 @@ let
     package = pkgs.mullvad-vpn;
   };
 in
-  {
+{
   config = lib.mkIf cfg {
     environment.systemPackages = [
       mullvad-autostart

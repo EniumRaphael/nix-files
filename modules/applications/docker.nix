@@ -1,14 +1,14 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
   cfg = config.applications.docker;
 in
-  {
+{
   config = lib.mkIf cfg {
     virtualisation.docker = {
       enable = true;

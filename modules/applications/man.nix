@@ -1,14 +1,14 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
   cfg = config.applications.man;
 in
-  {
+{
   config = lib.mkIf cfg {
     environment.defaultPackages = with pkgs; [
       linux-manual
