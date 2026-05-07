@@ -18,6 +18,9 @@ in
     nixpkgs.overlays = [
       inputs.minecraft.overlay
     ];
+    networking.firewall.allowedTCPPorts = [
+      25565
+    ];
     services.minecraft-servers = {
       enable = true;
       eula = true;
