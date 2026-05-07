@@ -147,6 +147,7 @@ in
         vdpauinfo
       ];
     };
+    hardware.nvidia.videoAcceleration = true;
     services.xserver.videoDrivers = [ "nvidia" ];
     environment.systemPackages = with pkgs; [
       intel-vaapi-driver
@@ -204,6 +205,9 @@ in
           };
         };
       };
+    };
+    systemd.services.jellyfin.serviceConfig = {
+      PrivateUsers = lib.mkForce false;
     };
   };
 }
