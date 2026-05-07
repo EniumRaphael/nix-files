@@ -9,6 +9,11 @@ let
   cfg = config.service.selfhost.nextcloud;
   nextcloud-admin-pass = config.age.secrets."nextcloud-admin-pass".path;
   nextcloud-database = config.age.secrets."nextcloud-database".path;
+  nextcloudLogo = pkgs.fetchurl {
+    url = "https://upload.wikimedia.org/wikipedia/commons/6/60/Nextcloud_Logo.svg";
+    name = "nextcloud.svg";
+    sha256 = "sha256-hL51zJkFxUys1CoM8yUxiH8BDw111wh3Qv7eTLm+XYo=";
+  };
   dataDir = "/mnt/data/nextcloud";
 in
 {
@@ -114,7 +119,7 @@ in
             sha256 = "sha256-Sc7R/hkjAvRUC4aUOLbMucoNabcXt27XB1pwqlz2Zv0=";
           };
         }
-        ;
+          ;
         settings = {
           trusted_domains = [
             "192.168.1.254"
@@ -123,6 +128,42 @@ in
           default_phone_region = "FR";
         };
         configureRedis = true;
+      };
+      kanidm.provision.systems.oauth2 = {
+        nextcloud = {
+          present = true;
+          displayName = "Nextcloud";
+          imageFile = nextcloudLogo;
+          originUrl = "https://nextcloud.enium.eu/apps/user_oidc/code";
+          originLanding = "https://nextcloud.enium.eu/login";
+          basicSecretFile = config.age.secrets.nextcloud-oidc-secret.path;
+          public = false;
+          enableLocalhostRedirects = false;
+          allowInsecureClientDisablePkce = false;
+          preferShortUsername = false;
+          claimMaps = {
+            groups = {
+              joinType = "array";
+              valuesByGroup = {
+                nextcloud_admins = [ "admin" ];
+              };
+            };
+          };
+          scopeMaps = {
+            nextcloud_admins = [
+              "openid"
+              "profile"
+              "email"
+              "groups"
+            ];
+            nextcloud_user = [
+              "openid"
+              "profile"
+              "email"
+              "groups"
+            ];
+          };
+        };
       };
       nginx.virtualHosts."nextcloud.enium.eu" = {
         enableACME = true;

@@ -6,7 +6,11 @@
 }:
 
 let
-  vaultEnv = config.age.secrets.vault-secret-env.path;
+  vaultLogo = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/dani-garcia/vaultwarden/ba5519167634ebe1e1f0fc10d610d10d1f405101/resources/vaultwarden-icon.svg";
+    name = "vault.svg";
+    sha256 = "sha256-xY/pFVS9puG+Ub0M9WrISrY/eY1Rc+QeceGqHeUVx+8=";
+  };
   cfg = config.service.selfhost.vault;
 in
   {
@@ -26,21 +30,47 @@ in
         mode = "0400";
       };
     };
-    services.vaultwarden = {
-      enable = true;
-      environmentFile = vaultEnv;
-      config = {
-        DOMAIN = "https://vault.enium.eu";
-        ROCKET_PORT = 8222;
-        SIGNUPS_ALLOWED = false;
-        SSO_ENABLED = true;
-        SSO_CLIENT_ID = "vault";
-        SSO_CLIENT_SECRET = "cat ${config.age.secrets.vault-oidc-secret.path}";
-        SSO_AUTHORITY = "https://auth.enium.eu/oauth2/openid/vault";
-        SSO_SIGNUPS_MATCH_EMAIL = true;
-        SSO_PKCE = true;
-        SSO_SCOPES = "openid profile email";
-        SSO_ONLY = true;
+    services = {
+      vaultwarden = {
+        enable = true;
+        environmentFile = config.age.secrets.vault-secret-env.path;
+        config = {
+          DOMAIN = "https://vault.enium.eu";
+          ROCKET_PORT = 8222;
+          SIGNUPS_ALLOWED = false;
+          SSO_ENABLED = true;
+          SSO_CLIENT_ID = "vault";
+          SSO_CLIENT_SECRET = "cat ${config.age.secrets.vault-oidc-secret.path}";
+          SSO_AUTHORITY = "https://auth.enium.eu/oauth2/openid/vault";
+          SSO_SIGNUPS_MATCH_EMAIL = true;
+          SSO_PKCE = true;
+          SSO_SCOPES = "openid profile email";
+          SSO_ONLY = true;
+        };
+      };
+      kanidm.provision.systems.oauth2.vault = {
+        present = true;
+        displayName = "Vault";
+        imageFile = vaultLogo;
+        originUrl = "https://vault.enium.eu";
+        originLanding = "https://vault.enium.eu/identity/connect/oidc-signin";
+        basicSecretFile = config.age.secrets.vault-oidc-secret.path;
+        public = false;
+        enableLocalhostRedirects = false;
+        allowInsecureClientDisablePkce = false;
+        preferShortUsername = true;
+        scopeMaps = {
+          vault_admins = [
+            "openid"
+            "profile"
+            "email"
+          ];
+          vault_users = [
+            "openid"
+            "profile"
+            "email"
+          ];
+        };
       };
     };
 

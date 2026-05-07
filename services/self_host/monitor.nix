@@ -39,20 +39,6 @@ in
     services = {
       kanidm = {
         provision = {
-          groups = {
-            grafana_superadmins = {
-              present = true;
-            };
-            grafana_admins = {
-              present = true;
-            };
-            grafana_editors = {
-              present = true;
-            };
-            grafana_users = {
-              present = true;
-            };
-          };
           systems.oauth2.grafana = {
             present = true;
             displayName = "Grafana";

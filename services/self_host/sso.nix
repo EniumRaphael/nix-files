@@ -9,11 +9,6 @@ let
   cfg = config.service.selfhost.sso;
   kanidm-admin = config.age.secrets."kanidm-admin".path;
   kanidm-idmAdmin = config.age.secrets."kanidm-idmAdmin".path;
-  nextcloudLogo = pkgs.fetchurl {
-    url = "https://upload.wikimedia.org/wikipedia/commons/6/60/Nextcloud_Logo.svg";
-    name = "nextcloud.svg";
-    sha256 = "sha256-hL51zJkFxUys1CoM8yUxiH8BDw111wh3Qv7eTLm+XYo=";
-  };
   vaultLogo = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/dani-garcia/vaultwarden/ba5519167634ebe1e1f0fc10d610d10d1f405101/resources/vaultwarden-icon.svg";
     name = "vault.svg";
@@ -97,6 +92,18 @@ in
             };
           };
           groups = {
+            grafana_superadmins = {
+              present = true;
+            };
+            grafana_admins = {
+              present = true;
+            };
+            grafana_editors = {
+              present = true;
+            };
+            grafana_users = {
+              present = true;
+            };
             forgejo_admins = {
               present = true;
             };
@@ -114,66 +121,6 @@ in
             };
             nextcloud_user = {
               present = true;
-            };
-          };
-          systems.oauth2 = {
-            nextcloud = {
-              present = true;
-              displayName = "Nextcloud";
-              imageFile = nextcloudLogo;
-              originUrl = "https://nextcloud.enium.eu/apps/user_oidc/code";
-              originLanding = "https://nextcloud.enium.eu/login";
-              basicSecretFile = config.age.secrets.nextcloud-oidc-secret.path;
-              public = false;
-              enableLocalhostRedirects = false;
-              allowInsecureClientDisablePkce = false;
-              preferShortUsername = false;
-              claimMaps = {
-                groups = {
-                  joinType = "array";
-                  valuesByGroup = {
-                    nextcloud_admins = [ "admin" ];
-                  };
-                };
-              };
-              scopeMaps = {
-                nextcloud_admins = [
-                  "openid"
-                  "profile"
-                  "email"
-                  "groups"
-                ];
-                nextcloud_user = [
-                  "openid"
-                  "profile"
-                  "email"
-                  "groups"
-                ];
-              };
-            };
-            vault = {
-              present = true;
-              displayName = "Vault";
-              imageFile = vaultLogo;
-              originUrl = "https://vault.enium.eu";
-              originLanding = "https://vault.enium.eu/identity/connect/oidc-signin";
-              basicSecretFile = config.age.secrets.vault-oidc-secret.path;
-              public = false;
-              enableLocalhostRedirects = false;
-              allowInsecureClientDisablePkce = false;
-              preferShortUsername = true;
-              scopeMaps = {
-                vault_admins = [
-                  "openid"
-                  "profile"
-                  "email"
-                ];
-                vault_users = [
-                  "openid"
-                  "profile"
-                  "email"
-                ];
-              };
             };
           };
         };
