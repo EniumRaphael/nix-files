@@ -1,14 +1,14 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
   cfg = config.graphical.laptop;
 in
-  {
+{
   config = lib.mkIf cfg {
     security = {
       pam.services = {

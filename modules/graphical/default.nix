@@ -1,8 +1,8 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
@@ -11,7 +11,7 @@ let
   };
   cfg = config.graphical;
 in
-  {
+{
   imports = [
     greetd
   ];
@@ -85,7 +85,7 @@ in
       dbus.enable = true;
       seatd.enable = true;
       udev.extraRules = ''
-      SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
+        SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666"
       '';
     };
     security = {
