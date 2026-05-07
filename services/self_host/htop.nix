@@ -1,15 +1,19 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
   cfg = config.service.selfhost.monitor;
 in
-  {
+{
   config = lib.mkIf cfg {
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+    ];
     services = {
       glances.enable = true;
 

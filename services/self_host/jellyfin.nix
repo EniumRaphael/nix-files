@@ -7,7 +7,7 @@
 let
   cfg = config.service.selfhost.jellyfin;
 in
-  {
+{
   config = lib.mkIf cfg {
     age.secrets."wireguard-secret" = {
       file = ../../secrets/wireguard-secret.age;
@@ -132,48 +132,61 @@ in
         };
       };
     };
-    hardware.graphics = {
-      enable = true;
-      enable32Bit = true;
-      extraPackages = with pkgs; [
+    hardware = {
+      graphics = {
+        enable = true;
+        enable32Bit = true;
+        extraPackages = with pkgs; [
+          intel-vaapi-driver
+          intel-media-driver
+          libvdpau-va-gl
+          nvidia-vaapi-driver
+          libva
+          libva-utils
+          vdpauinfo
+        ];
+      };
+      nvidia.videoAcceleration = true;
+    };
+    environment = {
+      systemPackages = with pkgs; [
         intel-vaapi-driver
         intel-media-driver
-        libvdpau-va-gl
-
-        nvidia-vaapi-driver
-
         libva
         libva-utils
+        ffmpeg-full
+        jellyfin-ffmpeg
         vdpauinfo
+        nvtopPackages.full
       ];
+      sessionVariables = {
+        LIBVA_DRIVER_NAME = "nvidia";
+        NVD_BACKEND = "direct";
+        __NV_PRIME_RENDER_OFFLOAD = "1";
+      };
     };
-    hardware.nvidia.videoAcceleration = true;
-    services.xserver.videoDrivers = [ "nvidia" ];
-    environment.systemPackages = with pkgs; [
-      intel-vaapi-driver
-      intel-media-driver
-      libva
-      libva-utils
-      ffmpeg-full
-      jellyfin-ffmpeg
-      vdpauinfo
-      nvtopPackages.full
+    boot.initrd.kernelModules = [
+      "nvidia"
+      "nvidia_drm"
+      "nvidia_modeset"
+      "nvidia_uvm"
     ];
-    environment.sessionVariables = {
-      LIBVA_DRIVER_NAME = "nvidia";
-      NVD_BACKEND = "direct";
-      __NV_PRIME_RENDER_OFFLOAD = "1";
-    };
-    boot.initrd.kernelModules = [ "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
 
     users = {
       groups.datausers = { };
       users = {
-        jellyfin.extraGroups = [ "datausers" "video" "render" ];
+        jellyfin.extraGroups = [
+          "datausers"
+          "video"
+          "render"
+        ];
       };
     };
 
     services = {
+      xserver.videoDrivers = [
+        "nvidia"
+      ];
       jellyfin = {
         enable = true;
         dataDir = "/mnt/data/jellyfin";
@@ -206,6 +219,10 @@ in
         };
       };
     };
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+    ];
     systemd.services.jellyfin.serviceConfig = {
       PrivateUsers = lib.mkForce false;
     };

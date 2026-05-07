@@ -2,7 +2,7 @@
   config,
   pkgs,
   lib,
-...
+  ...
 }:
 
 let
@@ -10,7 +10,7 @@ let
   mailjet-user = config.age.secrets."mailjet-user".path;
   mailjet-pass = config.age.secrets."mailjet-pass".path;
 in
-  {
+{
   config = lib.mkIf cfg {
     age.secrets = {
       "mailjet-user" = {
@@ -332,6 +332,12 @@ in
       port = 6381;
     };
     users.users.postfix.extraGroups = [ "rspamd" ];
+
+    networking.firewall.allowedTCPPorts = [
+      25
+      53
+      993
+    ];
 
     security.acme.certs."mail.enium.eu" = {
       listenHTTP = ":80";

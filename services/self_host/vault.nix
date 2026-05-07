@@ -13,7 +13,7 @@ let
   };
   cfg = config.service.selfhost.vault;
 in
-  {
+{
   config = lib.mkIf cfg {
     age.secrets = {
       "vault-oidc-secret" = {
@@ -72,18 +72,42 @@ in
           ];
         };
       };
-    };
-
-    services.nginx = {
-      enable = true;
-      virtualHosts."vault.enium.eu" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8222";
-          proxyWebsockets = true;
+      nginx = {
+        enable = true;
+        virtualHosts."vault.enium.eu" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:8222";
+            proxyWebsockets = true;
+          };
         };
       };
     };
+    security.apparmor.policies.vaultwarden = {
+      state = "enforce";
+      profile = ''
+        #include <tunables/global>
+        profile vaultwarden /run/current-system/sw/bin/vaultwarden {
+          #include <abstractions/base>
+          #include <abstractions/nameservice>
+          #include <abstractions/ssl_certs>
+          /run/current-system/sw/bin/vaultwarden  r,
+          /var/lib/vaultwarden/**  rw,
+          /etc/vaultwarden/**      r,
+          /var/log/vaultwarden/**  rw,
+          network inet  stream,
+          network inet6 stream,
+          deny /home/**            rw,
+          deny /root/**            rw,
+          deny /etc/shadow         r,
+          deny /etc/passwd         rw,
+        }
+      '';
+    };
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+    ];
   };
 }

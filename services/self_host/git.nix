@@ -1,8 +1,8 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
@@ -14,7 +14,7 @@ let
   };
   cfg = config.service.selfhost.git;
 in
-  {
+{
   config = lib.mkIf cfg {
     age.secrets = {
       "forgejo-oidc-secret" = {
@@ -157,5 +157,9 @@ in
         };
       };
     };
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+    ];
   };
 }

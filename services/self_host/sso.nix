@@ -134,15 +134,19 @@ in
             proxyPass = "https://127.0.0.1:9000";
             proxyWebsockets = true;
             extraConfig = ''
-            proxy_ssl_verify off;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto https;
+              proxy_ssl_verify off;
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto https;
             '';
           };
         };
       };
     };
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+    ];
   };
 }

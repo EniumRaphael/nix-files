@@ -1,8 +1,8 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
@@ -18,7 +18,7 @@ let
     "grafana"
   ];
 in
-  {
+{
   config = lib.mkIf cfg {
     age.secrets = {
       "grafana-oidc-secret" = {
@@ -379,6 +379,11 @@ in
         };
       };
     };
+
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+    ];
 
     environment.etc = {
       "process-exporter.json".text = builtins.toJSON {

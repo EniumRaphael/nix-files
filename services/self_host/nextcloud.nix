@@ -118,8 +118,7 @@ in
             url = "https://github.com/nextcloud-releases/user_oidc/releases/download/v8.10.1/user_oidc-v8.10.1.tar.gz";
             sha256 = "sha256-Sc7R/hkjAvRUC4aUOLbMucoNabcXt27XB1pwqlz2Zv0=";
           };
-        }
-          ;
+        };
         settings = {
           trusted_domains = [
             "192.168.1.254"
@@ -172,6 +171,26 @@ in
           fastcgi_pass unix:/run/phpfpm-nextcloud.sock;
         '';
       };
+    };
+    security.apparmor.policies.nextcloud = {
+      state = "enforce";
+      profile = ''
+        #include <tunables/global>
+        profile nextcloud /run/current-system/sw/bin/php-fpm {
+          #include <abstractions/base>
+          #include <abstractions/nameservice>
+          #include <abstractions/php>
+          /mnt/data/nextcloud/**     rw,
+          /etc/nextcloud/**         r,
+          /var/log/nextcloud/**     rw,
+          network unix stream,
+          deny /home/**             rw,
+          deny /root/**             rw,
+          deny /etc/shadow          r,
+          deny network inet  stream,  # Pas d'accès internet direct
+          deny network inet6 stream,
+        }
+      '';
     };
   };
 }
