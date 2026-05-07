@@ -1,14 +1,14 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
   cfg = config.config-hw.fingerprint;
 in
-  {
+{
   config = lib.mkIf cfg {
     security.polkit = lib.mkIf config.graphical.laptop {
       extraConfig = ''

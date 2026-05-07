@@ -1,14 +1,14 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
   cfg = config.config-hw.nix-settings;
 in
-  {
+{
   config = lib.mkIf cfg {
     nixpkgs.config.allowUnfree = true;
     nix = {

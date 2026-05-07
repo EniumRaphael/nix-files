@@ -1,17 +1,17 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
   cfg = config.config-hw.network;
 in
-  {
+{
   config = lib.mkIf cfg.enable {
     networking = {
-      firewall.enable = false;
+      firewall.enable = true;
       networkmanager = {
         enable = true;
         wifi = lib.mkIf cfg.wireless {

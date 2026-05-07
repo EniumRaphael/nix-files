@@ -104,26 +104,29 @@ in
 
     hardware.enableRedistributableFirmware = true;
 
-    environment.systemPackages = with pkgs; [
-      age
-      bat
-      git
-      git
-      home-manager
-      lego
-      openssl
-      pciutils
-      ripgrep
-      vim
-      vim
-      vulkan-tools
-      wget
-      wget
-      yarn
-      zsh
-    ] ++ [
-      inputs.agenix.packages.${pkgs.system}.agenix
-    ];
+    environment.systemPackages =
+      with pkgs;
+      [
+        age
+        bat
+        git
+        git
+        home-manager
+        lego
+        openssl
+        pciutils
+        ripgrep
+        vim
+        vim
+        vulkan-tools
+        wget
+        wget
+        yarn
+        zsh
+      ]
+      ++ [
+        inputs.agenix.packages.${pkgs.system}.agenix
+      ];
 
     age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 

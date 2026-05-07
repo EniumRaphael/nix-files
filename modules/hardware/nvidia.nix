@@ -1,14 +1,14 @@
 {
-config,
-pkgs,
-lib,
-...
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
   cfg = config.config-hw.nvidia;
 in
-  {
+{
   config = lib.mkIf cfg {
     hardware.nvidia = {
       open = false;
