@@ -26,7 +26,9 @@ in
         isSystemUser = true;
       };
     };
-
+    networking.firewall.allowedTCPPorts = [
+      4243
+    ];
     systemd.services.ft_irc = {
       description = "Upload our irc on my own server";
       after = [
