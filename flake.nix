@@ -111,6 +111,7 @@
           modules = [
             ./hosts/server/configuration.nix
             home-manager.nixosModules.home-manager
+            nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
             agenix.nixosModules.default
             authentik-nix.nixosModules.default
             {
