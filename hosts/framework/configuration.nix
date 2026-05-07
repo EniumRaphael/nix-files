@@ -16,6 +16,7 @@ in
     ../../modules/hardware/default.nix
     ../../modules/users/default.nix
     ../../modules/applications/default.nix
+    ../../modules/security/default.nix
   ];
 
   networking = {
@@ -24,6 +25,13 @@ in
 
   config-user = {
     raphael = true;
+  };
+
+  config-sec = {
+    apparmor = true;
+    fail2ban = false;
+    kernel = true;
+    nginx = true;
   };
 
   graphical = {
@@ -44,7 +52,6 @@ in
     nix-settings = true;
     nvidia = true;
   };
-
 
   applications = {
     docker = true;

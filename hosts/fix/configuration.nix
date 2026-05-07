@@ -13,6 +13,7 @@
     ../../modules/graphical/default.nix
     ../../modules/hardware/default.nix
     ../../modules/users/default.nix
+    ../../modules/security/default.nix
     ../../modules/applications/default.nix
   ];
 
@@ -22,6 +23,13 @@
 
   config-user = {
     raphael = true;
+  };
+
+  config-sec = {
+    apparmor = true;
+    fail2ban = false;
+    kernel = true;
+    nginx = true;
   };
 
   graphical = {

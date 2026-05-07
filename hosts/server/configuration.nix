@@ -9,11 +9,12 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/applications/default.nix
     ../../modules/games/default.nix
     ../../modules/graphical/default.nix
     ../../modules/hardware/default.nix
+    ../../modules/security/default.nix
     ../../modules/users/default.nix
-    ../../modules/applications/default.nix
     ../../services/bot_discord/default.nix
     ../../services/forty_two/default.nix
     ../../services/self_host/default.nix
@@ -30,6 +31,13 @@
     greetd = false;
     mail = false;
     laptop = false;
+  };
+
+  config-sec = {
+    apparmor = true;
+    fail2ban = true;
+    kernel = true;
+    nginx = true;
   };
 
   applications = {
