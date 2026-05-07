@@ -40,5 +40,9 @@ in
         "raphael.parodi.pro" = { };
       };
     };
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+    ];
   };
 }
