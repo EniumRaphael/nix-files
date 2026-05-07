@@ -105,5 +105,8 @@
     };
   };
 
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_535;
+  nixpkgs.config.nvidia.acceptLicense = true;
+
   system.stateVersion = "24.05";
 }
