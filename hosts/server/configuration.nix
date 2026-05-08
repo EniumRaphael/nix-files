@@ -86,12 +86,13 @@
 
   service = {
     selfhost = {
+      git = true;
       htop = true;
-      ollama = false;
+      jellyfin = true;
       mail = false;
       monitor = true;
       nextcloud = true;
-      jellyfin = true;
+      ollama = false;
       sso = true;
       vault = true;
     };
