@@ -26,10 +26,10 @@
   };
 
   config-sec = {
-    apparmor = true;
+    apparmor = false;
     fail2ban = false;
     kernel = true;
-    nginx = true;
+    nginx = false;
   };
 
   graphical = {
