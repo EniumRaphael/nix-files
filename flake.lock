@@ -435,11 +435,11 @@
         "zen-browser": "zen-browser"
       },
       "locked": {
-        "lastModified": 1778407796,
-        "narHash": "sha256-dlAsOWVJpDur8fTM8oMwqCjaIkeuCx1JSmCOMRr4Qes=",
+        "lastModified": 1778407962,
+        "narHash": "sha256-Dx/GiyU5eBH2ADPYkKS+VOiPIVINYKBDRlq7OyfhMCk=",
         "owner": "EniumRaphael",
         "repo": "home-manager",
-        "rev": "9a9da25d9fffb9d0de515e3a219b7de6afb9636a",
+        "rev": "59619c685ccb06cbcd476cd2f3dc823f813b2352",
         "type": "github"
       },
       "original": {
