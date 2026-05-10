@@ -9,11 +9,6 @@ let
   cfg = config.service.selfhost.sso;
   kanidm-admin = config.age.secrets."kanidm-admin".path;
   kanidm-idmAdmin = config.age.secrets."kanidm-idmAdmin".path;
-  vaultLogo = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/dani-garcia/vaultwarden/ba5519167634ebe1e1f0fc10d610d10d1f405101/resources/vaultwarden-icon.svg";
-    name = "vault.svg";
-    sha256 = "sha256-xY/pFVS9puG+Ub0M9WrISrY/eY1Rc+QeceGqHeUVx+8=";
-  };
 in
 {
   config = lib.mkIf cfg {
