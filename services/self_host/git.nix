@@ -33,45 +33,41 @@ in
     };
 
     services = {
-      kanidm = {
-        provision = {
-          systems.oauth2.forjego = {
-            present = true;
-            displayName = "Forjego";
-            imageFile = forgejoLogo;
-            originUrl = "https://git.enium.eu";
-            originLanding = "https://git.enium.eu/user/oauth2/Enium/callback";
-            basicSecretFile = config.age.secrets.forgejo-oidc-secret.path;
-            public = false;
-            enableLocalhostRedirects = false;
-            allowInsecureClientDisablePkce = true;
-            preferShortUsername = true;
-            scopeMaps = {
+      kanidm.provision.systems.oauth2.forjego = {
+        present = true;
+        displayName = "Forjego";
+        imageFile = forgejoLogo;
+        originUrl = "https://git.enium.eu";
+        originLanding = "https://git.enium.eu/user/oauth2/Enium/callback";
+        basicSecretFile = config.age.secrets.forgejo-oidc-secret.path;
+        public = false;
+        enableLocalhostRedirects = false;
+        allowInsecureClientDisablePkce = true;
+        preferShortUsername = true;
+        scopeMaps = {
+          forgejo_admins = [
+            "email"
+            "openid"
+            "profile"
+            "groups"
+          ];
+          forgejo_users = [
+            "email"
+            "openid"
+            "profile"
+            "groups"
+          ];
+        };
+        claimMaps = {
+          groups = {
+            joinType = "array";
+            valuesByGroup = {
               forgejo_admins = [
-                "email"
-                "openid"
-                "profile"
-                "groups"
+                "forgejo_admins"
               ];
               forgejo_users = [
-                "email"
-                "openid"
-                "profile"
-                "groups"
+                "forgejo_users"
               ];
-            };
-            claimMaps = {
-              groups = {
-                joinType = "array";
-                valuesByGroup = {
-                  forgejo_admins = [
-                    "forgejo_admins"
-                  ];
-                  forgejo_users = [
-                    "forgejo_users"
-                  ];
-                };
-              };
             };
           };
         };
