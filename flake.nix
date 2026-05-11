@@ -2,19 +2,38 @@
   description = "NixOS Configuration";
 
   inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    agenix.url = "github:ryantm/agenix";
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    hm-config.url = "github:EniumRaphael/home-manager";
-    orca-slicer-flake.url = "github:EniumRaphael/orca-slicer-flake";
-    minecraft.url = "github:Infinidoge/nix-minecraft";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixvim.url = "github:EniumRaphael/nixvim";
-    authentik-nix.url = "github:nix-community/authentik-nix";
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hm-config = {
+      url = "github:EniumRaphael/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    orca-slicer-flake = {
+      url = "github:EniumRaphael/orca-slicer-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixvim = {
+      url = "github:EniumRaphael/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    authentik-nix = {
+      url = "github:nix-community/authentik-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
