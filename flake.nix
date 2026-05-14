@@ -47,10 +47,6 @@
       url = "github:EniumRaphael/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    authentik-nix = {
-      url = "github:nix-community/authentik-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
@@ -68,113 +64,83 @@
     {
       self,
       nixpkgs,
-      flake-utils,
       agenix,
-      authentik-nix,
-      nixos-hardware,
-      firefox-addons,
-      home-manager,
-      orca-slicer-flake,
-      hm-config,
       catppuccin,
+      hm-config,
+      home-manager,
+      nixos-hardware,
+      orca-slicer-flake,
       ...
     }@inputs:
     let
       pkgs = import nixpkgs {
         config.allowUnfree = true;
       };
+
+      system = "x86_64-linux";
+
+      hmPackages = {
+        nixvim = inputs.nixvim.packages.${system}.default;
+        zen-browser = inputs.zen-browser.packages.${system}.default;
+        orca-slicer-pkg =
+          if orca-slicer-flake.packages ? ${system} then
+            orca-slicer-flake.packages.${system}.default
+          else
+            null;
+      };
+      mkHomeManagerModule = userModules: {
+        home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.backupFileExtension = "hmbak";
+        home-manager.extraSpecialArgs = {
+          inherit inputs;
+        }
+        // hmPackages;
+        home-manager.users = userModules;
+      };
+      mkHost =
+        {
+          nixName,
+          hostModules,
+          userModules ? {
+            raphael = import hm-config.outputs.homeModules.${nixName};
+            root = import hm-config.outputs.homeModules.root;
+          },
+          extraModules ? [ ],
+        }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./hosts/${nixName}/configuration.nix
+            agenix.nixosModules.default
+            home-manager.nixosModules.home-manager
+            (mkHomeManagerModule userModules)
+          ]
+          ++ hostModules
+          ++ extraModules;
+          specialArgs = { inherit inputs; };
+        };
     in
     {
       nixosConfigurations = {
-        "nixos-fix" = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/fix/configuration.nix
-            agenix.nixosModules.default
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "hmbak";
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                nixvim = inputs.nixvim.packages."x86_64-linux".default;
-                zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
-                orca-slicer-pkg =
-                  if orca-slicer-flake.packages ? "x86_64-linux" then
-                    orca-slicer-flake.packages.x86_64-linux.default
-                  else
-                    null;
-              };
-              home-manager.users.raphael = import hm-config.outputs.homeModules.fix;
-              home-manager.users.root = import hm-config.outputs.homeModules.root;
-            }
-          ];
-          specialArgs = {
-            inherit inputs;
-          };
+        "nixos-fix" = mkHost {
+          nixName = "fix";
+          hostModules = [ ];
         };
-        "nixos-framework" = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/framework/configuration.nix
+
+        "nixos-framework" = mkHost {
+          nixName = "framework";
+          hostModules = [
             nixos-hardware.nixosModules.framework-16-amd-ai-300-series
-            agenix.nixosModules.default
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "hmbak";
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                nixvim = inputs.nixvim.packages."x86_64-linux".default;
-                zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
-                orca-slicer-pkg =
-                  if orca-slicer-flake.packages ? "x86_64-linux" then
-                    orca-slicer-flake.packages.x86_64-linux.default
-                  else
-                    null;
-              };
-              home-manager.users.raphael = import hm-config.outputs.homeModules.framework;
-              home-manager.users.root = import hm-config.outputs.homeModules.root;
-            }
           ];
-          specialArgs = {
-            inherit inputs;
-          };
         };
-        "nixos-server" = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/server/configuration.nix
-            home-manager.nixosModules.home-manager
+
+        "nixos-server" = mkHost {
+          nixName = "server";
+          hostModules = [
             nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
-            agenix.nixosModules.default
-            authentik-nix.nixosModules.default
-            {
-              home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "hmbak";
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                nixvim = inputs.nixvim.packages."x86_64-linux".default;
-                zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
-                orca-slicer-pkg =
-                  if orca-slicer-flake.packages ? "x86_64-linux" then
-                    orca-slicer-flake.packages.x86_64-linux.default
-                  else
-                    null;
-              };
-              home-manager.users.raphael = import hm-config.outputs.homeModules.server;
-              home-manager.users.root = import hm-config.outputs.homeModules.root;
-            }
           ];
-          specialArgs = {
-            inherit inputs;
-          };
         };
       };
     };
