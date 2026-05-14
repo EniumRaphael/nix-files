@@ -76,15 +76,14 @@
       pkgs = import nixpkgs {
         config.allowUnfree = true;
       };
-
-      system = "x86_64-linux";
+      sys = pkgs.stdenv.hostPlatform.system;
 
       hmPackages = {
-        nixvim = inputs.nixvim.packages.${system}.default;
-        zen-browser = inputs.zen-browser.packages.${system}.default;
+        nixvim = inputs.nixvim.packages.${sys}.default;
+        zen-browser = inputs.zen-browser.packages.${sys}.default;
         orca-slicer-pkg =
-          if orca-slicer-flake.packages ? ${system} then
-            orca-slicer-flake.packages.${system}.default
+          if orca-slicer-flake.packages ? ${sys} then
+            orca-slicer-flake.packages.${sys}.default
           else
             null;
       };
@@ -110,7 +109,6 @@
           extraModules ? [ ],
         }:
         nixpkgs.lib.nixosSystem {
-          inherit system;
           modules = [
             ./hosts/${nixName}/configuration.nix
             agenix.nixosModules.default

@@ -323,11 +323,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778769364,
-        "narHash": "sha256-TnCEwLKOl2Lj8rlKcQvMi+fiZjBQFzKsNONcxb+74wc=",
+        "lastModified": 1778772399,
+        "narHash": "sha256-Po1c4sd02eJoayzWJomkzs5qsCoAt0FplPytoZw1Kfg=",
         "owner": "EniumRaphael",
         "repo": "home-manager",
-        "rev": "032584638c13bbe1e4524a69bccf8c7a70910801",
+        "rev": "97e6f56dd55284461473d538634d18af63a08d45",
         "type": "github"
       },
       "original": {
@@ -364,11 +364,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778764020,
-        "narHash": "sha256-SGDbsxHy/OPPYyh7pLnWueW3HbDCOwt/XpWzlsZNUGI=",
+        "lastModified": 1778771930,
+        "narHash": "sha256-lNeXQPMJBsmkJjP55RYMgnEc0LEUbUwpvKwh0zVRChM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "4f9cbe4384e00cf2cf80e99741e93f12a67a8f32",
+        "rev": "c3e7eb98c3c21f408039d717f5d4bdb0ecf6f158",
         "type": "github"
       },
       "original": {
@@ -738,11 +738,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778254216,
-        "narHash": "sha256-Zye2Stp1oqwzC4JvIdJevB5/CG0XrEqjNji+3nVvCyo=",
+        "lastModified": 1778770210,
+        "narHash": "sha256-1eEvxe586XJlDtjDO7pgCQtWCNkcupek+hyfb7mIBTw=",
         "owner": "JPyke3",
         "repo": "hytale-launcher-nix",
-        "rev": "6293d33be6a5cd1a763fe00477339b98f72da2b2",
+        "rev": "1ae541162e1aebbc4ba1845952b2f04a004e11b3",
         "type": "github"
       },
       "original": {
