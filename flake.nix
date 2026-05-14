@@ -6,6 +6,19 @@
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
+    hm-config = {
+      url = "github:EniumRaphael/home-manager";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        firefox-addons.follows = "firefox-addons";
+        hytale-launcher.follows = "hytale-launcher";
+        catppuccin.follows = "catppuccin";
+        home-manager.follows = "home-manager";
+        zen-browser.follows = "zen-browser";
+        orca-slicer-flake.follows = "orca-slicer-flake";
+      };
+    };
+
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,10 +33,6 @@
     };
     agenix = {
       url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hm-config = {
-      url = "github:EniumRaphael/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     orca-slicer-flake = {
@@ -87,6 +96,7 @@
               home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "hmbak";
               home-manager.extraSpecialArgs = {
                 inherit inputs;
                 nixvim = inputs.nixvim.packages."x86_64-linux".default;
@@ -116,6 +126,7 @@
               home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "hmbak";
               home-manager.extraSpecialArgs = {
                 inherit inputs;
                 nixvim = inputs.nixvim.packages."x86_64-linux".default;
@@ -146,6 +157,7 @@
               home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "hmbak";
               home-manager.extraSpecialArgs = {
                 inherit inputs;
                 nixvim = inputs.nixvim.packages."x86_64-linux".default;
