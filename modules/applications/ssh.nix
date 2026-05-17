@@ -24,6 +24,11 @@ in
         42131
       ];
       settings = {
+        AllowUsers = [
+          "raphael"
+          "forgejo"
+        ];
+        X11Forwarding = true;
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;
         PermitRootLogin = "no";
