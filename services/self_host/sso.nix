@@ -85,6 +85,16 @@ in
                 "vault_users"
               ];
             };
+            nathe = {
+              displayName = "Nathe";
+              legalName = "Nathe Siefert";
+              mailAddresses = [
+                "nathesiefert@enium.eu"
+              ];
+              groups = [
+                "nextcloud_user"
+              ];
+            };
           };
           groups = {
             grafana_superadmins = {
