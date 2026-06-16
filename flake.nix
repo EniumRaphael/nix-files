@@ -16,6 +16,7 @@
         home-manager.follows = "home-manager";
         zen-browser.follows = "zen-browser";
         orca-slicer-flake.follows = "orca-slicer-flake";
+        noctalia.follows = "noctalia";
       };
     };
 
@@ -25,6 +26,10 @@
     };
     hytale-launcher = {
       url = "github:JPyke3/hytale-launcher-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
@@ -88,7 +93,10 @@
             null;
       };
       mkHomeManagerModule = userModules: {
-        home-manager.sharedModules = [ catppuccin.homeModules.catppuccin ];
+        home-manager.sharedModules = [
+          inputs.noctalia.homeModules.default
+          catppuccin.homeModules.catppuccin
+        ];
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.backupFileExtension = "hmbak";
