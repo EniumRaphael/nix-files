@@ -13,6 +13,9 @@ let
   nix-settings = import ./nix-settings.nix {
     inherit config pkgs lib;
   };
+  keyboard = import ./keyboard.nix {
+    inherit config pkgs lib;
+  };
   network = import ./network.nix {
     inherit config pkgs lib;
   };
@@ -30,7 +33,7 @@ in
   imports = [
     nix-settings
     network
-    nix-settings
+    keyboard
     nvidia
     printer
     bluetooth
@@ -51,10 +54,15 @@ in
         description = "the configuration for wifi";
       };
     };
+    keyboard = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "The configuration for keyboard";
+    };
     nix-settings = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "The configuration for nix-settings graphic card";
+      description = "The configuration for nix-settings";
     };
     nvidia = lib.mkOption {
       type = lib.types.bool;
