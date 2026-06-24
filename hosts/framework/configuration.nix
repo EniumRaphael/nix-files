@@ -50,6 +50,7 @@ in
     fingerprint = true;
     printer = true;
     nix-settings = true;
+    keyboard = true;
     nvidia = true;
   };
 

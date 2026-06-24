@@ -56,6 +56,7 @@
     fingerprint = false;
     printer = false;
     nix-settings = true;
+    keyboard = false;
     nvidia = true;
   };
 
