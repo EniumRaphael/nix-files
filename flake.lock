@@ -326,11 +326,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782662277,
-        "narHash": "sha256-xqmQMnY3OqAhM305RpiK6VnkFrNbvljlApaY8W9XQUo=",
+        "lastModified": 1783283792,
+        "narHash": "sha256-dMvpwTqsef2jx/nE9/DRwEknKsKl7e9I975kOxtpDPY=",
         "owner": "EniumRaphael",
         "repo": "home-manager",
-        "rev": "7f6f9127f33af17cb3ff7fbb1657bdc20b10ad3a",
+        "rev": "68f916b14001053793bd008400a45c04fb3e8f5a",
         "type": "github"
       },
       "original": {
