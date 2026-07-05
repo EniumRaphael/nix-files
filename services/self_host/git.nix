@@ -123,7 +123,7 @@ in
         instances = {
           default = {
             enable = true;
-            name = "monolith";
+            name = "default";
             url = "https://git.enium.eu";
             tokenFile = config.age.secrets.forgejo-runner-token.path;
             labels = [
@@ -132,11 +132,20 @@ in
           };
           forty-two = {
             enable = true;
-            name = "monolith";
+            name = "forty-two runnner";
             url = "https://git.enium.eu";
             tokenFile = config.age.secrets.forgejo-runner-token.path;
             labels = [
               "forty-two:docker://alexandregv/remote-42"
+            ];
+          };
+          nix = {
+            enable = true;
+            name = "nix";
+            url = "https://git.enium.eu";
+            tokenFile = config.age.secrets.forgejo-runner-token.path;
+            labels = [
+              "nix:docker://nixos/nix"
             ];
           };
         };
