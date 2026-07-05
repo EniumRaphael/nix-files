@@ -1,0 +1,61 @@
+name: Update flake inputs
+
+on:
+  schedule:
+    - cron: '30 3 * * 0'
+  workflow_dispatch: {}
+
+jobs:
+  update-flake:
+    runs-on: nix
+    steps:
+      - name: Get repo info
+        id: repo
+        run: |
+          echo "full_name=${GITHUB_REPOSITORY}" >> "$GITHUB_OUTPUT"
+          echo "server_url=${GITHUB_SERVER_URL}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout (git manuel)
+        env:
+          REPO_URL: ${{ steps.repo.outputs.server_url }}/${{ steps.repo.outputs.full_name }}.git
+        run: |
+          git clone "${REPO_URL}" .
+          git config user.name "Flake Updater"
+          git config user.email "no-reply@enium.eu"
+      - name: Enable flakes
+        run: |
+          mkdir -p ~/.config/nix
+          echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+
+      - name: Update flake.lock
+        run: nix flake update
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet flake.lock; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build check
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          nix build .#nixosConfigurations.TON_HOST.config.system.build.toplevel --no-link
+
+      - name: Commit and push
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "Raphael CI"
+          git config user.email "raphael+ci@enium.eu"
+          git add flake.lock
+          git commit -m "chore(nix[flake]): update flake.lock"
+      - name: Push
+        if: steps.update.outputs.changed == 'true'
+        env:
+          FORGEJO_TOKEN: ${{ secrets.GITEA_TOKEN }}
+          REPO_FULL_NAME: ${{ steps.repo.outputs.full_name }}
+        run: |
+          HOST=git.enium.eu
+          git push "https://oauth2:${FORGEJO_TOKEN}@${HOST}/${REPO_FULL_NAME}.git"
