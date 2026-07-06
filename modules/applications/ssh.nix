@@ -8,7 +8,7 @@
 let
   sshKeyMac = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIML4yVz1fhccwaTL0iHixkNkU5zUWU1rsit9u2TIIa5r raphael@raphaels-MacBook-Pro.local";
   sshKeyFramework = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvVYo+D6p8SfnR4ZPPbrQ/ngBIyKKMedOxwR8xUd39a raphael@raphael-framework";
-  sshKeyFix = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHqvUXdRS78wloWZnSqiOt63Gx0QRJdHxggrrepOd9+1 raphael@nixos-fix";
+  sshKeyFix = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEypCJkYUhZAjclcGlG7Hp1HE2/BEORU/yYlpGbj47Kj raphael@raphael-fix";
   cfg = config.applications.ssh;
 in
 {
