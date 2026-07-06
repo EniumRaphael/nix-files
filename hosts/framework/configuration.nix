@@ -1,8 +1,9 @@
 {
-  inputs,
   config,
-  pkgs,
+  inputs,
   lib,
+  nixName,
+  pkgs,
   ...
 }:
 
@@ -29,6 +30,7 @@ in
 
   config-sec = {
     apparmor = false;
+    autorun = false;
     fail2ban = false;
     kernel = true;
     nginx = false;
@@ -68,6 +70,11 @@ in
       bp = false;
     };
   };
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-39.8.10"
+  ];
+
 
   system.stateVersion = "24.05";
 }

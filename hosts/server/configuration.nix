@@ -1,8 +1,9 @@
 {
-  inputs,
   config,
-  pkgs,
+  inputs,
   lib,
+  nixName,
+  pkgs,
   ...
 }:
 
@@ -35,6 +36,7 @@
 
   config-sec = {
     apparmor = true;
+    autorun = true;
     fail2ban = true;
     kernel = true;
     nginx = true;
@@ -114,6 +116,10 @@
       ticket = false;
     };
   };
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-39.8.10"
+  ];
 
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_535;
   nixpkgs.config.nvidia.acceptLicense = true;

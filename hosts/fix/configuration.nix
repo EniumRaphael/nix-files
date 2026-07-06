@@ -1,8 +1,9 @@
 {
-  inputs,
   config,
-  pkgs,
+  inputs,
   lib,
+  nixName,
+  pkgs,
   ...
 }:
 
@@ -27,6 +28,7 @@
 
   config-sec = {
     apparmor = false;
+    autorun = false;
     fail2ban = false;
     kernel = true;
     nginx = false;
@@ -66,6 +68,10 @@
       bp = false;
     };
   };
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-39.8.10"
+  ];
 
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
 
