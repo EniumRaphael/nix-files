@@ -2,12 +2,16 @@
   config,
   pkgs,
   lib,
+  nixName,
   ...
 }:
 
 let
   apparmor = import ./apparmor.nix {
     inherit config pkgs lib;
+  };
+  autorun = import ./autorun.nix {
+    inherit config pkgs lib nixName;
   };
   fail2ban = import ./fail2ban.nix {
     inherit config pkgs lib;
@@ -22,16 +26,17 @@ in
 {
   imports = [
     apparmor
+    autorun
     fail2ban
     kernel
     nginx
   ];
 
   options.config-sec = {
-    auditd = lib.mkOption {
+    autorun = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "enable the auditd configuration";
+      description = "enable the autorun configuration";
     };
     apparmor = lib.mkOption {
       type = lib.types.bool;
