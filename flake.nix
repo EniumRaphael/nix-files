@@ -125,7 +125,7 @@
           ]
           ++ hostModules
           ++ extraModules;
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs nixName; };
         };
     in
     {
