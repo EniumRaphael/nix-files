@@ -92,7 +92,7 @@
           else
             null;
       };
-      mkHomeManagerModule = userModules: {
+      mkHomeManagerModule = userModules: extraSpecialArgs: {
         home-manager.sharedModules = [
           inputs.noctalia.homeModules.default
           catppuccin.homeModules.catppuccin
@@ -100,15 +100,13 @@
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.backupFileExtension = "hmbak";
-        home-manager.extraSpecialArgs = {
-          inherit inputs;
-        }
-        // hmPackages;
+        home-manager.extraSpecialArgs = extraSpecialArgs;
         home-manager.users = userModules;
       };
       mkHost =
         {
           nixName,
+          gpgFingerprint ? null,
           hostModules,
           userModules ? {
             raphael = import hm-config.outputs.homeModules.${nixName};
@@ -120,8 +118,9 @@
           modules = [
             ./hosts/${nixName}/configuration.nix
             agenix.nixosModules.default
-            home-manager.nixosModules.home-manager
-            (mkHomeManagerModule userModules)
+            home-manager.nixosModules.home-manager (mkHomeManagerModule userModules ({
+          inherit inputs;
+        } // hmPackages // { inherit gpgFingerprint; }))
           ]
           ++ hostModules
           ++ extraModules;
@@ -137,6 +136,7 @@
 
         "nixos-framework" = mkHost {
           nixName = "framework";
+          gpgFingerprint = "7E68D47EEEE816AB5C223E06C0D77521C860610C";
           hostModules = [
             nixos-hardware.nixosModules.framework-16-amd-ai-300-series
           ];
