@@ -41,6 +41,13 @@
     ];
   };
 
+  fileSystems."/mnt/data" = {
+    device = "/dev/disk/by-uuid/25c8d71e-76b5-47f6-a304-25be5a69246a";
+    fsType = "ext4";
+  };
+  boot.initrd.luks.devices."luks-data".device =
+    "/dev/disk/by-uuid/37dac5aa-1e02-4afb-9b2b-b5f3625f83d7";
+
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
