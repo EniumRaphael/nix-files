@@ -1,12 +1,12 @@
-name: Update flake inputs
+name: Update flake.lock
 
 on:
-  schedule:
-    - cron: '30 3 * * 0'
   workflow_dispatch: {}
+  schedule:
+    - cron: "30 3 * * 0"
 
 jobs:
-  update-flake:
+  update-lockfile:
     runs-on: nix
     steps:
       - name: Get repo info
@@ -28,29 +28,21 @@ jobs:
           echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 
       - name: Update flake.lock
-        run: nix flake update
-
-      - name: Check for changes
-        id: diff
+        id: update
         run: |
+          nix flake update
           if git diff --quiet flake.lock; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Build check
-        if: steps.diff.outputs.changed == 'true'
+      - name: Commit
+        if: steps.update.outputs.changed == 'true'
         run: |
-          nix build .#nixosConfigurations.TON_HOST.config.system.build.toplevel --no-link
-
-      - name: Commit and push
-        if: steps.diff.outputs.changed == 'true'
-        run: |
-          git config user.name "Raphael CI"
-          git config user.email "raphael+ci@enium.eu"
           git add flake.lock
           git commit -m "chore(nix[flake]): update flake.lock"
+
       - name: Push
         if: steps.update.outputs.changed == 'true'
         env:
