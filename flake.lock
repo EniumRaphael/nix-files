@@ -110,11 +110,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1784520168,
-        "narHash": "sha256-ulTgejlYlZIbl7rJdDjFMfm81eW+OgbZaJ3tgVvQL3I=",
+        "lastModified": 1784606575,
+        "narHash": "sha256-ptfekNyhnUWagNco1dHOtkXUoLxFegzjwOc3ifQgi5Y=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "97a0b88b7ff3fabfbe9353ea3d8243e7d99f96a3",
+        "rev": "98ba5c85f2ef559d38c006a85b0429a27323323a",
         "type": "gitlab"
       },
       "original": {
@@ -303,11 +303,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784602855,
-        "narHash": "sha256-ugeCLGCSxmmWC9GJkYj9kt9D6sIp5+q4IrwDVw5pguA=",
+        "lastModified": 1784689263,
+        "narHash": "sha256-F1cn4QGhFE69/iKdjJl2sk+Y+WQjG13ftUUBQt4DZfg=",
         "owner": "EniumRaphael",
         "repo": "home-manager",
-        "rev": "682cbcdf4079ce569988d5564403c980228f46be",
+        "rev": "9fecc4607193a4dcca2e1b9e5219ddb4336174e4",
         "type": "github"
       },
       "original": {
@@ -344,11 +344,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784588016,
-        "narHash": "sha256-ouZe80aWEhMLVMkqICFDN+JUw+0FJtCr/bh+hHtRtMg=",
+        "lastModified": 1784690067,
+        "narHash": "sha256-t86pRs7IPs3RTMPueWvvdcxyTFrctHAv2Jl7jnjsSf8=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "deeb6b7eb7e0c44ae1819c051ce175bd92a85100",
+        "rev": "6d8d61567802997f9ec3086b2a837e3ef31fac16",
         "type": "github"
       },
       "original": {
@@ -441,11 +441,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1784574265,
-        "narHash": "sha256-3YP21xUS7i/FOZRNh3SqXAw7Icw8biu3BWN+YWqLMkI=",
+        "lastModified": 1784641930,
+        "narHash": "sha256-j1c/65skFvp1WPbHBlAfVWaeCz0Bgwr/WPwIg0H+Ncg=",
         "owner": "hyprwm",
         "repo": "Hyprland",
-        "rev": "2174f26a142d32823ceb8d7039e39eef52dbd050",
+        "rev": "1a3606234c59842340ad9a42baeeffe44a9d6cda",
         "type": "github"
       },
       "original": {
@@ -740,11 +740,11 @@
         "systems": "systems_5"
       },
       "locked": {
-        "lastModified": 1784604432,
-        "narHash": "sha256-csCj+e+wQOohlErOgy+8wcNJsvPmSDMbytbJeB+nbC4=",
+        "lastModified": 1784690860,
+        "narHash": "sha256-S0Y47eNLJ7lALoZG+UyZPwYeCE5NKKDJvNLOoSthYhQ=",
         "owner": "Infinidoge",
         "repo": "nix-minecraft",
-        "rev": "ff96c92bb6f953d45d95ce92d8865b1ddb025df6",
+        "rev": "1a27d0ced3ba850505766464b8ccfcc069ec3338",
         "type": "github"
       },
       "original": {
@@ -873,11 +873,11 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1784601042,
-        "narHash": "sha256-p+gKCJCrCunv5v5nefZA3a1zv95kQnXdfsOayzORabk=",
+        "lastModified": 1784687441,
+        "narHash": "sha256-GB6PfI7EBJp801SwU7OYyxGxVcoXMrE/T1S2YywnHJc=",
         "owner": "EniumRaphael",
         "repo": "nixvim",
-        "rev": "174a0dc6bc1b4bd759cbfc6e5716a13f8707d434",
+        "rev": "2bd3e54cf077b4af7c17600c17d45296d1a68ef1",
         "type": "github"
       },
       "original": {
@@ -915,11 +915,11 @@
         "nixvim": "nixvim_4"
       },
       "locked": {
-        "lastModified": 1784601042,
-        "narHash": "sha256-p+gKCJCrCunv5v5nefZA3a1zv95kQnXdfsOayzORabk=",
+        "lastModified": 1784687441,
+        "narHash": "sha256-GB6PfI7EBJp801SwU7OYyxGxVcoXMrE/T1S2YywnHJc=",
         "owner": "EniumRaphael",
         "repo": "nixvim",
-        "rev": "174a0dc6bc1b4bd759cbfc6e5716a13f8707d434",
+        "rev": "2bd3e54cf077b4af7c17600c17d45296d1a68ef1",
         "type": "github"
       },
       "original": {
@@ -955,11 +955,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784598073,
-        "narHash": "sha256-WCp9VCEIZpzuab3pOrfynX79DKok2qvtg1Pe+QMFKcs=",
+        "lastModified": 1784690572,
+        "narHash": "sha256-s89YEsJis9KzSgL1+i7PFtr7DMgojExdIKRZPrbLYpE=",
         "owner": "noctalia-dev",
         "repo": "noctalia-shell",
-        "rev": "448f8f56173667095fd79c972e033c523fcbd5a2",
+        "rev": "c156a1ef5068e20a6be1579487fcb11de292c98e",
         "type": "github"
       },
       "original": {
