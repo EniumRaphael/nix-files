@@ -31,7 +31,6 @@
     enable = false;
     greetd = false;
     mail = false;
-    laptop = false;
   };
 
   config-sec = {

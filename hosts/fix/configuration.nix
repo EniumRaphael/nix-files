@@ -38,7 +38,6 @@
     enable = true;
     greetd = true;
     mail = true;
-    laptop = false;
   };
 
   config-hw = {

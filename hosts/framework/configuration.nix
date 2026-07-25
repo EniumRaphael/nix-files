@@ -40,7 +40,6 @@ in
     enable = true;
     greetd = true;
     mail = true;
-    laptop = true;
   };
 
   config-hw = {
@@ -49,7 +48,7 @@ in
       wireless = true;
     };
     bluetooth = true;
-    fingerprint = true;
+    fingerprint = false;
     printer = true;
     nix-settings = true;
     keyboard = true;
