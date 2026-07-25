@@ -10,16 +10,29 @@ let
 in
 {
   config = lib.mkIf cfg {
-    security.polkit = lib.mkIf config.graphical.laptop {
-      extraConfig = ''
-        polkit.addRule(function(action, subject) {
-          if (action.id == "org.freedesktop.systemd1.manage-units" &&
-              action.lookup("unit") == "fprintd.service" &&
-              subject.user == "raphael") {
-            return polkit.Result.YES;
-          }
-        });
-      '';
+    security = {
+      pam.services = {
+        greetd = {
+          fprintAuth = true;
+        };
+        login.fprintAuth = true;
+        sudo.fprintAuth = true;
+        hyprlock.text = ''
+          auth sufficient pam_fprintd.so
+          auth include login
+        '';
+      };
+      polkit = {
+        extraConfig = ''
+          polkit.addRule(function(action, subject) {
+            if (action.id == "org.freedesktop.systemd1.manage-units" &&
+                action.lookup("unit") == "fprintd.service" &&
+                subject.user == "raphael") {
+              return polkit.Result.YES;
+            }
+          });
+        '';
+      };
     };
     services = {
       udev = {

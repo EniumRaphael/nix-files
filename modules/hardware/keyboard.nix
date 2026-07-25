@@ -10,9 +10,13 @@ let
 in
 {
   config = lib.mkIf cfg {
-    hardware.keyboard.zsa.enable = true;
+    hardware.keyboard = {
+      zsa.enable = true;
+      qmk.enable = true;
+    };
     environment.systemPackages = with pkgs; [
       keymapp
+      via
     ];
   };
 }

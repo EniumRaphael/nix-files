@@ -32,11 +32,6 @@ in
       default = false;
       description = "adding greetd login screen";
     };
-    laptop = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "adding laptop graphical settings";
-    };
   };
 
   config = lib.mkIf cfg.enable {
