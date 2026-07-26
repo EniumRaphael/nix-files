@@ -65,89 +65,92 @@
     };
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      agenix,
-      catppuccin,
-      hm-config,
-      home-manager,
-      nixos-hardware,
-      orca-slicer-flake,
-      ...
-    }@inputs:
-    let
-      pkgs = import nixpkgs {
-        config.allowUnfree = true;
-      };
-      sys = pkgs.stdenv.hostPlatform.system;
+outputs =
+  {
+    self,
+    nixpkgs,
+    agenix,
+    catppuccin,
+    hm-config,
+    home-manager,
+    nixos-hardware,
+    orca-slicer-flake,
+    ...
+  }@inputs:
+  let
+    mkHomeManagerModule = userModules: extraSpecialArgs: {
+      home-manager.sharedModules = [
+        inputs.noctalia.homeModules.default
+        catppuccin.homeModules.catppuccin
+      ];
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.backupFileExtension = "hmbak";
+      home-manager.extraSpecialArgs = extraSpecialArgs;
+      home-manager.users = userModules;
+    };
 
-      hmPackages = {
-        nixvim = inputs.nixvim.packages.${sys}.default;
-        zen-browser = inputs.zen-browser.packages.${sys}.default;
-        orca-slicer-pkg =
-          if orca-slicer-flake.packages ? ${sys} then
-            orca-slicer-flake.packages.${sys}.default
-          else
-            null;
+    mkHost =
+      {
+        sys ? "x86_64-linux",
+        nixName,
+        gpgFingerprint ? null,
+        hostModules,
+        userModules ? {
+          raphael = import hm-config.outputs.homeModules.${nixName};
+          root = import hm-config.outputs.homeModules.root;
+        },
+        extraModules ? [ ],
+      }:
+      let
+        hmPackages = {
+          nixvim = inputs.nixvim.packages.${sys}.default;
+          zen-browser = inputs.zen-browser.packages.${sys}.default;
+          orca-slicer-pkg =
+            if orca-slicer-flake.packages ? ${sys} then
+              orca-slicer-flake.packages.${sys}.default
+            else
+              null;
+        };
+      in
+      nixpkgs.lib.nixosSystem {
+        modules = [
+          ./hosts/${nixName}/configuration.nix
+          agenix.nixosModules.default
+          home-manager.nixosModules.home-manager
+          (mkHomeManagerModule userModules ({
+            inherit inputs;
+          } // hmPackages // { inherit gpgFingerprint; }))
+        ]
+        ++ hostModules
+        ++ extraModules;
+        specialArgs = { inherit inputs nixName; };
       };
-      mkHomeManagerModule = userModules: extraSpecialArgs: {
-        home-manager.sharedModules = [
-          inputs.noctalia.homeModules.default
-          catppuccin.homeModules.catppuccin
+  in
+  {
+    nixosConfigurations = {
+      "nixos-fix" = mkHost {
+        sys = "x86_64-linux";
+        nixName = "fix";
+        hostModules = [ ];
+      };
+
+      "nixos-framework" = mkHost {
+        sys = "x86_64-linux";
+        nixName = "framework";
+        gpgFingerprint = "7E68D47EEEE816AB5C223E06C0D77521C860610C";
+        hostModules = [
+          nixos-hardware.nixosModules.framework-16-amd-ai-300-series
         ];
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.backupFileExtension = "hmbak";
-        home-manager.extraSpecialArgs = extraSpecialArgs;
-        home-manager.users = userModules;
       };
-      mkHost =
-        {
-          nixName,
-          gpgFingerprint ? null,
-          hostModules,
-          userModules ? {
-            raphael = import hm-config.outputs.homeModules.${nixName};
-            root = import hm-config.outputs.homeModules.root;
-          },
-          extraModules ? [ ],
-        }:
-        nixpkgs.lib.nixosSystem {
-          modules = [
-            ./hosts/${nixName}/configuration.nix
-            agenix.nixosModules.default
-            home-manager.nixosModules.home-manager (mkHomeManagerModule userModules ({
-          inherit inputs;
-        } // hmPackages // { inherit gpgFingerprint; }))
-          ]
-          ++ hostModules
-          ++ extraModules;
-          specialArgs = { inherit inputs nixName; };
-        };
-    in
-    {
-      nixosConfigurations = {
-        "nixos-fix" = mkHost {
-          nixName = "fix";
-          hostModules = [ ];
-        };
 
-        "nixos-framework" = mkHost {
-          nixName = "framework";
-          gpgFingerprint = "7E68D47EEEE816AB5C223E06C0D77521C860610C";
-          hostModules = [
-            nixos-hardware.nixosModules.framework-16-amd-ai-300-series
-          ];
-        };
-
-        "nixos-server" = mkHost {
-          nixName = "server";
-          hostModules = [
-            nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
-          ];
-        };
+      "nixos-server" = mkHost {
+        sys = "x86_64-linux";
+        nixName = "server";
+        hostModules = [
+          nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
+        ];
       };
     };
+  };
 }
