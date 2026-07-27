@@ -130,6 +130,15 @@ in
               "ubuntu-latest:docker://ubuntu/resolute"
             ];
           };
+          rust = {
+            enable = true;
+            name = "rust";
+            url = "https://git.enium.eu";
+            tokenFile = config.age.secrets.forgejo-runner-token.path;
+            labels = [
+              "rust:docker://rust/alpine"
+            ];
+          };
           forty-two = {
             enable = true;
             name = "forty-two runnner";
