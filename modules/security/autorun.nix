@@ -18,6 +18,7 @@ in
         path = [
           pkgs.git
           pkgs.nixos-rebuild
+          pkgs.openssh
         ];
 
         script = ''
@@ -29,16 +30,19 @@ in
           OLD_HASH=$(git rev-parse HEAD)
 
           git fetch origin
-          git reset --hard origin/main
+          git reset --hard origin/master
 
           NEW_HASH=$(git rev-parse HEAD)
 
           if [ "$OLD_HASH" != "$NEW_HASH" ]; then
-            echo "Repo have changed"
-            nixos-rebuild switch --flake /etc/nixos#nixos-${nixName}
+            echo "[GIT] - Repo has changed"
           else
-            echo "No change"
+            echo "[GIT] - No change"
           fi
+
+          echo "[NIX] - The rebuild just started"
+          nixos-rebuild switch --flake /etc/nixos#nixos-${nixName}
+          echo "[NIX] - The rebuild just finished"
         '';
 
         serviceConfig = {
