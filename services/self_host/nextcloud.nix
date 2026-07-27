@@ -97,7 +97,7 @@ in
       nextcloud = {
         enable = true;
         https = true;
-        package = pkgs.nextcloud33;
+        package = pkgs.nextcloud34;
         hostName = "nextcloud.enium.eu";
         datadir = dataDir;
         config = {
