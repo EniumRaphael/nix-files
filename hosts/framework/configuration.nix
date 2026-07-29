@@ -74,6 +74,5 @@ in
     "electron-39.8.10"
   ];
 
-
   system.stateVersion = "24.05";
 }
