@@ -11,7 +11,12 @@ let
     inherit config pkgs lib;
   };
   autorun = import ./autorun.nix {
-    inherit config pkgs lib nixName;
+    inherit
+      config
+      pkgs
+      lib
+      nixName
+      ;
   };
   fail2ban = import ./fail2ban.nix {
     inherit config pkgs lib;
