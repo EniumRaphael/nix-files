@@ -21,7 +21,7 @@ in
   ];
 
   networking = {
-    hostName = "raphael-framework";
+    hostName = "framework";
   };
 
   config-user = {

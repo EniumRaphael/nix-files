@@ -19,7 +19,7 @@
   ];
 
   networking = {
-    hostName = "raphael-fix";
+    hostName = "fix";
   };
 
   config-user = {
