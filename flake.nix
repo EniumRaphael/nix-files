@@ -132,13 +132,13 @@
     in
     {
       nixosConfigurations = {
-        "nixos-fix" = mkHost {
+        "fix" = mkHost {
           sys = "x86_64-linux";
           nixName = "fix";
           hostModules = [ ];
         };
 
-        "nixos-framework" = mkHost {
+        "framework" = mkHost {
           sys = "x86_64-linux";
           nixName = "framework";
           gpgFingerprint = "7E68D47EEEE816AB5C223E06C0D77521C860610C";
@@ -147,7 +147,7 @@
           ];
         };
 
-        "nixos-server" = mkHost {
+        "server" = mkHost {
           sys = "x86_64-linux";
           nixName = "server";
           hostModules = [
