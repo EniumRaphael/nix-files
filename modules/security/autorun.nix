@@ -41,7 +41,7 @@ in
           fi
 
           echo "[NIX] - The rebuild just started"
-          nixos-rebuild switch --flake /etc/nixos#nixos-${nixName}
+          nixos-rebuild switch --flake /etc/nixos#${nixName}
           echo "[NIX] - The rebuild just finished"
         '';
 
