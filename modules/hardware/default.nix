@@ -118,16 +118,14 @@ in
         age
         bat
         git
-        git
         home-manager
         lego
+        nix-output-monitor
         openssl
         pciutils
         ripgrep
         vim
-        vim
         vulkan-tools
-        wget
         wget
         yarn
         zsh
