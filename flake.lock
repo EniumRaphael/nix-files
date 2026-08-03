@@ -303,11 +303,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785697222,
-        "narHash": "sha256-SsDppUzBmq4Tk0NFjmBxg3xNWwVx77bKkcqW/JFB1S4=",
+        "lastModified": 1785726075,
+        "narHash": "sha256-kogTYTwhdtWLKifH8HjM1+C4wiG0g1traAhKyf8hq0A=",
         "owner": "EniumRaphael",
         "repo": "home-manager",
-        "rev": "343e257a0c092096f4132645d8ef980fd8406e5a",
+        "rev": "91fff50fd1a496f2bcd2b5a0bde4aaee1a6258af",
         "type": "github"
       },
       "original": {
@@ -441,11 +441,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1785600170,
-        "narHash": "sha256-FUYhESvUq9i4/VtGGr75w3nb3LA8qPKXG4Vs7+IjYD0=",
+        "lastModified": 1785683361,
+        "narHash": "sha256-KcadGoassasEGHnoW3R0PVdbNqu7ldczeOzWyNvvr6U=",
         "owner": "hyprwm",
         "repo": "Hyprland",
-        "rev": "88c6386994c960006e14c7bfa4ccfee873252882",
+        "rev": "4d26628276de580c69be89e734ea89931b121f02",
         "type": "github"
       },
       "original": {
@@ -955,11 +955,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785697046,
-        "narHash": "sha256-5HA7Js5Wg+Lq7Prl9lvlJjmw9UiSpfWcyl7gNZfWHSQ=",
+        "lastModified": 1785707827,
+        "narHash": "sha256-H70rICsCS/cx4KR1Qryln9HJd0iVekP+8or3OCKvPT0=",
         "owner": "noctalia-dev",
         "repo": "noctalia-shell",
-        "rev": "0f30499c61310fbd428a81d0d3369d4e36d69668",
+        "rev": "5aae077a3563da6fda3fc2a2b8ce9162e3a42019",
         "type": "github"
       },
       "original": {
