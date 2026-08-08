@@ -110,7 +110,7 @@ in
           dbpassFile = nextcloud-database;
         };
         extraApps = {
-          inherit (pkgs.nextcloud33Packages.apps) calendar contacts;
+          inherit (pkgs.nextcloud34Packages.apps) calendar contacts tasks;
           user_oidc = pkgs.fetchNextcloudApp {
             appName = "user_oidc";
             appVersion = "0.8.2";
