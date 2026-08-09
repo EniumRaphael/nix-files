@@ -78,6 +78,22 @@
       ...
     }@inputs:
     let
+      overlays = [
+        (final: prev: {
+          lib = prev.lib // {
+            patchUnfree =
+              pkg:
+              pkg.overrideAttrs (old: {
+                meta = old.meta // {
+                  license = (old.meta.license or { }) // {
+                    free = true;
+                  };
+                };
+              });
+          };
+        })
+      ];
+
       mkHomeManagerModule = userModules: extraSpecialArgs: {
         home-manager.sharedModules = [
           inputs.noctalia.homeModules.default
@@ -112,6 +128,7 @@
         in
         nixpkgs.lib.nixosSystem {
           modules = [
+            { nixpkgs.overlays = overlays; }
             ./hosts/${nixName}/configuration.nix
             agenix.nixosModules.default
             home-manager.nixosModules.home-manager
@@ -127,7 +144,7 @@
           ]
           ++ hostModules
           ++ extraModules;
-          specialArgs = { inherit inputs nixName; };
+          specialArgs = { inherit inputs nixName overlays; };
         };
     in
     {
