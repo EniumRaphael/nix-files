@@ -110,7 +110,10 @@ in
       };
     };
 
-    hardware.enableRedistributableFirmware = true;
+    hardware = {
+      enableRedistributableFirmware = true;
+      enableAllFirmware = true;
+    };
 
     environment.systemPackages =
       with pkgs;
@@ -120,7 +123,6 @@ in
         git
         home-manager
         lego
-        nix-output-monitor
         openssl
         pciutils
         ripgrep
