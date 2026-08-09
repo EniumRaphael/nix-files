@@ -131,10 +131,28 @@ in
         wget
         yarn
         zsh
+        displaylink
       ]
       ++ [
         inputs.agenix.packages.${pkgs.system}.agenix
       ];
+
+    services = {
+      upower.enable = true;
+      xserver.videoDrivers = [
+        "displaylink"
+        "modesetting"
+      ];
+    };
+
+    boot = {
+      extraModulePackages = [ config.boot.kernelPackages.evdi ];
+      initrd = {
+        kernelModules = [
+          "evdi"
+        ];
+      };
+    };
 
     age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
