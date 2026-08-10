@@ -22,5 +22,6 @@ in
     services = {
       xserver.videoDrivers = [ "nvidia" ];
     };
+    boot.kernelParams = [ "nvidia-drm.modeset=1" ];
   };
 }
