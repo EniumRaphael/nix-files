@@ -5,6 +5,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
 
     hm-config = {
       url = "github:EniumRaphael/home-manager";
@@ -71,6 +76,7 @@
       nixpkgs,
       agenix,
       catppuccin,
+      disko,
       hm-config,
       home-manager,
       nixos-hardware,
@@ -130,6 +136,7 @@
           modules = [
             { nixpkgs.overlays = overlays; }
             ./hosts/${nixName}/configuration.nix
+            disko.nixosModules.disko
             agenix.nixosModules.default
             home-manager.nixosModules.home-manager
             (mkHomeManagerModule userModules (
