@@ -43,6 +43,11 @@
     fsType = "ext4";
   };
 
+  fileSystems."/mnt/disks" = {
+    device = "rpool/data";
+    fsType = "zfs";
+  };
+
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
