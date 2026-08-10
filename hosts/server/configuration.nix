@@ -10,6 +10,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./disk.nix
     ../../modules/applications/default.nix
     ../../modules/games/default.nix
     ../../modules/graphical/default.nix
@@ -71,6 +72,7 @@
 
   networking = {
     hostName = "server";
+    hostId = "ba9db3c6";
     interfaces.enp0s31f6.ipv4.addresses = [
       {
         address = "192.168.1.1";
