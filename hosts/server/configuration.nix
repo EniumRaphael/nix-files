@@ -94,7 +94,7 @@
   service = {
     selfhost = {
       git = true;
-      htop = true;
+      htop = false;
       jellyfin = true;
       mail = false;
       monitor = true;
