@@ -30,6 +30,13 @@ in
         group = "forgejo";
         mode = "0440";
       };
+
+      "forgejo-mail-password" = {
+        file = ../../secrets/forgejo-mail-password.age;
+        owner = "forgejo";
+        group = "forgejo";
+        mode = "0440";
+      };
     };
 
     services = {
@@ -116,7 +123,16 @@ in
             ENABLED = true;
             DEFAULT_ACTIONS_URL = "github";
           };
+          mailer = {
+            ENABLED = true;
+            PROTOCOL = "smtps";
+            SMTP_ADDR = "smtp.migadu.com";
+            SMTP_PORT = 465;
+            FROM = "git@enium.eu";
+            USER = "git@enium.eu";
+          };
         };
+        secrets.mailer.PASSWD = config.age.secrets.forgejo-mail-password.path;
       };
       gitea-actions-runner = {
         package = pkgs.forgejo-runner;
