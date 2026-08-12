@@ -21,6 +21,7 @@ in
   "nextcloud-admin-pass.age".publicKeys = users ++ systems;
   "nextcloud-database.age".publicKeys = users ++ systems;
   "nextcloud-oidc-secret.age".publicKeys = users ++ systems;
+  "nextcloud-mail-password.age".publicKeys = users ++ systems;
   "grafana-oidc-secret.age".publicKeys = users ++ systems;
   "grafana-secret-key.age".publicKeys = users ++ systems;
   "forgejo-oidc-secret.age".publicKeys = users ++ systems;
