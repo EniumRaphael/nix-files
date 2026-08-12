@@ -58,10 +58,10 @@ in
 
     systemd = {
       tmpfiles.rules = [
-        "d /mnt/data 2770 root datausers -"
-        "d /mnt/data/nextcloud 0750 nextcloud nextcloud -"
-        "d /mnt/data/nextcloud/config 0750 nextcloud nextcloud -"
-        "d /mnt/data/nextcloud/data 0750 nextcloud nextcloud -"
+        "d /mnt/disks 2770 root datausers -"
+        "d /mnt/disks/nextcloud 0750 nextcloud nextcloud -"
+        "d /mnt/disks/nextcloud/config 0750 nextcloud nextcloud -"
+        "d /mnt/disks/nextcloud/data 0750 nextcloud nextcloud -"
       ];
       services."nextcloud-setup" = {
         requires = [
