@@ -24,6 +24,7 @@ in
   "nextcloud-mail-password.age".publicKeys = users ++ systems;
   "grafana-oidc-secret.age".publicKeys = users ++ systems;
   "grafana-secret-key.age".publicKeys = users ++ systems;
+  "grafana-mail-password.age".publicKeys = users ++ systems;
   "forgejo-oidc-secret.age".publicKeys = users ++ systems;
   "forgejo-runner-token.age".publicKeys = users ++ systems;
   "forgejo-mail-password.age".publicKeys = users ++ systems;
