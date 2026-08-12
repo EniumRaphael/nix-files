@@ -40,12 +40,17 @@ in
           SIGNUPS_ALLOWED = false;
           SSO_ENABLED = true;
           SSO_CLIENT_ID = "vault";
-          SSO_CLIENT_SECRET = "cat ${config.age.secrets.vault-oidc-secret.path}";
           SSO_AUTHORITY = "https://auth.enium.eu/oauth2/openid/vault";
           SSO_SIGNUPS_MATCH_EMAIL = true;
           SSO_PKCE = true;
           SSO_SCOPES = "openid profile email";
           SSO_ONLY = true;
+          SMTP_HOST = "smtp.migadu.com";
+          SMTP_PORT = 465;
+          SMTP_SECURITY = "force_tls";
+          SMTP_FROM = "vaultwarden@enium.eu";
+          SMTP_FROM_NAME = "Vaultwarden";
+          SMTP_USERNAME = "vaultwarden@enium.eu";
         };
       };
       kanidm.provision.systems.oauth2.vault = {
