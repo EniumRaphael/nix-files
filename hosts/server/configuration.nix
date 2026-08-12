@@ -100,6 +100,7 @@
       monitor = true;
       nextcloud = true;
       ollama = false;
+      immich = true;
       sso = true;
       vault = true;
     };
