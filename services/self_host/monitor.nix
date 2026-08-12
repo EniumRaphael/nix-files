@@ -32,7 +32,14 @@ in
         file = ../../secrets/grafana-secret-key.age;
         owner = "grafana";
         group = "grafana";
-        mode = "0440";
+        mode = "0400";
+      };
+
+      "grafana-mail-password" = {
+        file = ../../secrets/grafana-mail-password.age;
+        owner = "grafana";
+        group = "grafana";
+        mode = "0400";
       };
     };
 
@@ -137,6 +144,16 @@ in
             root_url = "https://monitor.enium.eu";
             domain = "monitor.enium.eu";
             serve_from_sub_path = false;
+          };
+
+          smtp = {
+            enabled = true;
+            host = "smtp.migadu.com:465";
+            from_address = "grafana@enium.eu";
+            from_name = "Grafana";
+            user = "grafana@enium.eu";
+            password = "$__file{${config.age.secrets.grafana-mail-password.path}}";
+            startTLS_policy = "NoStartTLS";
           };
 
           "auth.generic_oauth" = {
