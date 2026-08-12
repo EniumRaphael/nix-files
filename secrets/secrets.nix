@@ -26,6 +26,7 @@ in
   "grafana-secret-key.age".publicKeys = users ++ systems;
   "forgejo-oidc-secret.age".publicKeys = users ++ systems;
   "forgejo-runner-token.age".publicKeys = users ++ systems;
+  "forgejo-mail-password.age".publicKeys = users ++ systems;
   "kandim-admin.age".publicKeys = users ++ systems;
   "kandim-idmAdmin.age".publicKeys = users ++ systems;
   "vault-secret-env.age".publicKeys = users ++ systems;
