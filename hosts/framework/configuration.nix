@@ -22,6 +22,7 @@ in
 
   networking = {
     hostName = "framework";
+    hostId = "790a9e11";
   };
 
   config-user = {
