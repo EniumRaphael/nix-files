@@ -55,6 +55,14 @@ let
       lib
       ;
   };
+  immich = import ./immich.nix {
+    inherit
+      inputs
+      config
+      pkgs
+      lib
+      ;
+  };
   nextcloud = import ./nextcloud.nix {
     inherit
       inputs
@@ -90,6 +98,7 @@ in
     monitor
     nextcloud
     ollama
+    immich
     sso
     vault
   ];
@@ -124,6 +133,11 @@ in
       type = lib.types.bool;
       default = false;
       description = "Enable the nextcloud";
+    };
+    immich = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable the immich";
     };
     ollama = lib.mkOption {
       type = lib.types.bool;
