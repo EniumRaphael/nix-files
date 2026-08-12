@@ -9,6 +9,7 @@ let
   cfg = config.service.selfhost.nextcloud;
   nextcloud-admin-pass = config.age.secrets."nextcloud-admin-pass".path;
   nextcloud-database = config.age.secrets."nextcloud-database".path;
+  nextcloud-mail-password = config.age.secrets."nextcloud-mail-password".path;
   nextcloudLogo = pkgs.fetchurl {
     url = "https://upload.wikimedia.org/wikipedia/commons/6/60/Nextcloud_Logo.svg";
     name = "nextcloud.svg";
@@ -45,6 +46,12 @@ in
         file = ../../secrets/nextcloud-oidc-secret.age;
         owner = "kanidm";
         group = "kanidm";
+        mode = "0400";
+      };
+      "nextcloud-mail-password" = {
+        file = ../../secrets/nextcloud-mail-password.age;
+        owner = "nextcloud";
+        group = "nextcloud";
         mode = "0400";
       };
     };
@@ -125,8 +132,18 @@ in
             "nextcloud.enium.eu"
           ];
           default_phone_region = "FR";
+          mail_smtpmode = "smtp";
+          mail_sendmailmode = "smtp";
+          mail_smtpsecure = "";
+          mail_smtphost = "smtp.migadu.com";
+          mail_smtpport = 587;
+          mail_smtpauth = true;
+          mail_smtpname = "nextcloud@enium.eu";
+          mail_from_address = "nextcloud";
+          mail_domain = "enium.eu";
         };
         configureRedis = true;
+        secrets.mail_smtppassword = "${nextcloud-mail-password}";
       };
       kanidm.provision.systems.oauth2 = {
         nextcloud = {
