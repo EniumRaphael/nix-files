@@ -69,6 +69,7 @@ in
               groups = [
                 "grafana_superadmins"
                 "forgejo_admins"
+                "matrix_user"
                 "nextcloud_admins"
                 "vault_admins"
               ];
@@ -107,6 +108,9 @@ in
               present = true;
             };
             grafana_users = {
+              present = true;
+            };
+            matrix_user = {
               present = true;
             };
             forgejo_admins = {
