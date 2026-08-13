@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.service.selfhost.monitor;
+  cfg = config.service.selfhost.htop;
 in
 {
   config = lib.mkIf cfg {
