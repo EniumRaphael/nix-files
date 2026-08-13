@@ -83,17 +83,33 @@ in
               groups = [
                 "grafana_superadmins"
                 "forgejo_users"
+                "matrix_user"
                 "vault_users"
               ];
             };
-            nathe = {
-              displayName = "Nathe";
-              legalName = "Nathe Siefert";
+            benjamin = {
+              displayName = "Benjamin";
+              legalName = "Benjamin Dinon";
               mailAddresses = [
-                "nathesiefert@enium.eu"
+                "benjamin@enium.eu"
               ];
               groups = [
-                "nextcloud_user"
+                "matrix_user"
+                "grafana_users"
+                "forgejo_users"
+                "vault_users"
+              ];
+            };
+            rchouraqui = {
+              displayName = "Raphael Chouraqui";
+              legalName = "Raphael Chouraqui";
+              mailAddresses = [
+                "rchouraqui@enium.eu"
+              ];
+              groups = [
+                "matrix_user"
+                "grafana_users"
+                "forgejo_users"
               ];
             };
           };
