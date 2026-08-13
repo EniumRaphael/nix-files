@@ -18,13 +18,22 @@ in
     networking.firewall.allowedTCPPorts = [
       80
       443
+      8448
     ];
-    age.secrets."matrix-oidc-secret" = {
+    age.secrets = {
+      "matrix-registration-token" = {
+        file = ../../secrets/matrix-registration-token.age;
+        owner = "tuwunel";
+        group = "tuwunel";
+        mode = "0400";
+      };
+      "matrix-oidc-secret" = {
         file = ../../secrets/matrix-oidc-secret.age;
         owner = "kanidm";
         group = "tuwunel";
         mode = "0440";
       };
+    };
     services = {
       kanidm.provision.systems.oauth2.matrix = {
         present = true;
@@ -49,6 +58,7 @@ in
         enable = true;
         settings.global = {
           server_name = "matrix.enium.eu";
+          new_user_displayname_suffix = "";
           address = [
             "127.0.0.1"
           ];
@@ -64,22 +74,72 @@ in
             default = true;
             scopes = [ "openid" "email" "profile" ];
             issuer_url = "https://auth.enium.eu/oauth2/openid/matrix";
-            callback_url = "https://matrix.enium.eu/_matrix/client/oidc/callback";
             userid_claims = [ "preferred_username" ];
             trusted = true;
             registration = true;
+            registration_token_file = config.age.secrets.matrix-registration-token.path;
             unique_id_fallbacks = false;
           }];
         };
       };
       nginx = {
         enable = true;
+        upstreams."tuwunel" = {
+          servers = {
+            "127.0.0.1:6167" = { };
+          };
+        };
         virtualHosts."matrix.enium.eu" = {
+          listen = [
+            {
+              addr = "0.0.0.0";
+              port = 443;
+              ssl = true;
+            }
+            {
+              addr = "[::]";
+              port = 443;
+              ssl = true;
+            }
+            {
+              addr = "0.0.0.0";
+              port = 8448;
+              ssl = true;
+            }
+            {
+              addr = "[::]";
+              port = 8448;
+              ssl = true;
+            }
+          ];
+          http2 = true;
+          http3 = true;
+          extraConfig = ''
+            client_max_body_size 100M;
+          '';
           enableACME = true;
           forceSSL = true;
+          locations."/.well-known/matrix/server" = {
+            extraConfig = ''
+              return 200 '{"m.server": "matrix.enium.eu:443"}';
+              add_header Content-Type application/json;
+            '';
+          };
+
+          locations."/.well-known/matrix/client" = {
+            extraConfig = ''
+              return 200 '{"m.homeserver": {"base_url": "https://matrix.enium.eu"}, "m.identity_server": {"base_url": "https://vector.im"}}';
+              add_header Content-Type application/json;
+              add_header "Access-Control-Allow-Origin" "*";
+            '';
+          };
           locations."/" = {
-            proxyPass = "http://127.0.0.1:6167";
-            proxyWebsockets = true;
+            proxyPass = "http://tuwunel";
+            extraConfig = ''
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-For $remote_addr;
+              proxy_set_header X-Forwarded-Proto https;
+            '';
           };
         };
       };
