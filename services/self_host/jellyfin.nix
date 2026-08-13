@@ -15,6 +15,34 @@ in
       group = "root";
       mode = "0400";
     };
+    systemd = {
+      services.update-arr-containers = {
+        script = ''
+          containers=(gluetun qbittorrent prowlarr sonarr radarr)
+
+          for container in "''${containers[@]}"; do
+            image=$(${pkgs.docker}/bin/docker inspect --format='{{.Config.Image}}' "$container")
+            echo "Pulling $image..."
+            ${pkgs.docker}/bin/docker pull "$image"
+          done
+
+          for container in "''${containers[@]}"; do
+            echo "Restarting $container..."
+            systemctl restart "docker-$container.service"
+            sleep 2
+          done
+        '';
+        serviceConfig.Type = "oneshot";
+      };
+      timers.update-arr-containers = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnCalendar = "weekly";
+          Persistent = true;
+          RandomizedDelaySec = "5min";
+        };
+      };
+    };
     virtualisation = {
       docker.enable = true;
       oci-containers = {
