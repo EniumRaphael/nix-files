@@ -39,6 +39,14 @@ let
       lib
       ;
   };
+  matrix = import ./matrix.nix {
+    inherit
+      inputs
+      config
+      pkgs
+      lib
+      ;
+  };
   monitor = import ./monitor.nix {
     inherit
       inputs
@@ -95,6 +103,7 @@ in
     jellyfin
     htop
     mail
+    matrix
     monitor
     nextcloud
     ollama
@@ -123,6 +132,11 @@ in
       type = lib.types.bool;
       default = false;
       description = "Enable the mail";
+    };
+    matrix = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable the matrix";
     };
     monitor = lib.mkOption {
       type = lib.types.bool;
