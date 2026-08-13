@@ -33,24 +33,27 @@ in
         enable = true;
         port = 2283;
         openFirewall = true;
+        host = "127.0.0.1";
         mediaLocation = "/mnt/disks/immich";
         machine-learning.enable = true;
         redis.enable = true;
-        server= {
-          externalDomain = "immich.enium.eu";
-          loginPageMessage = "Welcome to the cloud Enium";
-          publicUsers = false;
-        };
-      notifications.smtp = {
-          enabled = true;
-          from = "immich@enium.eu";
-          transport = {
-            host = "smtp.migadu.com";
-            ignoreCert = false;
-            username = "immich@enium.eu";
-            password._secret = config.age.secrets.immich-mail-password.path;
-            port = 465;
-            secure = true;
+        settings = {
+          server = {
+            externalDomain = "https://immich.enium.eu";
+            loginPageMessage = "Welcome to the cloud Enium";
+            publicUsers = false;
+          };
+          notifications.smtp = {
+            enabled = true;
+            from = "immich@enium.eu";
+            transport = {
+              host = "smtp.migadu.com";
+              ignoreCert = false;
+              username = "immich@enium.eu";
+              password._secret = config.age.secrets.immich-mail-password.path;
+              port = 465;
+              secure = true;
+            };
           };
         };
       };
@@ -75,7 +78,8 @@ in
       };
     };
     systemd.tmpfiles.rules = [
-        "d /mnt/disks 2770 immich datausers -"
+        "d /mnt/disks 2770 root datausers -"
+        "d /mnt/disks/immich 0750 immich immich -"
       ];
   };
 }
