@@ -13,10 +13,29 @@ in
     services = {
       ollama = {
         enable = true;
+        package = pkgs.ollama-cuda;
+        environmentVariables = {
+          OLLAMA_MAX_LOADED_MODELS = "1";
+          OLLAMA_NUM_PARALLEL = "1";
+          OLLAMA_KEEP_ALIVE = "5m";
+          OLLAMA_FLASH_ATTENTION = "1";
+        };
         loadModels = [
           "mistral:7b"
+          "llama3.1:8b"
+          "qwen2.5:7b"
+          "gemma2:9b"
+          "codellama:7b"
+          "phi3:14b"
+          "phi3:mini"
+          "qwen2.5:3b"
+          "llama3.2:3b"
+          "gemma2:2b"
+          "qwen2.5-coder:7b"
+          "codegemma:7b"
+          "starcoder2:7b"
+          "llama3.1:13b"
         ];
-        acceleration = false;
       };
 
       open-webui = {
@@ -32,6 +51,7 @@ in
         };
       };
     };
+    nixpkgs.config.cudaSupport = true;
     networking.firewall.allowedTCPPorts = [
       80
       443
