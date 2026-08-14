@@ -28,6 +28,59 @@ in
         "datausers"
       ];
     };
+    systemd = {
+      services.update-immich-containers = {
+        script = ''
+          containers=(immich-machine-learning)
+
+          for container in "''${containers[@]}"; do
+            image=$(${pkgs.docker}/bin/docker inspect --format='{{.Config.Image}}' "$container")
+            echo "Pulling $image..."
+            ${pkgs.docker}/bin/docker pull "$image"
+          done
+
+          for container in "''${containers[@]}"; do
+            echo "Restarting $container..."
+            systemctl restart "docker-$container.service"
+            sleep 2
+          done
+        '';
+        serviceConfig.Type = "oneshot";
+      };
+      timers.update-immich-containers = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnCalendar = "weekly";
+          Persistent = true;
+          RandomizedDelaySec = "5min";
+        };
+      };
+    };
+    hardware.nvidia-container-toolkit = {
+      enable = true;
+      mount-nvidia-executables = true;
+    };
+    virtualisation = {
+      docker.enable = true;
+      oci-containers = {
+        backend = "docker";
+        containers = {
+          immich-machine-learning = {
+            image = "ghcr.io/immich-app/immich-machine-learning:release-cuda";
+            devices = [
+              "nvidia.com/gpu=all"
+            ];
+            networks = [
+              "host"
+            ];
+            volumes = [
+              "/var/cache/immich:/cache"
+            ];
+            environment.TZ = "Europe/Paris";
+          };
+        };
+      };
+    };
     services = {
       immich = {
         enable = true;
@@ -35,7 +88,8 @@ in
         openFirewall = true;
         host = "127.0.0.1";
         mediaLocation = "/mnt/disks/immich";
-        machine-learning.enable = true;
+        environment.MACHINE_LEARNING_URL = "http://localhost:3003";
+        machine-learning.enable = false;
         redis.enable = true;
         settings = {
           server = {
