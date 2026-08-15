@@ -69,7 +69,8 @@ in
               groups = [
                 "grafana_superadmins"
                 "forgejo_admins"
-                "matrix_user"
+                "matrix_users"
+                "immich_users"
                 "nextcloud_admins"
                 "vault_admins"
               ];
@@ -83,7 +84,7 @@ in
               groups = [
                 "grafana_superadmins"
                 "forgejo_users"
-                "matrix_user"
+                "matrix_users"
                 "vault_users"
               ];
             };
@@ -94,7 +95,7 @@ in
                 "benjamin@enium.eu"
               ];
               groups = [
-                "matrix_user"
+                "matrix_users"
                 "grafana_users"
                 "forgejo_users"
                 "vault_users"
@@ -107,7 +108,7 @@ in
                 "rchouraqui@enium.eu"
               ];
               groups = [
-                "matrix_user"
+                "matrix_users"
                 "grafana_users"
                 "forgejo_users"
               ];
@@ -126,7 +127,10 @@ in
             grafana_users = {
               present = true;
             };
-            matrix_user = {
+            matrix_users = {
+              present = true;
+            };
+            immich_users = {
               present = true;
             };
             forgejo_admins = {
