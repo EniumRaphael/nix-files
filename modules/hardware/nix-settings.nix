@@ -21,19 +21,24 @@ in
         download-buffer-size = 268435456;
         substituters = [
           "https://eniumraphael.cachix.org"
+          "https://cache.nixos-cuda.org"
         ];
         trusted-substituters = [
           "https://eniumraphael.cachix.org"
+          "https://cache.nixos-cuda.org"
         ];
         trusted-public-keys = [
           "eniumraphael.cachix.org-1:MnPAkTzOEHAydM9/yMcBq0HuBMCGToNNmHEtyD/Okxg="
+          "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
         ];
         experimental-features = [
           "nix-command"
           "flakes"
         ];
         max-jobs = "auto";
-        auto-optimise-store = true;
+        cores = 0;
+        keep-outputs = true;
+        keep-derivations = true;
       };
       optimise.automatic = true;
     };
