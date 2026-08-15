@@ -82,7 +82,9 @@ in
                 "deborah@enium.eu"
               ];
               groups = [
-                "grafana_superadmins"
+                "nextcloud_users"
+                "immich_users"
+                "grafana_users"
                 "forgejo_users"
                 "matrix_users"
                 "vault_users"
@@ -148,7 +150,7 @@ in
             nextcloud_admins = {
               present = true;
             };
-            nextcloud_user = {
+            nextcloud_users = {
               present = true;
             };
           };

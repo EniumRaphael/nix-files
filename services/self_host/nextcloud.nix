@@ -172,7 +172,7 @@ in
               "email"
               "groups"
             ];
-            nextcloud_user = [
+            nextcloud_users = [
               "openid"
               "profile"
               "email"
