@@ -47,7 +47,7 @@ in
         allowInsecureClientDisablePkce = false;
         preferShortUsername = true;
         scopeMaps = {
-          matrix_user = [
+          matrix_users = [
             "email"
             "openid"
             "profile"
