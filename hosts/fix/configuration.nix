@@ -20,6 +20,12 @@
 
   networking = {
     hostName = "fix";
+    nameservers = [
+      "194.242.2.3"
+      "2a07:e340::3"
+      "194.242.2.4"
+      "2a07:e340::4"
+    ];
   };
 
   config-user = {
