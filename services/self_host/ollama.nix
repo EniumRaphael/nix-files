@@ -22,19 +22,9 @@ in
         };
         loadModels = [
           "mistral:7b"
-          "llama3.1:8b"
-          "qwen2.5:7b"
-          "gemma2:9b"
-          "codellama:7b"
-          "phi3:14b"
-          "phi3:mini"
-          "qwen2.5:3b"
-          "llama3.2:3b"
-          "gemma2:2b"
-          "qwen2.5-coder:7b"
-          "codegemma:7b"
-          "starcoder2:7b"
-          "llama3.1:13b"
+          "qwen3.5:9b"
+          "ministral-3:8b "
+          "gemma4:e4b"
         ];
       };
 
