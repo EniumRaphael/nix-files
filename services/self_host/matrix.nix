@@ -12,6 +12,8 @@ let
     name = "matrix.svg";
     sha256 = "0qp0k19gsw65ymnikdmkn3n32l3x7v8szf4ijlzsla92szn0vwhk";
   };
+  nddMatrix = "matrix.enium.eu";
+  nddAuth = "auth.enium.eu";
 in
 {
   config = lib.mkIf cfg {
@@ -39,8 +41,8 @@ in
         present = true;
         displayName = "Matrix";
         imageFile = matrixLogo;
-        originUrl = "https://matrix.enium.eu";
-        originLanding = "https://matrix.enium.eu/_matrix/client/unstable/login/sso/callback/matrix";
+        originUrl = "https://${nddMatrix}";
+        originLanding = "https://${nddMatrix}/_matrix/client/unstable/login/sso/callback/matrix";
         basicSecretFile = config.age.secrets.matrix-oidc-secret.path;
         public = false;
         enableLocalhostRedirects = false;
@@ -57,7 +59,7 @@ in
       matrix-tuwunel = {
         enable = true;
         settings.global = {
-          server_name = "matrix.enium.eu";
+          server_name = "${nddMatrix}";
           new_user_displayname_suffix = "";
           address = [
             "127.0.0.1"
@@ -65,21 +67,31 @@ in
           port = [
             6167
           ];
-          well_known.client = "https://matrix.enium.eu";
+          well_known.client = "https://${nddMatrix}";
           allow_federation = true;
-          identity_provider = [{
-            brand = "Enium";
-            client_id = "matrix";
-            client_secret_file = config.age.secrets.matrix-oidc-secret.path;
-            default = true;
-            scopes = [ "openid" "email" "profile" ];
-            issuer_url = "https://auth.enium.eu/oauth2/openid/matrix";
-            userid_claims = [ "preferred_username" ];
-            trusted = true;
-            registration = true;
-            registration_token_file = config.age.secrets.matrix-registration-token.path;
-            unique_id_fallbacks = false;
-          }];
+          identity_provider = [
+            {
+              brand = "Enium";
+              client_id = "matrix";
+              client_secret_file = config.age.secrets.matrix-oidc-secret.path;
+              default = true;
+              scopes = [
+                "openid"
+                "email"
+                "profile"
+              ];
+              issuer_url = "https://${nddAuth}/oauth2/openid/matrix";
+              userid_claims = [ "preferred_username" ];
+              trusted = true;
+              registration = true;
+              registration_token_file = config.age.secrets.matrix-registration-token.path;
+              unique_id_fallbacks = false;
+            }
+          ];
+        };
+        well_known = {
+          client.base_url = "https://${nddMatrix}";
+          server.base_url = "https://${nddMatrix}";
         };
       };
       nginx = {
@@ -89,7 +101,7 @@ in
             "127.0.0.1:6167" = { };
           };
         };
-        virtualHosts."matrix.enium.eu" = {
+        virtualHosts."${nddMatrix}" = {
           listen = [
             {
               addr = "0.0.0.0";
@@ -119,20 +131,6 @@ in
           '';
           enableACME = true;
           forceSSL = true;
-          locations."/.well-known/matrix/server" = {
-            extraConfig = ''
-              return 200 '{"m.server": "matrix.enium.eu:443"}';
-              add_header Content-Type application/json;
-            '';
-          };
-
-          locations."/.well-known/matrix/client" = {
-            extraConfig = ''
-              return 200 '{"m.homeserver": {"base_url": "https://matrix.enium.eu"}, "m.identity_server": {"base_url": "https://vector.im"}}';
-              add_header Content-Type application/json;
-              add_header "Access-Control-Allow-Origin" "*";
-            '';
-          };
           locations."/" = {
             proxyPass = "http://tuwunel";
             extraConfig = ''
