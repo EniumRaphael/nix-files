@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.service.selfhost.jellyfin;
+  data_dir = "/mnt/disks";
 in
 {
   config = lib.mkIf cfg {
@@ -95,8 +96,8 @@ in
               TZ = "Europe/Paris";
             };
             volumes = [
-              "/mnt/data/qbittorrent/config:/config"
-              "/mnt/data/downloads:/downloads"
+              "${data_dir}/qbittorrent/config:/config"
+              "${data_dir}/downloads:/downloads"
             ];
           };
           radarr = {
@@ -114,9 +115,9 @@ in
               TZ = "Europe/Paris";
             };
             volumes = [
-              "/mnt/data/radarr/config:/config"
-              "/mnt/data/downloads:/downloads"
-              "/mnt/data:/data"
+              "${data_dir}/radarr/config:/config"
+              "${data_dir}/downloads:/downloads"
+              "${data_dir}:/data"
             ];
           };
           sonarr = {
@@ -134,9 +135,9 @@ in
               TZ = "Europe/Paris";
             };
             volumes = [
-              "/mnt/data/sonarr/config:/config"
-              "/mnt/data/downloads:/downloads"
-              "/mnt/data:/data"
+              "${data_dir}/sonarr/config:/config"
+              "${data_dir}/downloads:/downloads"
+              "${data_dir}:/data"
             ];
           };
           prowlarr = {
@@ -154,7 +155,7 @@ in
               TZ = "Europe/Paris";
             };
             volumes = [
-              "/mnt/data/prowlarr/config:/config"
+              "${data_dir}/prowlarr/config:/config"
             ];
           };
         };
@@ -217,7 +218,7 @@ in
       ];
       jellyfin = {
         enable = true;
-        dataDir = "/mnt/data/jellyfin";
+        dataDir = "${data_dir}/jellyfin";
         openFirewall = true;
       };
       nginx = {
