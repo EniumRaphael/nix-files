@@ -67,7 +67,6 @@ in
           port = [
             6167
           ];
-          well_known.client = "https://${nddMatrix}";
           allow_federation = true;
           identity_provider = [
             {
@@ -88,10 +87,10 @@ in
               unique_id_fallbacks = false;
             }
           ];
-        };
-        well_known = {
-          client.base_url = "https://${nddMatrix}";
-          server.base_url = "https://${nddMatrix}";
+          well_known = {
+            client = "https://${nddMatrix}";
+            server = "${nddMatrix}";
+          };
         };
       };
       nginx = {
