@@ -56,6 +56,7 @@ in
     };
     bluetooth = true;
     fingerprint = false;
+    streamdeck = true;
     printer = true;
     nix-settings = true;
     keyboard = true;
