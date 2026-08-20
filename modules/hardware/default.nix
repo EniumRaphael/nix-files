@@ -25,6 +25,9 @@ let
   bluetooth = import ./bluetooth.nix {
     inherit config pkgs lib;
   };
+  streamdeck = import ./streamdeck.nix {
+    inherit config pkgs lib;
+  };
   fingerprint = import ./fingerprint.nix {
     inherit config pkgs lib;
   };
@@ -38,6 +41,7 @@ in
     printer
     bluetooth
     fingerprint
+    streamdeck
     inputs.agenix.nixosModules.default
   ];
 
@@ -83,6 +87,11 @@ in
       type = lib.types.bool;
       default = false;
       description = "The configuration for fingerprint";
+    };
+    streamdeck = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "The configuration for streamdeck";
     };
   };
   config = {
