@@ -16,34 +16,6 @@ in
       group = "root";
       mode = "0400";
     };
-    systemd = {
-      services.update-arr-containers = {
-        script = ''
-          containers=(gluetun qbittorrent prowlarr sonarr radarr)
-
-          for container in "''${containers[@]}"; do
-            image=$(${pkgs.docker}/bin/docker inspect --format='{{.Config.Image}}' "$container")
-            echo "Pulling $image..."
-            ${pkgs.docker}/bin/docker pull "$image"
-          done
-
-          for container in "''${containers[@]}"; do
-            echo "Restarting $container..."
-            systemctl restart "docker-$container.service"
-            sleep 2
-          done
-        '';
-        serviceConfig.Type = "oneshot";
-      };
-      timers.update-arr-containers = {
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = "weekly";
-          Persistent = true;
-          RandomizedDelaySec = "5min";
-        };
-      };
-    };
     virtualisation = {
       docker.enable = true;
       oci-containers = {
@@ -219,6 +191,7 @@ in
       jellyfin = {
         enable = true;
         dataDir = "${data_dir}/jellyfin";
+        cacheDir = "${data_dir}/jellyfin/cache";
         openFirewall = true;
       };
       nginx = {
@@ -252,8 +225,55 @@ in
       80
       443
     ];
-    systemd.services.jellyfin.serviceConfig = {
-      PrivateUsers = lib.mkForce false;
+    systemd = {
+      services = {
+        jellyfin = {
+          after = [
+            "zfs-mount.service"
+            "network-online.target"
+          ];
+          requires = [ "zfs-mount.service" ];
+          unitConfig = {
+            RequiresMountsFor = [
+              "${data_dir}/movies"
+              "${data_dir}/jellyfin/config"
+              "${data_dir}/jellyfin/log"
+            ];
+          };
+        };
+        update-arr-containers = {
+          script = ''
+            containers=(gluetun qbittorrent prowlarr sonarr radarr)
+
+            for container in "''${containers[@]}"; do
+              image=$(${pkgs.docker}/bin/docker inspect --format='{{.Config.Image}}' "$container")
+              echo "Pulling $image..."
+              ${pkgs.docker}/bin/docker pull "$image"
+            done
+
+            for container in "''${containers[@]}"; do
+              echo "Restarting $container..."
+              systemctl restart "docker-$container.service"
+              sleep 2
+            done
+          '';
+          serviceConfig.Type = "oneshot";
+        };
+      };
+      timers.update-arr-containers = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnCalendar = "weekly";
+          Persistent = true;
+          RandomizedDelaySec = "5min";
+        };
+      };
+      tmpfiles.rules = [
+        "d ${data_dir} 2770 root datausers -"
+        "d ${data_dir}/downloads 0770 jellyfin datausers -"
+        "d ${data_dir}/downloads/radarr 0770 jellyfin datausers -"
+        "d ${data_dir}/downloads/tv-sonarr 0770 jellyfin datausers -"
+      ];
     };
   };
 }
