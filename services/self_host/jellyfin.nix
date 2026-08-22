@@ -219,6 +219,7 @@ in
       jellyfin = {
         enable = true;
         dataDir = "${data_dir}/jellyfin";
+        cacheDir = "${data_dir}/jellyfin/cache";
         openFirewall = true;
       };
       nginx = {
@@ -252,8 +253,19 @@ in
       80
       443
     ];
-    systemd.services.jellyfin.serviceConfig = {
-      PrivateUsers = lib.mkForce false;
+    systemd.services.jellyfin = {
+      after = [
+        "zfs-mount.service"
+        "network-online.target"
+      ];
+      requires = [ "zfs-mount.service" ];
+      unitConfig = {
+        RequiresMountsFor = [
+          "/mnt/disks/movies"
+          "/mnt/disks/jellyfin/config"
+          "/mnt/disks/jellyfin/log"
+        ];
+      };
     };
   };
 }
