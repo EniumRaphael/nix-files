@@ -130,11 +130,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1787112172,
-        "narHash": "sha256-UMk1vXwGwx7dSxHAst6EcOvsryXIRuRF1QIFCz3oG+k=",
+        "lastModified": 1787284994,
+        "narHash": "sha256-ekBKvaEJY74xfbvB/QWLaB42XspwLlO5ySfmgvgKeeM=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "b6890db16471fa96d9223b538bcd30af7ea0a9bb",
+        "rev": "6e90cf8523a05e55621ede7cf1e101e1a70c5446",
         "type": "gitlab"
       },
       "original": {
@@ -323,11 +323,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787281271,
-        "narHash": "sha256-7ZFKM8XoTCU/5AgI91o+TPUpgkgZLmNc+RY5TVmj3cc=",
+        "lastModified": 1787367668,
+        "narHash": "sha256-DSc3NW73VhkOo2X5H3S38K1bUXquU9d29cmmN7egdq8=",
         "owner": "EniumRaphael",
         "repo": "home-manager",
-        "rev": "c3b3e892b250ee4c7cb3c5468ad023c45c20eede",
+        "rev": "4b5b2a9ad5d8642ff46dfff449dcbf671aec555b",
         "type": "github"
       },
       "original": {
@@ -461,11 +461,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1787239441,
-        "narHash": "sha256-O4pHn5sN1gRWz33L5fcontzUb89ytCikDIQVbrnYvKw=",
+        "lastModified": 1787346220,
+        "narHash": "sha256-iDmbrZM6XcLPRNWGo4g54XppRSuC8Q+GpInjbD9qrK8=",
         "owner": "hyprwm",
         "repo": "Hyprland",
-        "rev": "8d50be06aa7d84283ac364a03df74bd834cab0ee",
+        "rev": "d29916a91c201cc7043aa68ace2e5dfba59c13d8",
         "type": "github"
       },
       "original": {
@@ -893,11 +893,11 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1787279450,
-        "narHash": "sha256-nAmje+1b+jdHR/QZFAmpsxzTIKF6/U/mcxTJpEjwt3k=",
+        "lastModified": 1787365850,
+        "narHash": "sha256-XGdJDu7TYRgVyk2sewiXP2zgcreD2iRhVqwL+0PrGqc=",
         "owner": "EniumRaphael",
         "repo": "nixvim",
-        "rev": "87d33345d4314a186e52d341aa94b85666981023",
+        "rev": "c9c25a7638704dcec8cbfc116df7d5cd4afe2a37",
         "type": "github"
       },
       "original": {
@@ -935,11 +935,11 @@
         "nixvim": "nixvim_4"
       },
       "locked": {
-        "lastModified": 1787279450,
-        "narHash": "sha256-nAmje+1b+jdHR/QZFAmpsxzTIKF6/U/mcxTJpEjwt3k=",
+        "lastModified": 1787365850,
+        "narHash": "sha256-XGdJDu7TYRgVyk2sewiXP2zgcreD2iRhVqwL+0PrGqc=",
         "owner": "EniumRaphael",
         "repo": "nixvim",
-        "rev": "87d33345d4314a186e52d341aa94b85666981023",
+        "rev": "c9c25a7638704dcec8cbfc116df7d5cd4afe2a37",
         "type": "github"
       },
       "original": {
@@ -975,11 +975,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787272040,
-        "narHash": "sha256-YZxcF28MvmXOVt1sq0lXddgYVIj/5exDh0vztl/vIvw=",
+        "lastModified": 1787369379,
+        "narHash": "sha256-1WUdzP3Y9l95gRhn8muREP0UJu8PmvzEHmdIyfaYRac=",
         "owner": "noctalia-dev",
         "repo": "noctalia-shell",
-        "rev": "791e557417ceeba0e57562af2ddcbd3d8b93f62a",
+        "rev": "7fd9f7bfa9604022b9de311b30a3da0c2c4415de",
         "type": "github"
       },
       "original": {
@@ -1217,11 +1217,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787281392,
-        "narHash": "sha256-WnGPcxoouwp2ZNQ2lBfVunY77AIFy6cdAfT4J5Vw6Fs=",
+        "lastModified": 1787367259,
+        "narHash": "sha256-tDA0gwLMsp1pdaA20YjHEl3hPaBo5EXqLk75fSeD7y4=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "4ab199700226db9b91ab69fa2b78816ebe475358",
+        "rev": "d8a240ad75bce9c803a63dd8061b0ac4b1855532",
         "type": "github"
       },
       "original": {
