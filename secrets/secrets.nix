@@ -16,6 +16,9 @@ in
 {
   "cachix-key.age".publicKeys = users ++ systems;
   "wireguard-secret.age".publicKeys = users ++ systems;
+  "mail-perso-password.age".publicKeys = users ++ systems;
+  "mail-enium-password.age".publicKeys = users ++ systems;
+  "mail-icloud-password.age".publicKeys = users ++ systems;
   "mailjet-user.age".publicKeys = users ++ systems;
   "mailjet-pass.age".publicKeys = users ++ systems;
   "nextcloud-admin-pass.age".publicKeys = users ++ systems;
