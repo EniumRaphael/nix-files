@@ -35,6 +35,24 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    programs.seahorse.enable = true;
+    age.secrets = lib.mkIf cfg.mail {
+      "mail-perso-password" = {
+        file = ../../secrets/mail-perso-password.age;
+        owner = "raphael";
+        mode = "0400";
+      };
+      "mail-enium-password" = {
+        file = ../../secrets/mail-enium-password.age;
+        owner = "raphael";
+        mode = "0400";
+      };
+      "mail-icloud-password" = {
+        file = ../../secrets/mail-icloud-password.age;
+        owner = "raphael";
+        mode = "0400";
+      };
+    };
     hardware = {
       graphics = {
         enable = true;
@@ -42,7 +60,6 @@ in
       };
     };
     programs = {
-      thunderbird.enable = cfg.mail;
       hyprland = {
         enable = true;
         xwayland.enable = true;
