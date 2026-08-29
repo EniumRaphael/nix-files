@@ -37,6 +37,10 @@ in
     nginx
   ];
 
+  config = {
+    security.sudo.execWheelOnly = true;
+  };
+
   options.config-sec = {
     autorun = lib.mkOption {
       type = lib.types.bool;
