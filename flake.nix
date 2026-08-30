@@ -132,15 +132,19 @@
             disko.nixosModules.disko
             agenix.nixosModules.default
             home-manager.nixosModules.home-manager
-            (mkHomeManagerModule userModules (
-              {
-                inherit inputs;
-              }
-              // hmPackages
-              // {
-                inherit gpgFingerprint;
-              }
-            ))
+            (
+              { config, ... }:
+              mkHomeManagerModule userModules (
+                {
+                  inherit inputs;
+                  osConfig = config;
+                }
+                // hmPackages
+                // {
+                  inherit gpgFingerprint;
+                }
+              )
+            )
           ]
           ++ hostModules
           ++ extraModules;
