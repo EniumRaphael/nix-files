@@ -13,9 +13,16 @@ let
     name = "grafana.svg";
     sha256 = "sha256-UjE6ArLCa52o3XGUmpqPoakbEOeFi+zfsnATi1FtWmQ=";
   };
-  monitored = [
-    "nginx"
-    "grafana"
+  monitoredUrls = [
+    "https://auth.enium.eu"
+    "https://git.enium.eu"
+    "https://jellyfin.enium.eu"
+    "https://monitor.enium.eu"
+    "https://nextcloud.enium.eu"
+    "https://radarr.enium.eu"
+    "https://sonarr.enium.eu"
+    "https://vault.enium.eu"
+    "https://raphael.parodi.pro"
   ];
 in
 {
@@ -38,8 +45,8 @@ in
       "grafana-mail-password" = {
         file = ../../secrets/grafana-mail-password.age;
         owner = "grafana";
-        group = "grafana";
-        mode = "0400";
+        group = "alertmanager";
+        mode = "0440";
       };
     };
 
@@ -125,6 +132,14 @@ in
           ];
           datasources.settings.datasources = [
             {
+              name = "Loki";
+              type = "loki";
+              uid = "loki";
+              access = "proxy";
+              url = "http://127.0.0.1:3100";
+              editable = false;
+            }
+            {
               name = "Prometheus";
               type = "prometheus";
               uid = "prometheus";
@@ -194,6 +209,62 @@ in
       prometheus = {
         enable = true;
         checkConfig = false;
+        alertmanager = {
+          enable = true;
+          listenAddress = "127.0.0.1";
+          port = 9093;
+          configuration = {
+            global = {
+              smtp_smarthost = "smtp.migadu.com:465";
+              smtp_from = "grafana@enium.eu";
+              smtp_auth_username = "grafana@enium.eu";
+              smtp_auth_password_file = config.age.secrets.grafana-mail-password.path;
+              smtp_require_tls = false;
+            };
+
+            route = {
+              receiver = "email-default";
+              group_by = [
+                "alertname"
+                "severity"
+              ];
+              group_wait = "30s";
+              group_interval = "5m";
+              repeat_interval = "3h";
+
+              routes = [
+                {
+                  match = {
+                    severity = "critical";
+                  };
+                  receiver = "email-critical";
+                  repeat_interval = "1h";
+                }
+              ];
+            };
+
+            receivers = [
+              {
+                name = "email-critical";
+                email_configs = [
+                  {
+                    to = "raphael@enium.eu";
+                    send_resolved = true;
+                  }
+                ];
+              }
+              {
+                name = "email-default";
+                email_configs = [
+                  {
+                    to = "raphael@enium.eu";
+                    send_resolved = true;
+                  }
+                ];
+              }
+            ];
+          };
+        };
         exporters = {
           blackbox = {
             enable = true;
@@ -236,18 +307,6 @@ in
             ];
           }
           {
-            job_name = "process_exporter";
-            metrics_path = "/metrics";
-            scheme = "http";
-            static_configs = [
-              {
-                targets = [
-                  "127.0.0.1:9256"
-                ];
-              }
-            ];
-          }
-          {
             job_name = "blackbox_http_probe";
             metrics_path = "/probe";
             params = {
@@ -257,19 +316,7 @@ in
             };
             static_configs = [
               {
-                targets = [
-                  "https://raphael.parodi.pro"
-                  "https://auth.enium.eu"
-                  "https://git.enium.eu"
-                  "https://htop.enium.eu"
-                  "https://jellyfin.enium.eu"
-                  "https://monitor.enium.eu"
-                  "https://nextcloud.enium.eu"
-                  "https://radarr.enium.eu"
-                  "https://sonarr.enium.eu"
-                  "https://vault.enium.eu"
-                  "https://ollama.enium.eu"
-                ];
+                targets = monitoredUrls;
               }
             ];
             relabel_configs = [
@@ -386,15 +433,6 @@ in
 
     systemd.services = {
       alloy.serviceConfig.SupplementaryGroups = [ "systemd-journal" ];
-      process_exporter = {
-        description = "Prometheus Process Exporter";
-        after = [ "network.target" ];
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          ExecStart = "${pkgs.prometheus-process-exporter}/bin/process-exporter --config.path /etc/process-exporter.json";
-          Restart = "always";
-        };
-      };
     };
 
     networking.firewall.allowedTCPPorts = [
@@ -403,54 +441,19 @@ in
     ];
 
     environment.etc = {
-      "process-exporter.json".text = builtins.toJSON {
-        procMatchers = lib.map (svc: {
-          name = svc;
-          cmdline = [
-            "${svc}:"
-          ];
-        }) monitored;
-      };
       "grafana/dashboards".source = dashboardsDir;
       "prometheus/services.rules".text = ''
         groups:
         - name: services
           rules:
-          - alert: nginxServiceDown
-            expr: process_up{job="process_exporter",name="nginx"} == 0
+          - alert: ServiceDown
+            expr: node_systemd_unit_state{state="failed"} == 1
             for: 1m
             labels:
               severity: critical
             annotations:
-              summary: "Processus nginx arrêté"
-              description: "Le processus nginx ne tourne plus depuis >1m."
-
-          - alert: nginxServiceUp
-            expr: process_up{job="process_exporter",name="nginx"} == 1
-            for: 1m
-            labels:
-              severity: info
-            annotations:
-              summary: "Processus nginx rétabli"
-              description: "Le processus nginx tourne de nouveau."
-
-          - alert: grafanaServiceDown
-            expr: process_up{job="process_exporter",name="grafana"} == 0
-            for: 1m
-            labels:
-              severity: critical
-            annotations:
-              summary: "Processus grafana arrêté"
-              description: "Le processus grafana ne tourne plus depuis >1m."
-
-          - alert: grafanaServiceUp
-            expr: process_up{job="process_exporter",name="grafana"} == 1
-            for: 1m
-            labels:
-              severity: info
-            annotations:
-              summary: "Processus grafana rétabli"
-              description: "Le processus grafana tourne de nouveau."
+              summary: "Service {{ $labels.name }} en échec"
+              description: "Le service {{ $labels.name }} est en état 'failed' depuis >1m sur {{ $labels.instance }}."
       '';
     };
 
