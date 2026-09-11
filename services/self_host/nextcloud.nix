@@ -62,6 +62,7 @@ in
         "d /mnt/disks/nextcloud 0750 nextcloud nextcloud -"
         "d /mnt/disks/nextcloud/config 0750 nextcloud nextcloud -"
         "d /mnt/disks/nextcloud/data 0750 nextcloud nextcloud -"
+        "d /var/log/nextcloud 0750 nextcloud nextcloud -"
       ];
       services."nextcloud-setup" = {
         requires = [
@@ -126,11 +127,16 @@ in
             sha256 = "sha256-Sc7R/hkjAvRUC4aUOLbMucoNabcXt27XB1pwqlz2Zv0=";
           };
         };
+        phpOptions = {
+          "opcache.interned_strings_buffer" = "32";
+        };
         settings = {
           trusted_domains = [
             "192.168.1.254"
             "nextcloud.enium.eu"
           ];
+          maintenance_window_start = 5;
+          serverid = 0;
           default_phone_region = "FR";
           mail_smtpmode = "smtp";
           mail_sendmailmode = "smtp";
@@ -141,6 +147,9 @@ in
           mail_smtpname = "nextcloud@enium.eu";
           mail_from_address = "nextcloud";
           mail_domain = "enium.eu";
+          log_type = "file";
+          logfile = "/var/log/nextcloud/nextcloud.log";
+          loglevel = 2;
         };
         configureRedis = true;
         secrets.mail_smtppassword = "${nextcloud-mail-password}";
