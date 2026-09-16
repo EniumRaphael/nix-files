@@ -173,6 +173,15 @@ in
               "nix:docker://nixos/nix"
             ];
           };
+          flutter = {
+            enable = true;
+            name = "flutter";
+            url = "https://git.enium.eu";
+            tokenFile = config.age.secrets.forgejo-runner-token.path;
+            labels = [
+              "flutter:docker://ghcr.io/cirruslabs/flutter:stable"
+            ];
+          };
         };
       };
       nginx = {
