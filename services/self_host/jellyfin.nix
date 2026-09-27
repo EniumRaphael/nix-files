@@ -37,13 +37,10 @@ in
               BLOCK_MALICIOUS = "off";
               BLOCK_SURVEILLANCE = "off";
               BLOCK_ADS = "off";
-              WIREGUARD_ADDRESSES = "10.74.60.159/32";
-              SERVER_COUNTRIES = "Sweden";
-              SERVER_CITIES = "Stockholm";
-              SERVER_HOSTNAMES = "se-sto-wg-204";
+              WIREGUARD_ADDRESSES = "10.68.171.41/32";
+              SERVER_COUNTRIES = "Netherlands";
               TZ = "Europe/Paris";
               DNS_ADDRESS = "10.64.0.1";
-              DNS_KEEP_NAMESERVER = "off";
             };
             ports = [
               "8080:8080"
