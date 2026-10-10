@@ -7,6 +7,14 @@
 }:
 
 let
+  backup = import ./backup.nix {
+    inherit
+      inputs
+      config
+      pkgs
+      lib
+      ;
+  };
   git = import ./git.nix {
     inherit
       inputs
@@ -99,6 +107,7 @@ let
 in
 {
   imports = [
+    backup
     git
     jellyfin
     htop
@@ -113,6 +122,11 @@ in
   ];
 
   options.service.selfhost = {
+    backup = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable S3 backups (restic) of the self-hosted services";
+    };
     git = lib.mkOption {
       type = lib.types.bool;
       default = false;

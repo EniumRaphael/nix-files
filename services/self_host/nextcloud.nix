@@ -87,14 +87,6 @@ in
           }
         ];
       };
-      postgresqlBackup = {
-        enable = true;
-        location = "/data/backup/nextclouddb";
-        databases = [
-          "nextcloud"
-        ];
-        startAt = "*-*-* 23:15:00";
-      };
       redis.servers.nextcloud = {
         enable = true;
         user = "nextcloud";
