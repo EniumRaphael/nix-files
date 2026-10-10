@@ -101,6 +101,7 @@
 
   service = {
     selfhost = {
+      backup = true;
       git = true;
       htop = false;
       jellyfin = true;
