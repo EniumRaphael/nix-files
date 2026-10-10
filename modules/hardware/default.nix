@@ -148,7 +148,7 @@ in
         displaylink
       ]
       ++ [
-        inputs.agenix.packages.${pkgs.system}.agenix
+        inputs.agenix.packages.${stdenv.hostPlatform.system}.agenix
       ];
 
     services = {
