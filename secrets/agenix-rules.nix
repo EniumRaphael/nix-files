@@ -39,4 +39,6 @@ in
   "kandim-idmAdmin.age".publicKeys = users ++ systems;
   "vault-secret-env.age".publicKeys = users ++ systems;
   "vault-oidc-secret.age".publicKeys = users ++ systems;
+  "restic-password.age".publicKeys = users ++ systems;
+  "restic-s3-env.age".publicKeys = users ++ systems;
 }
