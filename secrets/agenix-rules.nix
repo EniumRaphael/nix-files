@@ -27,6 +27,8 @@ in
   "nextcloud-mail-password.age".publicKeys = users ++ systems;
   "matrix-oidc-secret.age".publicKeys = users ++ systems;
   "matrix-registration-token.age".publicKeys = users ++ systems;
+  "matrix-turn-secret.age".publicKeys = users ++ systems;
+  "livekit-keys.age".publicKeys = users ++ systems;
   "grafana-oidc-secret.age".publicKeys = users ++ systems;
   "grafana-secret-key.age".publicKeys = users ++ systems;
   "grafana-mail-password.age".publicKeys = users ++ systems;
