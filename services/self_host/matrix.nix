@@ -14,13 +14,57 @@ let
   };
   nddMatrix = "matrix.enium.eu";
   nddAuth = "auth.enium.eu";
+  nddTurn = "turn.enium.eu";
+  nddMatrixRtc = "matrix-rtc.enium.eu";
+  rtcPublicIp = "82.67.99.77";
+  rtcPrivateIp = "192.168.1.1";
+  deniedPeers = [
+    "0.0.0.0-0.255.255.255"
+    "10.0.0.0-10.255.255.255"
+    "100.64.0.0-100.127.255.255"
+    "127.0.0.0-127.255.255.255"
+    "169.254.0.0-169.254.255.255"
+    "172.16.0.0-172.31.255.255"
+    "192.0.0.0-192.0.0.255"
+    "192.0.2.0-192.0.2.255"
+    "192.88.99.0-192.88.99.255"
+    "192.168.0.0-192.168.255.255"
+    "198.18.0.0-198.19.255.255"
+    "198.51.100.0-198.51.100.255"
+    "203.0.113.0-203.0.113.255"
+    "240.0.0.0-255.255.255.255"
+    "::1"
+    "64:ff9b::-64:ff9b::ffff:ffff"
+    "::ffff:0.0.0.0-::ffff:255.255.255.255"
+    "100::-100::ffff:ffff:ffff:ffff"
+    "2001::-2001:1ff:ffff:ffff:ffff:ffff:ffff:ffff"
+    "2002::-2002:ffff:ffff:ffff:ffff:ffff:ffff:ffff"
+    "fc00::-fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"
+    "fe80::-febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff"
+  ];
 in
 {
   config = lib.mkIf cfg {
     networking.firewall.allowedTCPPorts = [
       80
       443
-      8448
+      3478
+      5349
+      7881
+    ];
+    networking.firewall.allowedUDPPorts = [
+      3478
+      5349
+    ];
+    networking.firewall.allowedUDPPortRanges = [
+      {
+        from = 49152;
+        to = 50175;
+      }
+      {
+        from = 50200;
+        to = 51200;
+      }
     ];
     age.secrets = {
       "matrix-registration-token" = {
@@ -34,6 +78,15 @@ in
         owner = "kanidm";
         group = "tuwunel";
         mode = "0440";
+      };
+      "matrix-turn-secret" = {
+        file = ../../secrets/matrix-turn-secret.age;
+        owner = "turnserver";
+        group = "tuwunel";
+        mode = "0440";
+      };
+      "livekit-keys" = {
+        file = ../../secrets/livekit-keys.age;
       };
     };
     services = {
@@ -87,11 +140,56 @@ in
               unique_id_fallbacks = false;
             }
           ];
+          turn_uris = [
+            "turn:${nddTurn}:3478?transport=udp"
+            "turn:${nddTurn}:3478?transport=tcp"
+            "turns:${nddTurn}:5349?transport=tcp"
+          ];
+          turn_secret_file = config.age.secrets.matrix-turn-secret.path;
+          turn_ttl = 86400;
           well_known = {
             client = "https://${nddMatrix}";
-            server = "${nddMatrix}";
+            server = "${nddMatrix}:443";
+            livekit_url = "https://${nddMatrixRtc}";
           };
         };
+      };
+      coturn = {
+        enable = true;
+        use-auth-secret = true;
+        static-auth-secret-file = config.age.secrets.matrix-turn-secret.path;
+        realm = nddTurn;
+        cert = "/var/lib/acme/${nddTurn}/fullchain.pem";
+        pkey = "/var/lib/acme/${nddTurn}/key.pem";
+        listening-ips = [ rtcPrivateIp ];
+        relay-ips = [ rtcPrivateIp ];
+        min-port = 49152;
+        max-port = 50175;
+        no-cli = true;
+        extraConfig = ''
+          external-ip=${rtcPublicIp}/${rtcPrivateIp}
+          allowed-peer-ip=${rtcPrivateIp}
+          fingerprint
+          no-multicast-peers
+          ${lib.concatMapStringsSep "\n" (r: "denied-peer-ip=${r}") deniedPeers}
+        '';
+      };
+      livekit = {
+        enable = true;
+        keyFile = config.age.secrets.livekit-keys.path;
+        settings = {
+          port = 7880;
+          rtc = {
+            port_range_start = 50200;
+            port_range_end = 51200;
+            node_ip = rtcPublicIp;
+          };
+        };
+      };
+      lk-jwt-service = {
+        enable = true;
+        livekitUrl = "wss://${nddMatrixRtc}";
+        keyFile = config.age.secrets.livekit-keys.path;
       };
       nginx = {
         enable = true;
@@ -139,7 +237,41 @@ in
             '';
           };
         };
+        virtualHosts."${nddTurn}" = {
+          enableACME = true;
+          forceSSL = true;
+          locations."/" = {
+            extraConfig = "return 200 '${nddTurn}';";
+          };
+        };
+        virtualHosts."${nddMatrixRtc}" = {
+          enableACME = true;
+          forceSSL = true;
+          locations = {
+            "~ ^/(sfu/get|get_token|healthz)" = {
+              proxyPass = "http://127.0.0.1:8089";
+            };
+            "/.well-known/foci" = {
+              proxyPass = "http://127.0.0.1:8089";
+            };
+            "/" = {
+              proxyPass = "http://127.0.0.1:7880";
+              extraConfig = ''
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+                proxy_read_timeout 300s;
+              '';
+            };
+          };
+        };
       };
+    };
+    users.users.turnserver.extraGroups = [ "nginx" ];
+    security.acme.certs."${nddTurn}".postRun = "systemctl restart coturn || true";
+    systemd.services.lk-jwt-service.environment = {
+      LIVEKIT_JWT_BIND = lib.mkForce "127.0.0.1:8089";
+      LIVEKIT_FULL_ACCESS_HOMESERVERS = "matrix.enium.eu";
     };
   };
 }
