@@ -97,7 +97,7 @@ in
       nextcloud = {
         enable = true;
         https = true;
-        package = pkgs.nextcloud34;
+        package = pkgs.nextcloud35;
         hostName = "nextcloud.enium.eu";
         datadir = dataDir;
         config = {
@@ -110,7 +110,7 @@ in
           dbpassFile = nextcloud-database;
         };
         extraApps = {
-          inherit (pkgs.nextcloud34Packages.apps) calendar contacts tasks;
+          inherit (pkgs.nextcloud35Packages.apps) calendar contacts tasks;
           user_oidc = pkgs.fetchNextcloudApp {
             appName = "user_oidc";
             appVersion = "0.8.2";
