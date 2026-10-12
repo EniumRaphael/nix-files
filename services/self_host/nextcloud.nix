@@ -113,10 +113,10 @@ in
           inherit (pkgs.nextcloud35Packages.apps) calendar contacts tasks;
           user_oidc = pkgs.fetchNextcloudApp {
             appName = "user_oidc";
-            appVersion = "0.8.2";
+            appVersion = "8.11.0";
             license = "agpl3Plus";
-            url = "https://github.com/nextcloud-releases/user_oidc/releases/download/v8.10.1/user_oidc-v8.10.1.tar.gz";
-            sha256 = "sha256-Sc7R/hkjAvRUC4aUOLbMucoNabcXt27XB1pwqlz2Zv0=";
+            url = "https://github.com/nextcloud-releases/user_oidc/releases/download/v8.11.0/user_oidc-v8.11.0.tar.gz";
+            sha256 = "sha256-iHkgUEwvDg0FWr1mIl7ntm11b1D+Wjc5d51rLOEIYz8=";
           };
         };
         phpOptions = {
