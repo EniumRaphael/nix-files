@@ -37,8 +37,13 @@ in
   config = lib.mkIf cfg.enable {
     programs.seahorse.enable = true;
     age.secrets = lib.mkIf cfg.mail {
-      "mail-perso-password" = {
-        file = ../../secrets/mail-perso-password.age;
+      "mail-perso-pro-password" = {
+        file = ../../secrets/mail-perso-pro-password.age;
+        owner = "raphael";
+        mode = "0400";
+      };
+      "mail-perso-tech-password" = {
+        file = ../../secrets/mail-perso-tech-password.age;
         owner = "raphael";
         mode = "0400";
       };
