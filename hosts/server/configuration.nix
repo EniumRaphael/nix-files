@@ -105,7 +105,6 @@
       git = true;
       htop = false;
       jellyfin = true;
-      mail = false;
       matrix = true;
       monitor = true;
       nextcloud = true;

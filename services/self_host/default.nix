@@ -39,14 +39,6 @@ let
       lib
       ;
   };
-  mail = import ./mail.nix {
-    inherit
-      inputs
-      config
-      pkgs
-      lib
-      ;
-  };
   matrix = import ./matrix.nix {
     inherit
       inputs
@@ -111,7 +103,6 @@ in
     git
     jellyfin
     htop
-    mail
     matrix
     monitor
     nextcloud
@@ -141,11 +132,6 @@ in
       type = lib.types.bool;
       default = false;
       description = "Enable the jellyfin";
-    };
-    mail = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Enable the mail";
     };
     matrix = lib.mkOption {
       type = lib.types.bool;
