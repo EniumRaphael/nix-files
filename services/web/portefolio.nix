@@ -22,6 +22,17 @@ in
           return = "404";
         };
       };
+      virtualHosts."raphael.parodi.tech" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          root = "/opt/portefolio/dist";
+          index = "index.html";
+          extraConfig = ''
+            try_files $uri /index.html;
+          '';
+        };
+      };
       virtualHosts."raphael.parodi.pro" = {
         forceSSL = true;
         enableACME = true;
@@ -38,6 +49,7 @@ in
       certs = {
         "parodi.pro" = { };
         "raphael.parodi.pro" = { };
+        "raphael.parodi.tech" = { };
       };
     };
     networking.firewall.allowedTCPPorts = [
