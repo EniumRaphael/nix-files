@@ -36,6 +36,7 @@ in
         environmentFile = config.age.secrets.vault-secret-env.path;
         config = {
           DOMAIN = "https://vault.infra.parodi.tech";
+          ROCKET_ADDRESS = "::1";
           ROCKET_PORT = 8222;
           SIGNUPS_ALLOWED = false;
           SSO_ENABLED = true;

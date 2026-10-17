@@ -21,7 +21,7 @@ let
     "https://nextcloud.enium.eu"
     "https://radarr.enium.eu"
     "https://sonarr.enium.eu"
-    "https://vault.enium.eu"
+    "https://vault.infra.parodi.tech"
     "https://raphael.parodi.pro"
     "https://raphael.parodi.tech"
   ];
