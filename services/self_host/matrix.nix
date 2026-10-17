@@ -16,8 +16,7 @@ let
   nddAuth = "auth.enium.eu";
   nddTurn = "turn.enium.eu";
   nddMatrixRtc = "matrix-rtc.enium.eu";
-  rtcPublicIp = "82.67.99.77";
-  rtcPrivateIp = "192.168.1.1";
+  rtcPublicIp = "2a01:e0a:e77:13f1::1";
   deniedPeers = [
     "0.0.0.0-0.255.255.255"
     "10.0.0.0-10.255.255.255"
@@ -51,8 +50,10 @@ in
       3478
       5349
       7881
+      8448
     ];
     networking.firewall.allowedUDPPorts = [
+      443
       3478
       5349
     ];
@@ -115,7 +116,7 @@ in
           server_name = "${nddMatrix}";
           new_user_displayname_suffix = "";
           address = [
-            "127.0.0.1"
+            "::1"
           ];
           port = [
             6167
@@ -161,14 +162,12 @@ in
         realm = nddTurn;
         cert = "/var/lib/acme/${nddTurn}/fullchain.pem";
         pkey = "/var/lib/acme/${nddTurn}/key.pem";
-        listening-ips = [ rtcPrivateIp ];
-        relay-ips = [ rtcPrivateIp ];
+        listening-ips = [ rtcPublicIp ];
+        relay-ips = [ rtcPublicIp ];
         min-port = 49152;
         max-port = 50175;
         no-cli = true;
         extraConfig = ''
-          external-ip=${rtcPublicIp}/${rtcPrivateIp}
-          allowed-peer-ip=${rtcPrivateIp}
           fingerprint
           no-multicast-peers
           ${lib.concatMapStringsSep "\n" (r: "denied-peer-ip=${r}") deniedPeers}
@@ -195,7 +194,7 @@ in
         enable = true;
         upstreams."tuwunel" = {
           servers = {
-            "127.0.0.1:6167" = { };
+            "[::1]:6167" = { };
           };
         };
         virtualHosts."${nddMatrix}" = {
@@ -249,13 +248,13 @@ in
           forceSSL = true;
           locations = {
             "~ ^/(sfu/get|get_token|healthz)" = {
-              proxyPass = "http://127.0.0.1:8089";
+              proxyPass = "http://[::1]:8089";
             };
             "/.well-known/foci" = {
-              proxyPass = "http://127.0.0.1:8089";
+              proxyPass = "http://[::1]:8089";
             };
             "/" = {
-              proxyPass = "http://127.0.0.1:7880";
+              proxyPass = "http://[::1]:7880";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -270,7 +269,7 @@ in
     users.users.turnserver.extraGroups = [ "nginx" ];
     security.acme.certs."${nddTurn}".postRun = "systemctl restart coturn || true";
     systemd.services.lk-jwt-service.environment = {
-      LIVEKIT_JWT_BIND = lib.mkForce "127.0.0.1:8089";
+      LIVEKIT_JWT_BIND = lib.mkForce "[::1]:8089";
       LIVEKIT_FULL_ACCESS_HOMESERVERS = "matrix.enium.eu";
     };
   };

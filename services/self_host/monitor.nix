@@ -23,6 +23,7 @@ let
     "https://sonarr.enium.eu"
     "https://vault.enium.eu"
     "https://raphael.parodi.pro"
+    "https://raphael.parodi.tech"
   ];
 in
 {
@@ -45,7 +46,7 @@ in
       "grafana-mail-password" = {
         file = ../../secrets/grafana-mail-password.age;
         owner = "grafana";
-        group = "alertmanager";
+        group = "grafana";
         mode = "0440";
       };
     };
@@ -136,7 +137,7 @@ in
               type = "loki";
               uid = "loki";
               access = "proxy";
-              url = "http://127.0.0.1:3100";
+              url = "http://[::1]:3100";
               editable = false;
             }
             {
@@ -144,7 +145,7 @@ in
               type = "prometheus";
               uid = "prometheus";
               access = "proxy";
-              url = "http://127.0.0.1:9090";
+              url = "http://[::1]:9090";
               isDefault = true;
               editable = false;
               jsonData = {
@@ -156,6 +157,8 @@ in
         };
         settings = {
           server = {
+            http_addr = "::1";
+            http_port = 3000;
             root_url = "https://monitor.enium.eu";
             domain = "monitor.enium.eu";
             serve_from_sub_path = false;
@@ -211,7 +214,7 @@ in
         checkConfig = false;
         alertmanager = {
           enable = true;
-          listenAddress = "127.0.0.1";
+          listenAddress = "[::1]";
           port = 9093;
           configuration = {
             global = {
@@ -291,7 +294,7 @@ in
             static_configs = [
               {
                 targets = [
-                  "127.0.0.1:9558"
+                  "[::1]:9558"
                 ];
               }
             ];
@@ -301,7 +304,7 @@ in
             static_configs = [
               {
                 targets = [
-                  "127.0.0.1:9100"
+                  "[::1]:9100"
                 ];
               }
             ];
@@ -330,10 +333,10 @@ in
               }
               {
                 target_label = "__address__";
-                replacement = "127.0.0.1:9115";
+                replacement = "[::1]:9115";
               }
             ];
-            proxy_url = "http://127.0.0.1:9115";
+            proxy_url = "http://[::1]:9115";
           }
         ];
         ruleFiles = lib.mkForce [ "/etc/prometheus/services.rules" ];
@@ -356,7 +359,7 @@ in
             };
             replication_factor = 1;
             ring = {
-              instance_addr = "127.0.0.1";
+              instance_addr = "::1";
               kvstore.store = "inmemory";
             };
           };
@@ -424,7 +427,7 @@ in
           enableACME = true;
           forceSSL = true;
           locations."/" = {
-            proxyPass = "http://127.0.0.1:3000";
+            proxyPass = "http://[::1]:3000";
             proxyWebsockets = true;
           };
         };

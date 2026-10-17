@@ -45,7 +45,7 @@ in
           settings = {
             domain = "enium.eu";
             origin = "https://auth.enium.eu";
-            bindaddress = "127.0.0.1:9000";
+            bindaddress = "[::1]:9000";
             tls_chain = "/var/lib/acme/auth.enium.eu/fullchain.pem";
             tls_key = "/var/lib/acme/auth.enium.eu/key.pem";
           };
@@ -162,7 +162,7 @@ in
           enableACME = true;
           forceSSL = true;
           locations."/" = {
-            proxyPass = "https://127.0.0.1:9000";
+            proxyPass = "https://[::1]:9000";
             proxyWebsockets = true;
             extraConfig = ''
               proxy_ssl_verify off;

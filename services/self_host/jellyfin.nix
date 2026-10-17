@@ -205,14 +205,14 @@ in
             enableACME = true;
             forceSSL = true;
             locations."/" = {
-              proxyPass = "http://127.0.0.1:7878";
+              proxyPass = "http://[::1]:7878";
             };
           };
           "sonarr.enium.eu" = {
             enableACME = true;
             forceSSL = true;
             locations."/" = {
-              proxyPass = "http://127.0.0.1:8989";
+              proxyPass = "http://[::1]:8989";
             };
           };
         };

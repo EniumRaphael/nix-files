@@ -179,7 +179,7 @@ in
           enableACME = true;
           forceSSL = true;
           locations."/" = {
-            proxyPass = "http://127.0.0.1:2283";
+            proxyPass = "http://[::1]:2283";
             proxyWebsockets = true;
             recommendedProxySettings = true;
             extraConfig = ''
@@ -193,8 +193,8 @@ in
       };
     };
     systemd.tmpfiles.rules = [
-        "d /mnt/disks 2770 root datausers -"
-        "d /mnt/disks/immich 0750 immich immich -"
-      ];
+      "d /mnt/disks 2770 root datausers -"
+      "d /mnt/disks/immich 0750 immich immich -"
+    ];
   };
 }

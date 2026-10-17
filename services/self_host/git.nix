@@ -90,7 +90,7 @@ in
             DOMAIN = gitDomain;
             ROOT_URL = "https://${gitDomain}/";
             SSH_PORT = 42131;
-            HTTP_ADDR = "127.0.0.1";
+            HTTP_ADDR = "::1";
             HTTP_PORT = 3042;
           };
 
@@ -190,7 +190,7 @@ in
           enableACME = true;
           forceSSL = true;
           locations."/" = {
-            proxyPass = "http://127.0.0.1:3042";
+            proxyPass = "http://[::1]:3042";
             proxyWebsockets = true;
           };
         };

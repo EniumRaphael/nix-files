@@ -35,7 +35,7 @@ in
         enable = true;
         environmentFile = config.age.secrets.vault-secret-env.path;
         config = {
-          DOMAIN = "https://vault.enium.eu";
+          DOMAIN = "https://vault.infra.parodi.tech";
           ROCKET_PORT = 8222;
           SIGNUPS_ALLOWED = false;
           SSO_ENABLED = true;
@@ -57,8 +57,8 @@ in
         present = true;
         displayName = "Vault";
         imageFile = vaultLogo;
-        originUrl = "https://vault.enium.eu";
-        originLanding = "https://vault.enium.eu/identity/connect/oidc-signin";
+        originUrl = "https://vault.infra.parodi.tech";
+        originLanding = "https://vault.infra.parodi.tech/identity/connect/oidc-signin";
         basicSecretFile = config.age.secrets.vault-oidc-secret.path;
         public = false;
         enableLocalhostRedirects = false;
@@ -79,11 +79,11 @@ in
       };
       nginx = {
         enable = true;
-        virtualHosts."vault.enium.eu" = {
+        virtualHosts."vault.infra.parodi.tech" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
-            proxyPass = "http://127.0.0.1:8222";
+            proxyPass = "http://[::1]:8222";
             proxyWebsockets = true;
           };
         };
