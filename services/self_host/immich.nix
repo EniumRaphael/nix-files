@@ -99,15 +99,15 @@ in
         enable = true;
         port = 2283;
         openFirewall = true;
-        host = "127.0.0.1";
+        host = "::1";
         mediaLocation = "/mnt/disks/immich";
         environment.MACHINE_LEARNING_URL = "http://localhost:3003";
         machine-learning.enable = false;
         redis.enable = true;
         settings = {
           server = {
-            externalDomain = "https://immich.enium.eu";
-            loginPageMessage = "Welcome to the cloud Enium";
+            externalDomain = "https://immich.infra.parodi.tech";
+            loginPageMessage = "Welcome to the cloud";
             publicUsers = false;
           };
           notifications.smtp = {
@@ -144,10 +144,10 @@ in
         displayName = "Immich";
         imageFile = immichLogo;
         originUrl = [
-          "https://immich.enium.eu"
+          "https://immich.infra.parodi.tech"
           "app.immich:///oauth-callback"
         ];
-        originLanding = "https://immich.enium.eu/auth/login";
+        originLanding = "https://immich.infra.parodi.tech/auth/login";
         basicSecretFile = config.age.secrets.immich-oidc-secret.path;
         public = false;
         enableLocalhostRedirects = false;
@@ -175,7 +175,7 @@ in
 
       nginx = {
         enable = true;
-        virtualHosts."immich.enium.eu" = {
+        virtualHosts."immich.infra.parodi.tech" = {
           enableACME = true;
           forceSSL = true;
           locations."/" = {

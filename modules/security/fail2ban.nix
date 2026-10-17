@@ -14,10 +14,14 @@ in
       enable = true;
       maxretry = 3;
       ignoreIP = [
-        "127.0.0.1/8"
-        "192.168.0.0/16"
+        "127.0.0.0/8"
+        "::1"
         "10.0.0.0/8"
         "172.16.0.0/12"
+        "192.168.0.0/16"
+        "fe80::/10"
+        "fc00::/7"
+        "2a01:e0a:e77:13f1::/64"
       ];
       bantime = "24h";
       bantime-increment = {
@@ -43,7 +47,7 @@ in
           enable = true;
           filter = "sshd";
           action = "iptables-multiport[name=SSH, port=\"ssh\"]";
-          logpath = "/var/log/auth.log";
+          backend = "systemd";
           maxretry = 3;
         };
       };
