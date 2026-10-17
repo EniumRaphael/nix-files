@@ -53,6 +53,12 @@
     network = {
       enable = true;
       wireless = false;
+      version6 = {
+        enable = true;
+        interface = "enp0s31f6";
+        address = "2a01:e0a:e77:13f1::1";
+        addressLocalLink = "fe80::3a07:16ff:fecb:a63c";
+      };
     };
     bluetooth = false;
     fingerprint = false;
