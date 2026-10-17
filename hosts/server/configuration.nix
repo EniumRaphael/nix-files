@@ -122,8 +122,8 @@
     forty_two.irc = false;
     web.portefolio = true;
     server = {
-      minecraft = true;
-      teamspeak = true;
+      minecraft = false;
+      teamspeak = false;
     };
     bot_discord = {
       master = false;
