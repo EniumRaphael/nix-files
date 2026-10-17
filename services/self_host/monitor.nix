@@ -16,12 +16,13 @@ let
   monitoredUrls = [
     "https://auth.enium.eu"
     "https://git.enium.eu"
-    "https://jellyfin.enium.eu"
+    "https://jellyfin.infra.parodi.tech"
     "https://monitor.enium.eu"
     "https://nextcloud.enium.eu"
-    "https://radarr.enium.eu"
-    "https://sonarr.enium.eu"
-    "https://vault.enium.eu"
+    "https://radarr.infra.parodi.tech"
+    "https://immich.infra.parodi.tech"
+    "https://sonarr.infra.parodi.tech"
+    "https://vault.infra.parodi.tech"
     "https://raphael.parodi.pro"
     "https://raphael.parodi.tech"
   ];

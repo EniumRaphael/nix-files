@@ -194,25 +194,31 @@ in
       nginx = {
         enable = true;
         virtualHosts = {
-          "jellyfin.enium.eu" = {
+          "jellyfin.infra.parodi.tech" = {
             enableACME = true;
             forceSSL = true;
             locations."/" = {
               proxyPass = "http://127.0.0.1:8096";
+              proxyWebsockets = true;
+              recommendedProxySettings = true;
             };
           };
-          "radarr.enium.eu" = {
+          "radarr.infra.parodi.tech" = {
             enableACME = true;
             forceSSL = true;
             locations."/" = {
               proxyPass = "http://[::1]:7878";
+              proxyWebsockets = true;
+              recommendedProxySettings = true;
             };
           };
-          "sonarr.enium.eu" = {
+          "sonarr.infra.parodi.tech" = {
             enableACME = true;
             forceSSL = true;
             locations."/" = {
               proxyPass = "http://[::1]:8989";
+              proxyWebsockets = true;
+              recommendedProxySettings = true;
             };
           };
         };

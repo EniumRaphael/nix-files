@@ -98,7 +98,7 @@ in
         enable = true;
         https = true;
         package = pkgs.nextcloud35;
-        hostName = "nextcloud.enium.eu";
+        hostName = "nextcloud.parodi.tech";
         datadir = dataDir;
         config = {
           adminpassFile = nextcloud-admin-pass;
@@ -125,7 +125,7 @@ in
         settings = {
           trusted_domains = [
             "192.168.1.254"
-            "nextcloud.enium.eu"
+            "nextcloud.parodi.tech"
           ];
           maintenance_window_start = 5;
           serverid = 0;
@@ -151,8 +151,8 @@ in
           present = true;
           displayName = "Nextcloud";
           imageFile = nextcloudLogo;
-          originUrl = "https://nextcloud.enium.eu/apps/user_oidc/code";
-          originLanding = "https://nextcloud.enium.eu/login";
+          originUrl = "https://nextcloud.parodi.tech/apps/user_oidc/code";
+          originLanding = "https://nextcloud.parodi.tech/login";
           basicSecretFile = config.age.secrets.nextcloud-oidc-secret.path;
           public = false;
           enableLocalhostRedirects = false;
@@ -182,12 +182,16 @@ in
           };
         };
       };
-      nginx.virtualHosts."nextcloud.enium.eu" = {
+      nginx.virtualHosts."nextcloud.parodi.tech" = {
         enableACME = true;
         forceSSL = true;
-        locations."~ \.php$".extraConfig = ''
-          fastcgi_pass unix:/run/phpfpm-nextcloud.sock;
-        '';
+        locations."~ \.php$" = {
+          proxyWebsockets = true;
+          recommendedProxySettings = true;
+          extraConfig = ''
+            fastcgi_pass unix:/run/phpfpm-nextcloud.sock;
+          '';
+        };
       };
     };
     security.apparmor.policies.nextcloud = {
