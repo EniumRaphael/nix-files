@@ -7,8 +7,14 @@
 
 let
   cfg = config.config-hw.network;
+  ipv6 = import ./ipv6.nix {
+    inherit config pkgs lib;
+  };
 in
 {
+  imports = [
+    ipv6
+  ];
   config = lib.mkIf cfg.enable {
     systemd.network = {
       enable = true;

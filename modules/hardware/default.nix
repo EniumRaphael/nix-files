@@ -57,6 +57,28 @@ in
         default = false;
         description = "the configuration for wifi";
       };
+      version6 = {
+        enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Enable the configuration for ipv6";
+        };
+        interface = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+          description = "The interface where IpV6 will be shown";
+        };
+        addressLocalLink = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+          description = "The Gateway in IpV6";
+        };
+        address = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+          description = "The public address of the server";
+        };
+      };
     };
     keyboard = lib.mkOption {
       type = lib.types.bool;
