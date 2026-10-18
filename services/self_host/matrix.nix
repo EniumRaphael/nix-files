@@ -116,6 +116,7 @@ in
           server_name = "${nddMatrix}";
           new_user_displayname_suffix = "";
           address = [
+            "127.0.0.1"
             "::1"
           ];
           port = [
@@ -194,6 +195,7 @@ in
         enable = true;
         upstreams."tuwunel" = {
           servers = {
+            "127.0.0.1:6167" = { };
             "[::1]:6167" = { };
           };
         };
@@ -248,13 +250,13 @@ in
           forceSSL = true;
           locations = {
             "~ ^/(sfu/get|get_token|healthz)" = {
-              proxyPass = "http://[::1]:8089";
+              proxyPass = "http://127.0.0.1:8089";
             };
             "/.well-known/foci" = {
-              proxyPass = "http://[::1]:8089";
+              proxyPass = "http://127.0.0.1:8089";
             };
             "/" = {
-              proxyPass = "http://[::1]:7880";
+              proxyPass = "http://127.0.0.1:7880";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -269,7 +271,7 @@ in
     users.users.turnserver.extraGroups = [ "nginx" ];
     security.acme.certs."${nddTurn}".postRun = "systemctl restart coturn || true";
     systemd.services.lk-jwt-service.environment = {
-      LIVEKIT_JWT_BIND = lib.mkForce "[::1]:8089";
+      LIVEKIT_JWT_BIND = lib.mkForce "127.0.0.1:8089";
       LIVEKIT_FULL_ACCESS_HOMESERVERS = "matrix.enium.eu";
     };
   };
