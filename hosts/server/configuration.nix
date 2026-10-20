@@ -79,14 +79,26 @@
   networking = {
     hostName = "server";
     hostId = "ba9db3c6";
-    interfaces.enp0s31f6.ipv4.addresses = [
-      {
-        address = "192.168.1.1";
-        prefixLength = 24;
-      }
-    ];
+    interfaces.enp0s31f6 = {
+      ipv4.addresses = [
+        {
+          address = "192.168.1.1";
+          prefixLength = 24;
+        }
+      ];
+      ipv6.addresses = [
+        {
+          address = "2a01:e0a:e77:13f1::1";
+          prefixLength = 64;
+        }
+      ];
+    };
     defaultGateway = {
       address = "192.168.1.254";
+      interface = "enp0s31f6";
+    };
+    defaultGateway6 = {
+      address = "fe80::3a07:16ff:fecb:a63c";
       interface = "enp0s31f6";
     };
     nameservers = [
