@@ -79,6 +79,14 @@ let
       lib
       ;
   };
+  alert = import ./alert.nix {
+    inherit
+      inputs
+      config
+      pkgs
+      lib
+      ;
+  };
   sso = import ./sso.nix {
     inherit
       inputs
@@ -99,6 +107,7 @@ let
 in
 {
   imports = [
+    alert
     backup
     git
     jellyfin
