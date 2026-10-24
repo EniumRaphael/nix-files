@@ -22,6 +22,7 @@ in
   "mail-icloud-password.age".publicKeys = users ++ systems;
   "mailjet-user.age".publicKeys = users ++ systems;
   "mailjet-pass.age".publicKeys = users ++ systems;
+  "alert-mail-password.age".publicKeys = users ++ systems;
   "nextcloud-admin-pass.age".publicKeys = users ++ systems;
   "nextcloud-database.age".publicKeys = users ++ systems;
   "nextcloud-oidc-secret.age".publicKeys = users ++ systems;
