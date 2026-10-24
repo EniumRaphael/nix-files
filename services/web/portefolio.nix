@@ -15,6 +15,13 @@ in
       pnpm
     ];
     services.nginx = {
+      virtualHosts."parodi.tech" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          return = "404";
+        };
+      };
       virtualHosts."parodi.pro" = {
         forceSSL = true;
         enableACME = true;
