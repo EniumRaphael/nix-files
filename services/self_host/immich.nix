@@ -112,11 +112,11 @@ in
           };
           notifications.smtp = {
             enabled = true;
-            from = "immich@enium.eu";
+            from = "immich@infra.parodi.tech";
             transport = {
               host = "smtp.migadu.com";
               ignoreCert = false;
-              username = "immich@enium.eu";
+              username = "immich@infra.parodi.tech";
               password._secret = config.age.secrets.immich-mail-password.path;
               port = 465;
               secure = true;

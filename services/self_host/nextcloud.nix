@@ -136,9 +136,9 @@ in
           mail_smtphost = "smtp.migadu.com";
           mail_smtpport = 587;
           mail_smtpauth = true;
-          mail_smtpname = "nextcloud@enium.eu";
+          mail_smtpname = "nextcloud@infra.parodi.tech";
           mail_from_address = "nextcloud";
-          mail_domain = "enium.eu";
+          mail_domain = "infra.parodi.tech";
           log_type = "file";
           logfile = "/var/log/nextcloud/nextcloud.log";
           loglevel = 2;

@@ -49,9 +49,9 @@ in
           SMTP_HOST = "smtp.migadu.com";
           SMTP_PORT = 465;
           SMTP_SECURITY = "force_tls";
-          SMTP_FROM = "vaultwarden@enium.eu";
+          SMTP_FROM = "vaultwarden@infra.parodi.tech";
           SMTP_FROM_NAME = "Vaultwarden";
-          SMTP_USERNAME = "vaultwarden@enium.eu";
+          SMTP_USERNAME = "vaultwarden@infra.parodi.tech";
         };
       };
       kanidm.provision.systems.oauth2.vault = {
