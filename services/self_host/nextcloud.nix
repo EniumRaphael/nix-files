@@ -7,7 +7,6 @@
 
 let
   cfg = config.service.selfhost.nextcloud;
-  nextcloud-admin-pass = config.age.secrets."nextcloud-admin-pass".path;
   nextcloud-database = config.age.secrets."nextcloud-database".path;
   nextcloud-mail-password = config.age.secrets."nextcloud-mail-password".path;
   nextcloudLogo = pkgs.fetchurl {
@@ -32,12 +31,6 @@ in
     age.secrets = {
       "nextcloud-database" = {
         file = ../../secrets/nextcloud-database.age;
-        owner = "nextcloud";
-        group = "nextcloud";
-        mode = "0400";
-      };
-      "nextcloud-admin-pass" = {
-        file = ../../secrets/nextcloud-admin-pass.age;
         owner = "nextcloud";
         group = "nextcloud";
         mode = "0400";
@@ -101,8 +94,6 @@ in
         hostName = "nextcloud.parodi.tech";
         datadir = dataDir;
         config = {
-          adminpassFile = nextcloud-admin-pass;
-          adminuser = "OwnedByTheEniumTeam";
           dbtype = "pgsql";
           dbname = "nextcloud";
           dbhost = "localhost";
@@ -127,6 +118,9 @@ in
             "192.168.1.254"
             "nextcloud.parodi.tech"
           ];
+          "overwrite.cli.url" = "https://nextcloud.parodi.tech";
+          overwritehost = "nextcloud.parodi.tech";
+          overwriteprotocol = "https";
           maintenance_window_start = 5;
           serverid = 0;
           default_phone_region = "FR";
