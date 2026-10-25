@@ -44,7 +44,7 @@
 
   applications = {
     docker = true;
-    man = true;
+    man = false;
     mullvad = false;
     ssh = true;
   };
