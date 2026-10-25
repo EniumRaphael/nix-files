@@ -36,6 +36,11 @@ in
   "grafana-mail-password.age".publicKeys = users ++ systems;
   "forgejo-oidc-secret.age".publicKeys = users ++ systems;
   "forgejo-runner-token.age".publicKeys = users ++ systems;
+  "forgejo-runner-default-token.age".publicKeys = users ++ systems;
+  "forgejo-runner-rust-token.age".publicKeys = users ++ systems;
+  "forgejo-runner-forty-two-token.age".publicKeys = users ++ systems;
+  "forgejo-runner-nix-token.age".publicKeys = users ++ systems;
+  "forgejo-runner-flutter-token.age".publicKeys = users ++ systems;
   "forgejo-mail-password.age".publicKeys = users ++ systems;
   "immich-mail-password.age".publicKeys = users ++ systems;
   "immich-oidc-secret.age".publicKeys = users ++ systems;
