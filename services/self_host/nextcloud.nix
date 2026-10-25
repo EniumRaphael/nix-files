@@ -157,7 +157,7 @@ in
           public = false;
           enableLocalhostRedirects = false;
           allowInsecureClientDisablePkce = false;
-          preferShortUsername = false;
+          preferShortUsername = true;
           claimMaps = {
             groups = {
               joinType = "array";
