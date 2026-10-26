@@ -14,7 +14,7 @@ let
     name = "nextcloud.svg";
     sha256 = "sha256-hL51zJkFxUys1CoM8yUxiH8BDw111wh3Qv7eTLm+XYo=";
   };
-  dataDir = "/mnt/data/nextcloud";
+  dataDir = "/mnt/disks/nextcloud";
 in
 {
   config = lib.mkIf cfg {
@@ -115,8 +115,12 @@ in
         };
         settings = {
           trusted_domains = [
-            "192.168.1.254"
             "nextcloud.parodi.tech"
+          ];
+          trusted_proxies = [
+            "::1"
+            "127.0.0.1"
+            "192.168.1.254"
           ];
           "overwrite.cli.url" = "https://nextcloud.parodi.tech";
           overwritehost = "nextcloud.parodi.tech";
