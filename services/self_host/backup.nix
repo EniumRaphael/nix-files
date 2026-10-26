@@ -15,7 +15,7 @@ let
   };
 
   backupRoot = "/var/backup";
-  nextcloudDataDir = "/mnt/data/nextcloud";
+  nextcloudDataDir = "/mnt/disks/nextcloud";
 in
 {
   config = lib.mkIf cfg {
