@@ -14,6 +14,7 @@ let
   ];
 in
 {
+  "arr-api-keys.age".publicKeys = users ++ systems;
   "cachix-key.age".publicKeys = users ++ systems;
   "wireguard-secret.age".publicKeys = users ++ systems;
   "mail-perso-pro-password.age".publicKeys = users ++ systems;
