@@ -68,6 +68,17 @@ in
           default = "";
           description = "The interface where IpV6 will be shown";
         };
+        lanPrefix = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+          description = "The prefix of this lan";
+        };
+
+        mask = lib.mkOption {
+          type = lib.types.ints.between 1 128;
+          default = 128;
+          description = "The mask for the lanPrefix";
+        };
         addressLocalLink = lib.mkOption {
           type = lib.types.str;
           default = "";

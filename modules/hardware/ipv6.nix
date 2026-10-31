@@ -13,12 +13,20 @@ in
       enableIPv6 = true;
       tempAddresses = "disabled";
 
-      interfaces.${cfg.interface}.ipv6.addresses = [
-        {
-          address = cfg.address;
-          prefixLength = 64;
-        }
-      ];
+      interfaces.${cfg.interface}.ipv6 = {
+        addresses = [
+          {
+            address = cfg.address;
+            prefixLength = cfg.mask;
+          }
+        ];
+        routes = [
+          {
+            address = cfg.lanPrefix;
+            prefixLength = cfg.mask;
+          }
+        ];
+      };
 
       defaultGateway6 = {
         address = cfg.addressLocalLink;
