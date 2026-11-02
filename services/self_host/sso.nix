@@ -48,6 +48,12 @@ in
             bindaddress = "[::1]:9000";
             tls_chain = "/var/lib/acme/auth.enium.eu/fullchain.pem";
             tls_key = "/var/lib/acme/auth.enium.eu/key.pem";
+            online_backup = {
+              path = "/var/lib/kanidm/backups";
+              schedule = "00 02 * * *";
+              versions = 3;
+              compression = "gzip";
+            };
           };
         };
         client = {

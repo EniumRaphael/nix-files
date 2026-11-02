@@ -12,6 +12,7 @@ let
     nextcloud = config.service.selfhost.nextcloud;
     git = config.service.selfhost.git;
     vault = config.service.selfhost.vault;
+    sso = config.service.selfhost.sso;
   };
 
   backupRoot = "/var/backup";
@@ -61,7 +62,8 @@ in
           lib.optional enabled.nextcloud nextcloudDataDir
           ++ lib.optional enabled.nextcloud "${backupRoot}/postgresql"
           ++ lib.optional enabled.vault "${backupRoot}/vaultwarden"
-          ++ lib.optional enabled.git "${backupRoot}/forgejo";
+          ++ lib.optional enabled.git "${backupRoot}/forgejo"
+          ++ lib.optional enabled.sso config.services.kanidm.server.settings.online_backup.path;
 
         exclude = [
           "**/*.log"

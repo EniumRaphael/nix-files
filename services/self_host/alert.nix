@@ -12,6 +12,7 @@ let
     nextcloud = config.service.selfhost.nextcloud;
     git = config.service.selfhost.git;
     vault = config.service.selfhost.vault;
+    sso = config.service.selfhost.sso;
   };
 
   mailFrom = "alert@infra.parodi.tech";
@@ -19,6 +20,7 @@ let
 
   maxAgeHours = 26;
   stampFile = "/var/lib/backup-alert/backup.success";
+  kanidmBackupDir = config.services.kanidm.server.settings.online_backup.path;
 
   notify = pkgs.writeShellScript "backup-notify" ''
     subject="$1"
@@ -111,13 +113,46 @@ in
             fi
           '';
         };
+
+        kanidm-backup-watchdog = lib.mkIf enabled.sso {
+          description = "Check if the last kanidm online backup is recent";
+          serviceConfig.Type = "oneshot";
+          script = ''
+            latest=$(find ${kanidmBackupDir} -maxdepth 1 -name 'backup-*.json*' -printf '%T@\n' 2>/dev/null | sort -n | tail -n 1)
+
+            if [ -z "$latest" ]; then
+              ${notify} "Kanidm backup failed" \
+                "No backup found in ${kanidmBackupDir}. Check: journalctl -u kanidm | grep -i backup"
+              exit 0
+            fi
+
+            age=$(( $(date +%s) - ''${latest%.*} ))
+            max=$(( ${toString maxAgeHours} * 3600 ))
+
+            if [ "$age" -gt "$max" ]; then
+              ${notify} "Last kanidm backup failed (>${toString maxAgeHours}h)" \
+                "The last kanidm backup was $((age / 3600))h ago (the limit is: ${toString maxAgeHours}h).
+            It can be check using : journalctl -u kanidm | grep -i backup"
+            fi
+          '';
+        };
       };
 
-      timers.backup-watchdog = {
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = "*-*-* 10:00:00";
-          Persistent = true;
+      timers = {
+        backup-watchdog = {
+          wantedBy = [ "timers.target" ];
+          timerConfig = {
+            OnCalendar = "*-*-* 10:00:00";
+            Persistent = true;
+          };
+        };
+
+        kanidm-backup-watchdog = lib.mkIf enabled.sso {
+          wantedBy = [ "timers.target" ];
+          timerConfig = {
+            OnCalendar = "*-*-* 10:00:00";
+            Persistent = true;
+          };
         };
       };
     };
