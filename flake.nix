@@ -62,6 +62,10 @@
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    claude-cage = {
+      url = "github:EniumRaphael/claude-cage";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -70,6 +74,7 @@
       nixpkgs,
       agenix,
       catppuccin,
+      claude-cage,
       disko,
       hm-config,
       home-manager,
@@ -176,5 +181,6 @@
           ];
         };
       };
+      devShells.x86_64-linux.default = claude-cage.devShells.x86_64-linux.default;
     };
 }

@@ -77,6 +77,47 @@
         "type": "github"
       }
     },
+    "claude-cage": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793657029,
+        "narHash": "sha256-vUjum5bTPo+pIyddKXAIaQvBo/GiUHA2ViJLZLKfnzU=",
+        "owner": "EniumRaphael",
+        "repo": "claude-cage",
+        "rev": "531a4be3f6754ec2c09435616dbad83f2c92ac4f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "EniumRaphael",
+        "repo": "claude-cage",
+        "type": "github"
+      }
+    },
+    "claude-cage_2": {
+      "inputs": {
+        "nixpkgs": [
+          "hm-config",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793657029,
+        "narHash": "sha256-vUjum5bTPo+pIyddKXAIaQvBo/GiUHA2ViJLZLKfnzU=",
+        "owner": "EniumRaphael",
+        "repo": "claude-cage",
+        "rev": "531a4be3f6754ec2c09435616dbad83f2c92ac4f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "EniumRaphael",
+        "repo": "claude-cage",
+        "type": "github"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -273,6 +314,7 @@
         "catppuccin": [
           "catppuccin"
         ],
+        "claude-cage": "claude-cage_2",
         "firefox-addons": [
           "firefox-addons"
         ],
@@ -295,11 +337,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793650974,
-        "narHash": "sha256-i2OvG1PfmtxKE9V867PdbmT1d0LRYav3uww5SWOiir0=",
+        "lastModified": 1793663716,
+        "narHash": "sha256-R5JydRdmB0HTGCUFXIqV0OwTIJIfPhdm7++tIwmdpFI=",
         "owner": "EniumRaphael",
         "repo": "home-manager",
-        "rev": "b6ece47ed7e96afcf901b48f7f43e55a7a75350c",
+        "rev": "75d8150674c5747b14c3a5f902fc90a9a8379cf5",
         "type": "github"
       },
       "original": {
@@ -965,6 +1007,7 @@
       "inputs": {
         "agenix": "agenix",
         "catppuccin": "catppuccin",
+        "claude-cage": "claude-cage",
         "disko": "disko",
         "firefox-addons": "firefox-addons",
         "flake-utils": "flake-utils",
