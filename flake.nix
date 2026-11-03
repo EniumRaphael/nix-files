@@ -100,14 +100,17 @@
       ];
 
       mkHomeManagerModule = userModules: extraSpecialArgs: {
-        home-manager.sharedModules = [
-          catppuccin.homeModules.catppuccin
-        ];
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.backupFileExtension = "hmbak";
-        home-manager.extraSpecialArgs = extraSpecialArgs;
-        home-manager.users = userModules;
+        home-manager = {
+          sharedModules = [
+            catppuccin.homeModules.catppuccin
+          ];
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          backupFileExtension = "hmbak";
+          overwriteBackup = true;
+          extraSpecialArgs = extraSpecialArgs;
+          users = userModules;
+        };
       };
 
       mkHost =
