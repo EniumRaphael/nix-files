@@ -28,6 +28,7 @@ in
   "nextcloud-database.age".publicKeys = users ++ systems;
   "nextcloud-oidc-secret.age".publicKeys = users ++ systems;
   "nextcloud-mail-password.age".publicKeys = users ++ systems;
+  "nextcloud-calendar.age".publicKeys = users ++ systems;
   "matrix-oidc-secret.age".publicKeys = users ++ systems;
   "matrix-registration-token.age".publicKeys = users ++ systems;
   "matrix-turn-secret.age".publicKeys = users ++ systems;

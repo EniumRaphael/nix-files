@@ -36,28 +36,38 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.seahorse.enable = true;
-    age.secrets = lib.mkIf cfg.mail {
-      "mail-perso-pro-password" = {
-        file = ../../secrets/mail-perso-pro-password.age;
-        owner = "raphael";
-        mode = "0400";
-      };
-      "mail-perso-tech-password" = {
-        file = ../../secrets/mail-perso-tech-password.age;
-        owner = "raphael";
-        mode = "0400";
-      };
-      "mail-enium-password" = {
-        file = ../../secrets/mail-enium-password.age;
-        owner = "raphael";
-        mode = "0400";
-      };
-      "mail-icloud-password" = {
-        file = ../../secrets/mail-icloud-password.age;
-        owner = "raphael";
-        mode = "0400";
-      };
-    };
+    age.secrets = lib.mkMerge [
+      {
+        # CalDAV password for Nextcloud (read by the Noctalia shell in home-manager)
+        "nextcloud-calendar" = {
+          file = ../../secrets/nextcloud-calendar.age;
+          owner = "raphael";
+          mode = "0400";
+        };
+      }
+      (lib.mkIf cfg.mail {
+        "mail-perso-pro-password" = {
+          file = ../../secrets/mail-perso-pro-password.age;
+          owner = "raphael";
+          mode = "0400";
+        };
+        "mail-perso-tech-password" = {
+          file = ../../secrets/mail-perso-tech-password.age;
+          owner = "raphael";
+          mode = "0400";
+        };
+        "mail-enium-password" = {
+          file = ../../secrets/mail-enium-password.age;
+          owner = "raphael";
+          mode = "0400";
+        };
+        "mail-icloud-password" = {
+          file = ../../secrets/mail-icloud-password.age;
+          owner = "raphael";
+          mode = "0400";
+        };
+      })
+    ];
     hardware = {
       graphics = {
         enable = true;
