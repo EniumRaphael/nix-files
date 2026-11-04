@@ -53,7 +53,9 @@ in
     network = {
       enable = true;
       wireless = true;
+      resolved = true;
     };
+    avahi = true;
     bluetooth = true;
     fingerprint = false;
     streamdeck = true;

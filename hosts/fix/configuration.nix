@@ -50,7 +50,9 @@
     network = {
       enable = true;
       wireless = false;
+      resolved = true;
     };
+    avahi = true;
     bluetooth = false;
     fingerprint = false;
     streamdeck = true;
