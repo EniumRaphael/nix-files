@@ -19,6 +19,9 @@ let
   network = import ./network.nix {
     inherit config pkgs lib;
   };
+  avahi = import ./avahi.nix {
+    inherit config pkgs lib;
+  };
   printer = import ./printer.nix {
     inherit config pkgs lib;
   };
@@ -38,6 +41,7 @@ in
     network
     keyboard
     nvidia
+    avahi
     printer
     bluetooth
     fingerprint
@@ -56,6 +60,11 @@ in
         type = lib.types.bool;
         default = false;
         description = "the configuration for wifi";
+      };
+      resolved = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Enable systemd-resolved with opportunistic DNS over TLS";
       };
       version6 = {
         enable = lib.mkOption {
@@ -94,6 +103,11 @@ in
       type = lib.types.bool;
       default = false;
       description = "The configuration for nvidia graphic card";
+    };
+    avahi = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "The configuration for avahi (mDNS discovery)";
     };
     printer = lib.mkOption {
       type = lib.types.bool;
@@ -191,10 +205,5 @@ in
     };
 
     age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-
-    services.avahi = {
-      enable = true;
-      nssmdns4 = true;
-    };
   };
 }
