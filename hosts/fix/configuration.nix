@@ -49,11 +49,11 @@
   config-hw = {
     network = {
       enable = true;
-      wireless = false;
+      wireless = true;
       resolved = true;
     };
     avahi = true;
-    bluetooth = false;
+    bluetooth = true;
     fingerprint = false;
     streamdeck = true;
     printer = true;
@@ -81,7 +81,17 @@
     "electron-39.8.10"
   ];
 
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+  hardware = {
+    nvidia = {
+      open = true;
+    };
+  };
+
+  zramSwap.enable = true;
+
+  services = {
+    fwupd.enable = true;
+  };
 
   system.stateVersion = "24.05";
 }
