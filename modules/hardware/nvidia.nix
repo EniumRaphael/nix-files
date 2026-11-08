@@ -11,13 +11,14 @@ in
 {
   config = lib.mkIf cfg {
     hardware.nvidia = {
-      open = false;
+      open = lib.mkDefault false;
       modesetting.enable = true;
       powerManagement = {
         enable = false;
         finegrained = false;
       };
       nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
     services = {
       xserver.videoDrivers = [ "nvidia" ];
