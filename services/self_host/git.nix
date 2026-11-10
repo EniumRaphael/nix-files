@@ -149,7 +149,7 @@ in
           };
           actions = {
             ENABLED = true;
-            DEFAULT_ACTIONS_URL = "github";
+            DEFAULT_ACTIONS_URL = "https://github.com";
           };
           mailer = {
             ENABLED = true;
@@ -162,73 +162,75 @@ in
         };
         secrets.mailer.PASSWD = config.age.secrets.forgejo-mail-password.path;
       };
-      forgejo-runner.instances.default = {
-        enable = true;
-        settings = {
-          runner.labels = [
-            "ubuntu-latest:docker://ubuntu:latest"
-          ];
-          server.connections.default = {
-            url = "https://git.enium.eu";
-            uuid = "362ea69f-4e4b-424d-9eb7-45e5de316dbb";
+      forgejo-runner.instances = {
+        default = {
+          enable = true;
+          settings = {
+            runner.labels = [
+              "ubuntu-latest:docker://ubuntu:latest"
+            ];
+            server.connections.default = {
+              url = "https://git.enium.eu";
+              uuid = "362ea69f-4e4b-424d-9eb7-45e5de316dbb";
+            };
           };
+          secrets.server.connections.default.token_url =
+            config.age.secrets."forgejo-runner-default-token".path;
         };
-        secrets.server.connections.default.token_url =
-          config.age.secrets."forgejo-runner-default-token".path;
-      };
-      forgejo-runner.instances.rust = {
-        enable = true;
-        settings = {
-          runner.labels = [
-            "rust:docker://rust:alpine"
-          ];
-          server.connections.default = {
-            url = "https://git.enium.eu";
-            uuid = "3d8720af-e477-4549-a4ad-394756702a15";
+        rust = {
+          enable = true;
+          settings = {
+            runner.labels = [
+              "rust:docker://rust:alpine"
+            ];
+            server.connections.default = {
+              url = "https://git.enium.eu";
+              uuid = "3d8720af-e477-4549-a4ad-394756702a15";
+            };
           };
+          secrets.server.connections.default.token_url = config.age.secrets."forgejo-runner-rust-token".path;
         };
-        secrets.server.connections.default.token_url = config.age.secrets."forgejo-runner-rust-token".path;
-      };
-      forgejo-runner.instances.forty-two = {
-        enable = true;
-        settings = {
-          runner.labels = [
-            "forty-two:docker://alexandregv/remote-42"
-          ];
-          server.connections.default = {
-            url = "https://git.enium.eu";
-            uuid = "7e7a16dd-893e-4c54-98d5-eb7c06b87a15";
+        forty-two = {
+          enable = true;
+          settings = {
+            runner.labels = [
+              "forty-two:docker://alexandregv/remote-42"
+            ];
+            server.connections.default = {
+              url = "https://git.enium.eu";
+              uuid = "7e7a16dd-893e-4c54-98d5-eb7c06b87a15";
+            };
           };
+          secrets.server.connections.default.token_url =
+            config.age.secrets."forgejo-runner-forty-two-token".path;
         };
-        secrets.server.connections.default.token_url =
-          config.age.secrets."forgejo-runner-forty-two-token".path;
-      };
-      forgejo-runner.instances.nix = {
-        enable = true;
-        settings = {
-          runner.labels = [
-            "nix:docker://nixos/nix"
-          ];
-          server.connections.default = {
-            url = "https://git.enium.eu";
-            uuid = "d36e098d-ad8d-407c-9265-f78f4d634922";
+        nix = {
+          enable = true;
+          settings = {
+            runner.labels = [
+              "nix:docker://nixos/nix"
+            ];
+            server.connections.default = {
+              url = "https://git.enium.eu";
+              uuid = "d36e098d-ad8d-407c-9265-f78f4d634922";
+            };
           };
+          secrets.server.connections.default.token_url = config.age.secrets."forgejo-runner-nix-token".path;
         };
-        secrets.server.connections.default.token_url = config.age.secrets."forgejo-runner-nix-token".path;
-      };
-      forgejo-runner.instances.flutter = {
-        enable = true;
-        settings = {
-          runner.labels = [
-            "flutter:docker://ghcr.io/cirruslabs/flutter:stable"
-          ];
-          server.connections.default = {
-            url = "https://git.enium.eu";
-            uuid = "c28489ce-2b14-4ea3-b13e-12d90835ebab";
+        flutter = {
+          enable = true;
+          settings = {
+            runner.labels = [
+              "flutter:docker://ghcr.io/cirruslabs/flutter:stable"
+            ];
+            server.connections.default = {
+              url = "https://git.enium.eu";
+              uuid = "c28489ce-2b14-4ea3-b13e-12d90835ebab";
+            };
           };
+          secrets.server.connections.default.token_url =
+            config.age.secrets."forgejo-runner-flutter-token".path;
         };
-        secrets.server.connections.default.token_url =
-          config.age.secrets."forgejo-runner-flutter-token".path;
       };
       nginx = {
         enable = true;
