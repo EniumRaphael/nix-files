@@ -210,6 +210,12 @@ in
             runner.labels = [
               "nix:docker://nixos/nix"
             ];
+            container = {
+              options = "-v forgejo-nix-store:/nix";
+              valid_volumes = [
+                "forgejo-nix-store"
+              ];
+            };
             server.connections.default = {
               url = "https://git.enium.eu";
               uuid = "d36e098d-ad8d-407c-9265-f78f4d634922";
