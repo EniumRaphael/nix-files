@@ -36,6 +36,11 @@ in
       };
     };
 
+    systemd.tmpfiles.rules = [
+      "e /var/backup/forgejo - - - 3d"
+      "e /var/backup/postgresql - - - 3d"
+    ];
+
     services = {
       postgresqlBackup = lib.mkIf enabled.nextcloud {
         enable = true;
