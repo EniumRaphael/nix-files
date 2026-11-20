@@ -59,6 +59,13 @@ in
         mode = "0400";
       };
 
+      "forgejo-runner-docker-token" = {
+        file = ../../secrets/forgejo-runner-docker-token.age;
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
+
       "forgejo-mail-password" = {
         file = ../../secrets/forgejo-mail-password.age;
         owner = "forgejo";
@@ -190,6 +197,21 @@ in
           };
           secrets.server.connections.default.token_url = config.age.secrets."forgejo-runner-rust-token".path;
         };
+        docker = {
+          enable = true;
+          settings = {
+            runner.labels = [
+              "docker:docker://docker:dind"
+            ];
+            container.privileged = true;
+            server.connections.default = {
+              url = "https://${gitDomain}";
+              uuid = "141201fc-b676-484f-82d1-a8b19b77f5fd";
+            };
+          };
+          secrets.server.connections.default.token_url =
+            config.age.secrets."forgejo-runner-docker-token".path;
+        };
         forty-two = {
           enable = true;
           settings = {
@@ -254,5 +276,65 @@ in
       80
       443
     ];
+    virtualisation.oci-containers.containers.forgejo-dind = {
+      image = "docker:dind";
+      environment = {
+        DOCKER_TLS_CERTDIR = "/certs";
+      };
+      volumes = [
+        "forgejo-dind-certs:/certs"
+        "forgejo-dind-data:/var/lib/docker"
+      ];
+      extraOptions = [
+        "--privileged"
+        "--network=forgejo-dind"
+        "--network-alias=docker"
+        "--hostname=docker"
+      ];
+    };
+
+    systemd = {
+      services = {
+        docker-network-forgejo-dind = {
+          description = "Création du réseau docker forgejo-dind";
+          after = [
+            "docker.service"
+          ];
+          requires = [
+            "docker.service"
+          ];
+          before = [
+            "docker-forgejo-dind.service"
+          ];
+          requiredBy = [
+            "docker-forgejo-dind.service"
+          ];
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+          };
+          script = ''
+            ${config.virtualisation.docker.package}/bin/docker network inspect forgejo-dind >/dev/null 2>&1 \
+              || ${config.virtualisation.docker.package}/bin/docker network create forgejo-dind
+          '';
+        };
+        forgejo-dind-prune = {
+          description = "Nettoyage du cache docker du runner dind";
+          serviceConfig.Type = "oneshot";
+          script = ''
+            ${config.virtualisation.docker.package}/bin/docker exec forgejo-dind docker system prune -af --filter until=168h
+          '';
+        };
+      };
+      timers.forgejo-dind-prune = {
+        wantedBy = [
+          "timers.target"
+        ];
+        timerConfig = {
+          OnCalendar = "weekly";
+          Persistent = true;
+        };
+      };
+    };
   };
 }
