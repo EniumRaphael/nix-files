@@ -38,6 +38,7 @@ in
   "grafana-mail-password.age".publicKeys = users ++ systems;
   "forgejo-oidc-secret.age".publicKeys = users ++ systems;
   "forgejo-runner-token.age".publicKeys = users ++ systems;
+  "forgejo-runner-docker-token.age".publicKeys = users ++ systems;
   "forgejo-runner-default-token.age".publicKeys = users ++ systems;
   "forgejo-runner-rust-token.age".publicKeys = users ++ systems;
   "forgejo-runner-forty-two-token.age".publicKeys = users ++ systems;
