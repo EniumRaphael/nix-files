@@ -203,7 +203,11 @@ in
             runner.labels = [
               "docker:docker://docker:dind"
             ];
-            container.privileged = true;
+            container = {
+              privileged = true;
+              options = "--dns=1.1.1.1 --dns=1.0.0.1";
+              docker_host = "automount";
+            };
             server.connections.default = {
               url = "https://${gitDomain}";
               uuid = "141201fc-b676-484f-82d1-a8b19b77f5fd";
@@ -285,39 +289,20 @@ in
         "forgejo-dind-certs:/certs"
         "forgejo-dind-data:/var/lib/docker"
       ];
+      cmd = [
+        "--bip=10.200.0.1/24"
+        "--default-address-pool=base=10.201.0.0/16,size=24"
+      ];
       extraOptions = [
         "--privileged"
-        "--network=forgejo-dind"
-        "--network-alias=docker"
         "--hostname=docker"
+        "--dns=1.1.1.1"
+        "--dns=1.0.0.1"
       ];
     };
 
     systemd = {
       services = {
-        docker-network-forgejo-dind = {
-          description = "Création du réseau docker forgejo-dind";
-          after = [
-            "docker.service"
-          ];
-          requires = [
-            "docker.service"
-          ];
-          before = [
-            "docker-forgejo-dind.service"
-          ];
-          requiredBy = [
-            "docker-forgejo-dind.service"
-          ];
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-          };
-          script = ''
-            ${config.virtualisation.docker.package}/bin/docker network inspect forgejo-dind >/dev/null 2>&1 \
-              || ${config.virtualisation.docker.package}/bin/docker network create forgejo-dind
-          '';
-        };
         forgejo-dind-prune = {
           description = "Nettoyage du cache docker du runner dind";
           serviceConfig.Type = "oneshot";
