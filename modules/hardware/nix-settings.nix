@@ -28,8 +28,12 @@ in
           "https://cache.nixos-cuda.org"
         ];
         trusted-public-keys = [
-          "eniumraphael.cachix.org-1:MnPAkTzOEHAydM9/yMcBq0HuBMCGToNNmHEtyD/Okxg="
           "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+          "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+          "eniumraphael.cachix.org-1:MnPAkTzOEHAydM9/yMcBq0HuBMCGToNNmHEtyD/Okxg="
+          "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
         ];
         experimental-features = [
           "nix-command"
