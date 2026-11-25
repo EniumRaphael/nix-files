@@ -1,6 +1,6 @@
 {
+  inputs,
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -9,11 +9,22 @@ let
   cfg = config.service.web.portefolio;
 in
 {
+  imports = [
+    inputs.portefolio.nixosModules.default
+  ];
+
   config = lib.mkIf cfg {
-    environment.systemPackages = with pkgs; [
-      nodejs
-      pnpm
-    ];
+    services.portefolio = {
+      enable = true;
+      domains = [
+        "raphael.parodi.tech"
+        "raphael.parodi.pro"
+      ];
+      user = "nginx";
+      group = "nginx";
+      createUser = false;
+    };
+
     services.nginx = {
       virtualHosts."parodi.tech" = {
         forceSSL = true;
@@ -29,36 +40,8 @@ in
           return = "404";
         };
       };
-      virtualHosts."raphael.parodi.tech" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/" = {
-          root = "/opt/portefolio/dist";
-          index = "index.html";
-          extraConfig = ''
-            try_files $uri /index.html;
-          '';
-        };
-      };
-      virtualHosts."raphael.parodi.pro" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/" = {
-          root = "/opt/portefolio/dist";
-          index = "index.html";
-          extraConfig = ''
-            try_files $uri /index.html;
-          '';
-        };
-      };
     };
-    security.acme = {
-      certs = {
-        "parodi.pro" = { };
-        "raphael.parodi.pro" = { };
-        "raphael.parodi.tech" = { };
-      };
-    };
+
     networking.firewall.allowedTCPPorts = [
       80
       443
