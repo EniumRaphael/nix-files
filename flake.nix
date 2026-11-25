@@ -66,6 +66,14 @@
       url = "github:EniumRaphael/claude-cage";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    portefolio = {
+      url = "github:EniumRaphael/portefolio";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+        claude-cage.follows = "claude-cage";
+      };
+    };
   };
 
   outputs =
